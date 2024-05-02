@@ -2,7 +2,7 @@ import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
 
 import {useTitle} from "../../common/hooks";
-import {Carousel, Image} from "../../component/mika-ui";
+import {Carousel, Image} from "@natsume_shiki/mika-ui";
 
 import './Home.less';
 
@@ -23,7 +23,6 @@ const CarouselItem = () => {
 
 const Home = () => {
     useTitle("首页");
-
     return (<div className="moe-video-home-page-root">
             <Header/>
             <div className="moe-video-home-page-wrapper">

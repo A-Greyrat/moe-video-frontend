@@ -1,6 +1,6 @@
 import './Register.less';
 import {useTitle, useTypePrint} from "../../common/hooks";
-import {Button} from "../../component/mika-ui";
+import {Button} from "@natsume_shiki/mika-ui";
 import React, {memo, useCallback, useEffect, useRef, useState} from "react";
 import {emailTimeLimit, getEmailCaptcha, isUserLoggedIn, register} from "../../common/user";
 import {useNavigate} from "react-router-dom";

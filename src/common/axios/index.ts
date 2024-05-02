@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios';
-import {showModal} from "../../component/mika-ui";
+import {showModal} from "@natsume_shiki/mika-ui";
 import {isUserLoggedIn} from "../user";
-import {withLock} from "../../component/mika-ui/utils/utils.ts";
+import {withLock} from  "@natsume_shiki/mika-ui/dist/utils/utils.ts";
 
 export const baseURL = import.meta.env.VITE_BASE_URL;
 const instance = axios.create({
@@ -18,6 +18,7 @@ instance.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const expireModal = withLock((_lock: boolean) => {
     showModal({
         title: "登录过期",

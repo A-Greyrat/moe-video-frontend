@@ -1,2 +1,1 @@
-export {debounce} from '../../component/mika-ui';
-export {throttle} from '../../component/mika-ui';
+export {debounce, throttle} from "@natsume_shiki/mika-ui";

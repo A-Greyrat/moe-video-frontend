@@ -1,11 +1,11 @@
-import {Button, Image, showModal} from "../../component/mika-ui";
+import {Button, Image, showModal} from "@natsume_shiki/mika-ui";
 import "./Login.less";
 import {useTypePrint} from "../../common/hooks";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {getCaptcha, isUserLoggedIn, login} from "../../common/user";
 import {throttle} from "../../common/utils";
 import {useNavigate} from "react-router-dom";
-import {useStore} from "../../common/mika-store";
+import {useStore} from "mika-store";
 
 const text =
     "無敵の笑顔で荒らすメディア\n" +
@@ -130,8 +130,8 @@ export const Captcha = () => {
             lock.current = false;
         });
     }, []);
-    const [_resetCaptchaCallback, _setResetCaptchaCallback] = useStore<() => unknown>('reset-captcha', resetCaptcha);
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_resetCaptchaCallback, _setResetCaptchaCallback] = useStore('reset-captcha', () => () => resetCaptcha);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const renewCaptcha = useCallback(throttle(resetCaptcha, 1000), [resetCaptcha]);
 
@@ -157,6 +157,7 @@ export const SubmitButton = () => {
     const [showError, setShowError] = useState<string | null>(null);
     const [disable, setDisable] = useState(false);
     const nav = useNavigate();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [resetCaptchaCallback, _setResetCaptchaCallback] = useStore<() => unknown>('reset-captcha');
 
     const loginCallback = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -185,7 +186,7 @@ export const SubmitButton = () => {
                 nav(-1);
             } else {
                 setShowError(res.msg);
-                resetCaptchaCallback();
+                resetCaptchaCallback?.();
             }
         });
     }, [nav, resetCaptchaCallback]);
