@@ -1,0 +1,21 @@
+@footer-height: 60px;
+.moe-video-footer-container {
+  width: 100%;
+  height: @footer-height;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+  position: absolute;
+  bottom: 0;
+}
+
+:has(> .moe-video-footer-container) {
+  position: relative;
+  min-height: calc(100vh - 20px);
+  padding-bottom: @footer-height + 10px;
+  box-sizing: border-box;
+}

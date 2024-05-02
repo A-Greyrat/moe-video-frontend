@@ -1,0 +1,39 @@
+@import '../../common/theme/theme.less';
+
+.moe-video-404-root {
+  display: flex;
+  height: 100vh;
+
+  background: mix(@primary-color, transparent, 20%);
+
+  > h1 {
+    margin: auto;
+    color: transparent;
+
+    background: linear-gradient(45deg, mix(@primary-color, transparent, 50%), mix(@primary-color, transparent, 50%));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px mix(@primary-color, transparent, 50%);
+
+    font-size: 40px;
+    user-select: none;
+
+    @media (max-width: 768px) {
+      font-size: 30px;
+    }
+
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      border-radius: 10px;
+      height: 5px;
+      background: linear-gradient(45deg, mix(@primary-color, transparent, 50%), mix(@primary-color, transparent, 50%));
+    }
+
+  }
+}

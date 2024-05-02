@@ -1,0 +1,78 @@
+@import "../../common/theme/theme";
+@import "Login";
+
+.moe-video-register-root {
+  display: flex;
+  height: 100vh;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  & > :nth-child(1) {
+    flex: 2;
+  }
+
+  & > :nth-child(2) {
+    flex: 3;
+  }
+}
+
+.mika-novel-register-side {
+  .moe-video-login-side;
+}
+
+.moe-video-register-container {
+  .moe-video-login-form-container;
+  @media (max-width: 768px) {
+    order: 3;
+  }
+}
+
+.moe-video-register-form {
+  .moe-video-login-form;
+
+  > button {
+    width: 100%;
+  }
+
+  .moe-video-register-form-error {
+    margin: -10px 0;
+    align-self: flex-start;
+    font-size: 14px;
+    color: @error-color;
+  }
+
+  .moe-video-register-form-captcha {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+
+    button {
+      all: unset;
+      white-space: nowrap;
+      box-shadow: 0.25px 0.25px 1px @primary-color,
+      1px 1px 3px @primary-color;
+      box-sizing: border-box;
+      color: @primary-color;
+      border-radius: 5px;
+      padding: @small-padding @medium-padding;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 130px;
+      text-align: center;
+
+      &:focus {
+        box-shadow: -1px -1px 3px @primary-color,
+          -0.25px -0.25px 1px @primary-color;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        filter: grayscale(100%);
+      }
+    }
+  }
+}
