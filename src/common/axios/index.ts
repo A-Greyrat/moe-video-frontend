@@ -1,7 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios';
-import {showModal} from "@natsume_shiki/mika-ui";
+import {showModal, withLock} from "@natsume_shiki/mika-ui";
 import {isUserLoggedIn} from "../user";
-import {withLock} from  "@natsume_shiki/mika-ui/dist/utils/utils.ts";
 
 export const baseURL = import.meta.env.VITE_BASE_URL;
 const instance = axios.create({

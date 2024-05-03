@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@natsume_shiki/mika-ui": "^1.0.1",
+    "@natsume_shiki/mika-ui": "^1.0.3",
     "axios": "^1.6.8",
-    "mika-store": "^1.0.3",
+    "mika-store": "^1.0.4",
+    "mika-video-player": "^1.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0"
