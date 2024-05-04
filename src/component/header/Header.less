@@ -2,7 +2,7 @@
 
 .moe-video-header-container {
   width: 90vw;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 20px auto;
   border-radius: 10px;
   height: 50pt;
@@ -16,7 +16,7 @@
 
   display: grid;
   grid-template-areas: ". icon . search . right .";
-  grid-template-columns: minmax(10px, 100px) auto 65px minmax(50px, auto)  50px min-content minmax(10px, auto);
+  grid-template-columns: minmax(10px, 50px) min-content auto minmax(50px, auto) auto min-content minmax(10px, 50px);
   @media (max-width: 768px) {
     grid-template-columns: minmax(0, 20px) min-content 50px minmax(50px, auto) 20px min-content minmax(0, 20px);
   }
@@ -77,7 +77,7 @@
 
     .moe-video-header-search {
       max-width: unset;
-      width: 80%;
+      width: 90%;
     }
 
     > .moe-video-header-right {
@@ -91,7 +91,8 @@
 
   .moe-video-header-search {
     grid-area: search;
-    max-width: 300px;
+    width: 100%;
+    justify-self: center;
 
     .mika-dropdown {
       width: 100%;
