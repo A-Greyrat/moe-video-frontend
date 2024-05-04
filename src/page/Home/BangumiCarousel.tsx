@@ -37,7 +37,7 @@ const BangumiCarousel = memo((props: BangumiCarouselProps) => {
             items.map((item, index) => {
                 return <BangumiCarouselItem key={index} {...item}/>;
             })
-        }/>
+        } autoSwitchByTime={5000}/>
     );
 });
 

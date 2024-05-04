@@ -5,26 +5,69 @@
     box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
       -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
     flex: 1;
-    height: 12rem;
     border-radius: 0.5rem;
   }
 }
 
 .moe-video-home-page-index-item-wrapper {
-
+  background: linear-gradient(45deg, rgba(206, 210, 255, 0.08), rgba(239, 147, 255, 0.08));
+  //background: white;
 }
 
 .moe-video-home-page-index-item-title {
   font-size: 1.5rem;
-  margin: 0.5rem 0 0.5rem 1rem;
+  color: darken(@primary-color, 10%);
+  margin: 1.2rem 0 0.8rem 1.4rem;
+  position: relative;
+  font-weight: 600;
+  line-height: 1;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0.35rem;
+    height: 100%;
+    background: @primary-color;
+    left: -0.8rem;
+    top: 50%;
+    transform: translateY(-48%);
+    border-radius: 0.5rem;
+  }
 }
 
 .moe-video-home-page-index-item-list {
-  margin-left: 1rem;
-  gap: 0.2rem;
+  padding: 0.3rem 0.5rem;
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .moe-video-home-page-index-item {
   font-size: 1.1rem;
-  padding: 0.5rem 1.5rem 0.5rem 0;
+  padding: 0 0.2rem 0.4rem 0.2rem;
+  white-space: nowrap;
+
+  > a {
+    display: block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    color: darken(@primary-color, 5%);
+    transition: 0.2s;
+    width: fit-content;
+
+    &:hover {
+      background: lighten(@primary-color, 10%);
+      color: white;
+    }
+  }
 }

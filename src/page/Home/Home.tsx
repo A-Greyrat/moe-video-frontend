@@ -7,7 +7,7 @@ import './Home.less';
 import BangumiCarousel from "./BangumiCarousel.tsx";
 import IndexList from "./IndexList.tsx";
 import ChasingList from "./ChasingList.tsx";
-import TimeLineList from "./TimeLineList.tsx";
+import TimelineList from "./TimelineList.tsx";
 import RecommendList from "./RecommendList.tsx";
 
 const carouselItem = [{
@@ -41,31 +41,34 @@ const indexList = [{
 const chasingList = [{
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackVolume: '4.6万',
+    playbackCount: '4.6万',
 } ,{
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackVolume: '300',
+    playbackCount: '300',
 } ,{
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackVolume: '2400',
+    playbackCount: '2400',
 } ,]
 
 const timeLineList = [{
     title: '迷宫饭',
     cover: '/img.png',
-    playTime: '2024-05-04',
+    updateTime: '18:00',
+    updateTo: '更新至第12话',
     score: 9.8,
 } ,{
     title: '迷宫饭',
     cover: '/img.png',
-    playTime: '2024-05-05',
+    updateTime: '18:00',
+    updateTo: '更新至第12话',
     score: 9.6,
 } ,{
     title: '迷宫饭',
     cover: '/img.png',
-    playTime: '2024-05-06',
+    updateTime: '18:00',
+    updateTo: '更新至第12话',
     score: 9.4,
 } ,]
 
@@ -82,7 +85,35 @@ const recommendList = [{
     likeCount: '6666',
     offer: '免费',
     uploadTime: '2024-05-06'
-}, ]
+}, {
+    title: '迷宫饭1111111',
+    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+    playbackCount: '3万',
+    likeCount: '6666',
+    offer: '免费',
+    uploadTime: '2024-05-06'
+}, {
+    title: '迷宫饭1111111',
+    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+    playbackCount: '3万',
+    likeCount: '6666',
+    offer: '免费',
+    uploadTime: '2024-05-06'
+}, {
+    title: '迷宫饭1111111',
+    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+    playbackCount: '3万',
+    likeCount: '6666',
+    offer: '免费',
+    uploadTime: '2024-05-06'
+}, {
+    title: '迷宫饭1111111',
+    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+    playbackCount: '3万',
+    likeCount: '6666',
+    offer: '免费',
+    uploadTime: '2024-05-06'
+} ]
 
 const Home = () => {
     useTitle("首页");
@@ -100,10 +131,10 @@ const Home = () => {
                 <ChasingList items={chasingList}/>
 
                 {/* 时间表 */}
-                <TimeLineList items={timeLineList}/>
+                <TimelineList items={timeLineList}/>
 
                 {/* 推荐列表 */}
-                <RecommendList items={recommendList}/>
+                {/*<RecommendList items={recommendList}/>*/}
             </div>
             <Footer/>
         </div>
