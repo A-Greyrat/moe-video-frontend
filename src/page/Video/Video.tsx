@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo, useEffect} from "react";
 import VideoPlayer, {DanmakuAttr} from "mika-video-player";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
@@ -7,13 +7,9 @@ import './Video.less';
 import VideoPageComment from "./VideoPageComment.tsx";
 import {useTitle} from "../../common/hooks";
 import {useParams} from "react-router-dom";
-
-const proxy_url = 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=';
-
-const getURL = (url: string) => {
-    const host = url.split('/')[2];
-    return proxy_url + host + '&pUrl=' + encodeURIComponent(url);
-};
+import VideoPageInfo from "./VideoPageInfo.tsx";
+import VideoPaginationList from "./VideoPaginationList.tsx";
+import VideoRecommendList from "./VideoRecommendList.tsx";
 
 const item = {
     title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)\n',
@@ -238,7 +234,6 @@ const getUrl = (bv: string) => {
 };
 
 const Video = memo(() => {
-    const [showMore, setShowMore] = useState(false);
     useTitle(item.title);
     const param = useParams();
 
@@ -288,32 +283,7 @@ const Video = memo(() => {
                                  }}
                     />
 
-
-                    <div className='moe-video-video-page-info'>
-                        <h1 className='moe-video-video-page-title'>
-                            {item.title}
-                        </h1>
-                        <span className='moe-video-video-page-tags'>
-                            {item.tags.map((tag, index) => {
-                                return <span key={index} className='moe-video-video-page-tag'>{tag}</span>
-                            })}
-                        </span>
-
-                        <div className='moe-video-video-page-count'>
-                            <span>播放: {item.playCount}</span>
-                            <span>点赞: {item.likeCount}</span>
-                            <span>弹幕: {item.danmakuCount}</span>
-                            <span>收藏: {item.favoriteCount}</span>
-                        </div>
-
-                        <div className={'moe-video-video-page-description ' + (showMore ? '' : 'line-clamp-5')}>
-                            <p>{item.description}</p>
-                        </div>
-                        <p className="moe-video-video-page-show-more" onClick={() => setShowMore(!showMore)}>
-                            {showMore ? '收起' : '展开'}
-                        </p>
-
-                    </div>
+                    <VideoPageInfo {...item}/>
 
                     <div className="moe-video-video-page-comment">
                         <div className="moe-video-video-page-comment-list">
@@ -323,36 +293,11 @@ const Video = memo(() => {
                     </div>
 
                 </div>
-                <div className="moe-video-video-page-right">
-                    <div className="moe-video-video-page-pagination-list">
-                        <p className="moe-video-video-page-pagination-title">视频列表</p>
-                        {item.pagination.map((item, index) => {
-                            return (<div key={index} className="moe-video-video-page-pagination-item">
-                                <a href={item.url}>
-                                    <span className='mr-1.5 font-bold'>{item.index}</span>
-                                    <span className='line-clamp-1'>{item.title}</span>
-                                    <span className='ml-1.5 text-gray-400'>{item.duration}</span>
-                                </a>
-                            </div>)
-                        })}
-                    </div>
 
-                    <div className="moe-video-video-page-recommend-list">
-                        <p className="moe-video-video-page-recommend-title">推荐视频</p>
-                        {item.recommendList.map((item, index) => {
-                            return (<a href={item.url} key={index} className="moe-video-video-page-recommend-item">
-                                <img src={getURL(item.cover)} alt={item.title}/>
-                                <div className="moe-video-video-page-recommend-item-info">
-                                    <span className='line-clamp-2 text-base'>{item.title}</span>
-                                    <span className='text-gray-400'>{item.author}</span>
-                                    <span className='flex justify-between'>
-                                        <span className='text-gray-400'>{item.playCount} views</span>
-                                        <span className='text-gray-400'>{item.update}</span>
-                                    </span>
-                                </div>
-                            </a>)
-                        })}
-                    </div>
+                <div className="moe-video-video-page-right">
+                    <VideoPaginationList items={item.pagination}/>
+
+                    <VideoRecommendList items={item.recommendList}/>
                 </div>
             </div>
             <Footer/>

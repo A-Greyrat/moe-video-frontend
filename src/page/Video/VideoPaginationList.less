@@ -1,0 +1,47 @@
+@import "../../common/theme/theme.less";
+
+.moe-video-video-page-pagination-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+    -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
+
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  .moe-video-video-page-pagination-title {
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .moe-video-video-page-pagination-item {
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    > a {
+      display: flex;
+      padding: 0.2rem 0.5rem;
+    }
+
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+
+    &.active {
+      background-color: @primary-color;
+      color: white;
+    }
+  }
+
+}
