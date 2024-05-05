@@ -1,4 +1,4 @@
-import {Button, Image, Pagination, showMessage, withLockTime,InfinityList} from "@natsume_shiki/mika-ui";
+import {Button, Image, InfinityList, Pagination, showMessage, withLockTime} from "@natsume_shiki/mika-ui";
 import {useStore} from "mika-store";
 import {memo, useCallback, useRef, useState} from "react";
 import {addComment, deleteComment, getComments} from "../../common/video";
@@ -56,7 +56,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
     return (
         <div className="moe-video-page-comment-box">
             <div className="moe-video-page-comment-box-container">
-                <Image lazy src={props.user.avatar} width={36} height={36} error="/defaultAvatar.webp"/>
+                <Image lazy src={props.user.avatar} style={{width: '2.2rem', height: '2.2rem'}} error="/defaultAvatar.webp"/>
                 <div>
                     <h3>{props.user.name}</h3>
                     <p>{props.time}</p>
@@ -72,7 +72,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
                                 setCurrentInputIndex(parseInt(props.id));
                                 setReplyTo(props.id);
                             }
-                        }} style={{paddingLeft: 0}} styleType="link">回复</Button>
+                        }} style={{paddingLeft: 0, fontSize: '1rem'}} styleType="link">回复</Button>
                         {userInfo?.userId.toString() === props.user.id &&
                             <Button styleType="link" onClick={_deleteComment}>删除</Button>}
                     </div>
@@ -112,7 +112,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReply) => {
     return (
         <div className="moe-video-page-comment-box reply">
             <div className="moe-video-page-comment-box-container">
-                <Image src={props.user.avatar} width={30} height={30} error="/defaultAvatar.webp"/>
+                <Image src={props.user.avatar} style={{width: '2rem', height: '2rem'}} error="/defaultAvatar.webp"/>
                 <div>
                     <h3>{props.user.name}</h3>
                     <p>{props.time}</p>
@@ -128,7 +128,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReply) => {
                                 setCurrentInputIndex(parseInt(props.parent as string));
                                 setReplyTo(props.id);
                             }
-                        }} style={{paddingLeft: 0}} styleType="link">回复</Button>
+                        }} style={{paddingLeft: 0, fontSize: '1rem'}} styleType="link">回复</Button>
                         {userInfo?.userId.toString() === props.user.id &&
                             <Button styleType="link" onClick={_deleteComment}>删除</Button>}
                     </div>
@@ -248,7 +248,7 @@ const VideoPageCommentInput = memo((props: {
 
     return (
         <div className="moe-video-page-comment-input">
-            <Image width={36} height={36} src="/defaultAvatar.webp" error="/defaultAvatar.webp"/>
+            <Image style={{width: '2.2rem', height: '2.2rem'}} src="/defaultAvatar.webp" error="/defaultAvatar.webp"/>
             <textarea placeholder="写下你的评论" ref={ref}/>
             <Button styleType="primary" onClick={reply}>评论</Button>
         </div>
@@ -288,10 +288,8 @@ const VideoPageComment = memo(({videoId}: { videoId: string }) => {
             <h2>评论</h2>
             <div>
                 <VideoPageCommentInput vid={videoId} toId={'-1'}/>
-                <InfinityList className="moe-video-page-comment-infinity-list" style={{
-                    display: 'flex',
-                    flexDirection: 'column-reverse',
-                }} onIntersect={getCommentList} limit={total} itemNum={comment ? comment.length : 0}>
+                <InfinityList className="moe-video-page-comment-infinity-list"
+                              onIntersect={getCommentList} limit={total} itemNum={comment ? comment.length : 0}>
                     {comment?.map((comment, _index) => {
                         return (
                             <VideoPageCommentBox key={comment.id} videoId={videoId} {...comment}/>

@@ -7,7 +7,6 @@ interface VideoRecommendListProps {
 }
 
 interface VideoRecommendListItemProps {
-    index: number,
     title: string,
     url: string,
     cover: string,
@@ -16,23 +15,26 @@ interface VideoRecommendListItemProps {
     author: string,
 }
 
-const proxy_url = 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=';
 
-const getURL = (url: string) => {
+const getCover = (url: string) => {
     const host = url.split('/')[2];
-    return proxy_url + host + '&pUrl=' + encodeURIComponent(url);
-};
+    return 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=' + host + '&pUrl=' + encodeURIComponent(url);
+}
 
 export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) => {
+    const {url, cover, title, playCount, update, author} = props;
+
     return (
-        <a href={props.url} className="moe-video-video-page-recommend-item">
-            <img src={getURL(props.cover)} alt={props.title}/>
-            <div className="moe-video-video-page-recommend-item-info">
-                <span className='line-clamp-2 text-base'>{props.title}</span>
-                <span className='text-gray-400'>{props.author}</span>
+        <a href={url} target='_blank' className="moe-video-video-page-recommend-item">
+            <div className='moe-video-video-page-recommend-list-item-cover-background'></div>
+            <img src={getCover(cover)} alt={title}/>
+            <div className="moe-video-video-page-recommend-item-info w-full justify-between">
+                <span className='line-clamp-2 text-base'>{title}</span>
+                <span className='text-gray-400'>{author}</span>
                 <span className='flex justify-between'>
-                    <span className='text-gray-400 flex items-center gap-1'><PlaybackVolumeIcon fill='currentColor'/>{props.playCount}</span>
-                    <span className='text-gray-400'>{props.update}</span>
+                    <span className='text-gray-400 flex items-center gap-1'><PlaybackVolumeIcon
+                        fill='currentColor'/>{playCount}</span>
+                    <span className='text-gray-400'>{update}</span>
                 </span>
             </div>
         </a>
@@ -42,12 +44,13 @@ export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) 
 const VideoRecommendList = memo((props: VideoRecommendListProps) => {
     const {items} = props;
 
-    return (
-        <div className="moe-video-video-page-recommend-list">
+    return (<div className="moe-video-video-page-recommend-wrapper">
             <p className="moe-video-video-page-recommend-title">推荐视频</p>
-            {items.map((item, index) => {
-                return (<VideoRecommendListItem key={index} {...item}/>)
-            })}
+            <div className="moe-video-video-page-recommend-list">
+                {items.map((item, index) => {
+                    return (<VideoRecommendListItem key={index} {...item}/>)
+                })}
+            </div>
         </div>
     );
 });

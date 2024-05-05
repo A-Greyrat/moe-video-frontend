@@ -5,24 +5,24 @@ import Footer from "../../component/footer/Footer";
 
 import './Video.less';
 import VideoPageComment from "./VideoPageComment.tsx";
-import {useTitle} from "../../common/hooks";
 import {useParams} from "react-router-dom";
 import VideoPageInfo from "./VideoPageInfo.tsx";
 import VideoPaginationList from "./VideoPaginationList.tsx";
 import VideoRecommendList from "./VideoRecommendList.tsx";
 
 const item = {
+    avid: '1',
     title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)\n',
     tags: ['音乐', 'VOCALOID·UTAU', 'VOCALOID', '歌愛ユキ', '稲葉曇', 'ぬくぬくにぎりめし'],
-    playCount: '68.0万',
-    likeCount: '8.5万',
+    playCount: '6821940',
+    likeCount: '82424',
     danmakuCount: '1158',
-    favoriteCount: '6.2万',
+    favoriteCount: '62414',
     recommendList: [
         {
             index: 1,
             title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)',
-            url: '/video/1',
+            url: '/video/BV1EE421M7zP',
             cover: 'https://i1.hdslb.com/bfs/archive/3c9e5a95685493ce56ebbce4bf3d1375d016e014.jpg@320w_200h_1c_!web-space-upload-video.avif',
             playCount: '68.0万',
             update: '2021-09-10',
@@ -31,7 +31,7 @@ const item = {
         {
             index: 2,
             title: '稲葉曇『ラグトレイン』Vo. 歌愛ユキ / 稻叶昙- Lagtrain (Vo. 歌爱雪)',
-            url: '/video/2',
+            url: '/video/BV1fK4y1s7Qf',
             cover: 'https://i2.hdslb.com/bfs/archive/81192e9411bc18bba5f00f17736126a804610679.jpg@320w_200h_1c_!web-space-upload-video.avif',
             playCount: '57.0万',
             update: '2023-01-20',
@@ -40,7 +40,7 @@ const item = {
         {
             index: 3,
             title: '稲葉曇『ロストアンブレラ』Vo. 歌愛ユキ / 稻叶昙- Lost Umbrella (Vo. 歌爱雪)',
-            url: '/video/3',
+            url: '/video/BV1CW411x7TC',
             cover: 'https://i1.hdslb.com/bfs/archive/b77d62d50afc8ca9bb47fb39aadfe8f8bbd2e4ca.jpg@320w_200h_1c_!web-space-upload-video.avif',
             playCount: '54.0万',
             update: '2022-03-12',
@@ -49,7 +49,7 @@ const item = {
         {
             index: 4,
             title: '稲葉曇『ハルノ寂寞』Vo. 弦巻マキ / 稻叶昙 - 春日寂寞 (Vo. Tsurumaki Maki)',
-            url: '/video/4',
+            url: '/video/BV1Yq4y1774V',
             cover: 'https://i1.hdslb.com/bfs/archive/b5045e7959337428c4bd99d2cba7c1bb7a02be67.jpg@320w_200h_1c_!web-space-upload-video.webp',
             playCount: '48.0万',
             update: '2021-11-10',
@@ -58,7 +58,7 @@ const item = {
         {
             index: 5,
             title: '稲葉曇『期待通り』Vo. 音街ウナ / 稻叶昙 - 期待大街 (Vo. 音街鳗)',
-            url: '/video/5',
+            url: '/video/BV1Cu411a7wo',
             cover: 'https://i1.hdslb.com/bfs/archive/2bd5456b9b01e02cfccd7cf8a573181afadf5778.jpg@320w_200h_1c_!web-space-upload-video.webp',
             playCount: '42.0万',
             update: '2024-03-20',
@@ -67,7 +67,7 @@ const item = {
         {
             index: 6,
             title: '稲葉曇『シンクタンク』Vo. 裏命 / 稻叶昙 - Sinktank (Vo. 裏命)',
-            url: '/video/6',
+            url: '/video/BV1LP411L7zb',
             cover: 'https://i1.hdslb.com/bfs/archive/f2dae45e7ce81387b008351af15a878d58c05ae1.jpg@320w_200h_1c_!web-space-upload-video.webp',
             playCount: '38.0万',
             update: '2022-05-10',
@@ -76,7 +76,7 @@ const item = {
         {
             index: 7,
             title: '稲葉曇『フロートプレイ』Vo. 歌愛ユキ / 稻叶昙 - Float Play (Vo. 歌爱雪)\n',
-            url: '/video/7',
+            url: '/video/BV1FK411y775',
             cover: 'https://i2.hdslb.com/bfs/archive/cbab38c3662e855b51eb519cd7e992963a85a3db.jpg@320w_200h_1c_!web-space-upload-video.webp',
             playCount: '34.0万',
             update: '2021-12-10',
@@ -85,7 +85,7 @@ const item = {
         {
             index: 8,
             title: '稲葉曇『レイニーブーツ』Vo. 歌愛ユキ / 稻叶昙- Rainy Boots (Vo. 歌爱雪)\n',
-            url: '/video/8',
+            url: '/video/BV1yw411o76p',
             cover: 'https://i0.hdslb.com/bfs/archive/faad7575a77d57ca6ba8be1e8492ef8be5d4f80f.jpg@320w_200h_1c_!web-space-upload-video.webp',
             playCount: '30.0万',
             update: '2022-05-02',
@@ -96,49 +96,49 @@ const item = {
         {
             index: 'P1',
             title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)',
-            url: '/video/1',
+            url: '/video/BV1EE421M7zP',
             duration: '04:00',
         },
         {
             index: 'P2',
             title: '稲葉曇『ラグトレイン』Vo. 歌愛ユキ / 稻叶昙- Lagtrain (Vo. 歌爱雪)',
-            url: '/video/2',
+            url: '/video/BV1fK4y1s7Qf',
             duration: '03:59',
         },
         {
             index: 'P3',
             title: '稲葉曇『ロストアンブレラ』Vo. 歌愛ユキ / 稻叶昙- Lost Umbrella (Vo. 歌爱雪)',
-            url: '/video/3',
+            url: '/video/BV1CW411x7TC',
             duration: '04:00',
         },
         {
             index: 'P4',
             title: '稲葉曇『ハルノ寂寞』Vo. 弦巻マキ / 稻叶昙 - 春日寂寞 (Vo. Tsurumaki Maki)',
-            url: '/video/4',
+            url: '/video/BV1Yq4y1774V',
             duration: '04:00',
         },
         {
             index: 'P5',
             title: '稲葉曇『期待通り』Vo. 音街ウナ / 稻叶昙 - 期待大街 (Vo. 音街鳗)',
-            url: '/video/5',
+            url: '/video/BV1Cu411a7wo',
             duration: '04:00',
         },
         {
             index: 'P6',
             title: '稲葉曇『シンクタンク』Vo. 裏命 / 稻叶昙 - Sinktank (Vo. 裏命)',
-            url: '/video/6',
+            url: '/video/BV1LP411L7zb',
             duration: '04:00',
         },
         {
             index: 'P7',
             title: '稲葉曇『フロートプレイ』Vo. 歌愛ユキ / 稻叶昙 - Float Play (Vo. 歌爱雪)\n',
-            url: '/video/7',
+            url: '/video/BV1FK411y775',
             duration: '04:00',
         },
         {
             index: 'P8',
             title: '稲葉曇『レイニーブーツ』Vo. 歌愛ユキ / 稻叶昙- Rainy Boots (Vo. 歌爱雪)\n',
-            url: '/video/8',
+            url: '/video/BV1yw411o76p',
             duration: '04:00',
         },
     ],
@@ -233,12 +233,23 @@ const getUrl = (bv: string) => {
     return 'https://b.erisu.moe/api/playurl/flv?bvid=' + bv + '&SESSDATA=' + sess_data;
 };
 
+type VideoProps = typeof item;
+
+const proxy_url = 'https://b.erisu.moe/api/proxy?x-User-Agent=Android&x-Referer=https://www.bilibili.com&x-Host=';
+
+const getURL = (url: string) => {
+    const host = url.split('/')[2];
+    return proxy_url + host + '&url=' + encodeURIComponent(url);
+};
+
+
 const Video = memo(() => {
-    useTitle(item.title);
+    // useTitle(item.title);
     const param = useParams();
 
     const [url, setUrl] = React.useState<string | undefined>(undefined);
     const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
+    const [item, setItem] = React.useState<VideoProps>();
 
     useEffect(() => {
         let bv = param.id;
@@ -263,42 +274,64 @@ const Video = memo(() => {
                 });
             }
 
-            console.log(newDanmakus);
             setDanmakus(newDanmakus);
         });
+
+        fetch(getURL('https://api.bilibili.com/x/web-interface/view/detail?bvid=' + bv))
+            .then(res => res.json())
+            .then(res => {
+                const data = res.data;
+                setItem({
+                    title: data.View.title,
+                    tags: data.Tags.map((tag: any) => tag.tag_name),
+                    playCount: data.View.stat.view,
+                    likeCount: data.View.stat.like,
+                    danmakuCount: data.View.stat.danmaku,
+                    favoriteCount: data.View.stat.favorite,
+                    description: data.View.desc,
+                    pagination: data.View.pages.map((page: any) => {
+                        return {
+                            index: 'P' + page.page,
+                            title: page.part,
+                            url: '/video/' + bv + '?p=' + page.page,
+                            duration: new Date(page.duration * 1000).toISOString().substr(11, 8),
+                        };
+                    }),
+                    recommendList: data.Related.map((item: any) => {
+                        return {
+                            title: item.title,
+                            url: '/video/' + item.bvid,
+                            cover: item.pic,
+                            playCount: item.stat.view > 10000 ? (item.stat.view / 10000).toFixed(1) + '万' : item.stat.view,
+                            update: new Date(item.pubdate * 1000).toLocaleDateString(),
+                        }
+                    }),
+                    avid: data.View.aid,
+                });
+            });
     }, [param.id]);
 
     return (
         <div className="moe-video-video-page-root">
             <Header/>
             <div className="moe-video-video-page-wrapper">
-                <div className="moe-video-video-page-left">
-                    <VideoPlayer src={url ? url : undefined}
-                                 danmaku={danmakus}
-                                 controls
-                                 style={{
-                                     borderRadius: '15px',
-                                     overflow: 'hidden',
-                                     width: '100%',
-                                 }}
-                    />
+                <VideoPlayer src={url ? url : undefined}
+                             danmaku={danmakus}
+                             controls
+                             style={{
+                                 borderRadius: '15px',
+                                 height: 'fit-content',
+                                 overflow: 'hidden',
+                                 width: '100%',
+                                 gridArea: 'video',
+                             }}
+                />
+                {void console.log(item)}
+                {item && <VideoPageInfo {...item}/>}
+                {item && <VideoPageComment videoId={item.avid}/>}
+                {item && <VideoPaginationList items={item.pagination}/>}
+                {item && <VideoRecommendList items={item.recommendList}/>}
 
-                    <VideoPageInfo {...item}/>
-
-                    <div className="moe-video-video-page-comment">
-                        <div className="moe-video-video-page-comment-list">
-                            <VideoPageComment videoId={'1'}/>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div className="moe-video-video-page-right">
-                    <VideoPaginationList items={item.pagination}/>
-
-                    <VideoRecommendList items={item.recommendList}/>
-                </div>
             </div>
             <Footer/>
         </div>

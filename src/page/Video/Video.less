@@ -6,11 +6,23 @@
   margin: 1% auto;
 
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 20px;
+  grid-gap: 1.5rem;
 
-  @media (max-width: 1200px) {
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas: "video pagination"
+                       "video recommend"
+                       "info recommend"
+                       "comment recommend"
+                       "comment .";
+  grid-auto-rows: auto auto auto auto minmax(auto, 1fr);
+
+  @media (max-width: 1000px) {
     grid-template-columns: 1fr;
+    grid-template-areas: "video"
+                         "info"
+                         "pagination"
+                         "recommend"
+                         "comment";
   }
 
 }

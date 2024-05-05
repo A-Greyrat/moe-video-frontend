@@ -11,6 +11,9 @@
 
 .moe-video-page-video-comment {
   .panel-style;
+  grid-area: comment;
+  height: fit-content;
+
   > h2 {
     color: @primary-color;
     user-select: none;
@@ -67,12 +70,12 @@
 
           > h3 {
             font-weight: 500;
-            font-size: 16px;
+            font-size: 1rem;
           }
 
           > p {
             color: #888;
-            font-size: 15px;
+            font-size: 0.9rem;
           }
 
           > :is(:not(.moe-video-page-comment-box-content)):is(div) {
@@ -83,7 +86,7 @@
 
       .moe-video-page-comment-box-content {
         > p {
-          font-size: 16px;
+          font-size: 1rem;
           line-height: 1.5;
           margin: 3px 0;
           word-break: break-all;
@@ -102,15 +105,15 @@
           margin: 8px 0;
 
           h3 {
-            font-size: 14px !important;
+            font-size: 0.8rem !important;
           }
 
           h3 + p {
-            font-size: 12px !important;
+            font-size: 0.6rem !important;
           }
 
           &:has(span) {
-            font-size: 14px;
+            font-size: 0.8rem;
           }
 
         }

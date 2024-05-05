@@ -1,22 +1,47 @@
 @import "../../common/theme/theme.less";
 
+.moe-video-video-page-recommend-wrapper {
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+    -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
+
+  grid-area: recommend;
+  height: fit-content;
+
+  .moe-video-video-page-recommend-title {
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+}
+
 .moe-video-video-page-recommend-list {
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  padding: 1rem 1.2rem;
-  border-radius: 10px;
-  box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
-    -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
-
   gap: 1rem;
-  margin-bottom: 1rem;
 
-  .moe-video-video-page-recommend-title {
-    color: #666;
-    font-size: 1.2rem;
-    font-weight: bold;
+  @media (max-width: 1000px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    > :is(.moe-video-video-page-recommend-item) {
+      width: calc(33.3333% - 0.67rem);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    > :is(.moe-video-video-page-recommend-item) {
+      width: calc(50% - 0.5rem);
+    }
   }
 
   .moe-video-video-page-recommend-item {
@@ -30,10 +55,25 @@
     cursor: pointer;
     transition: all 0.3s;
     min-width: 370px;
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: 1300px) {
+      flex-direction: column;
+      min-width: auto;
+    }
 
     img {
+      aspect-ratio: 14 / 9;
       height: 110px;
       border-radius: 0.5rem;
+      object-fit: cover;
+
+
+      @media (max-width: 1300px) {
+        width: 100%;
+        height: auto;
+      }
     }
 
     &:hover {
@@ -45,11 +85,38 @@
       color: white;
     }
 
+
+    .moe-video-video-page-recommend-list-item-cover-background {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .00386607) 8.07%, rgba(0, 0, 0, .0152486) 15.54%, rgba(0, 0, 0, .033824) 22.5%, rgba(0, 0, 0, .0592687) 29.04%, rgba(0, 0, 0, .0912593) 35.26%, rgba(0, 0, 0, .129472) 41.25%, rgba(0, 0, 0, .173583) 47.1%, rgba(0, 0, 0, .22327) 52.9%, rgba(0, 0, 0, .278208) 58.75%, rgba(0, 0, 0, .338074) 64.74%, rgba(0, 0, 0, .402545) 70.96%, rgba(0, 0, 0, .471296) 77.5%, rgba(0, 0, 0, .544005) 84.46%, rgba(0, 0, 0, .620347) 91.93%, rgba(0, 0, 0, .7));
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      display: none;
+
+      @media (max-width: 1300px) {
+        display: block;
+      }
+    }
+
     .moe-video-video-page-recommend-item-info {
       display: flex;
       flex-direction: column;
       padding: 0.5rem;
       gap: 0.2rem;
+      height: 110px;
+
+      @media (max-width: 1300px) {
+        position: absolute;
+        bottom: 0;
+        color: white;
+        height: fit-content;
+
+        > :is(:not(:first-child)) {
+          display: none;
+        }
+      }
     }
   }
 }
