@@ -272,7 +272,7 @@ const VideoPageComment = memo(({videoId}: { videoId: string }) => {
             if (res && res.records.length > 0) {
                 const newComment = comment ? comment.concat(res.records) : res.records;
                 const map = new Map();
-                newComment.forEach((item) => {
+                newComment.forEach((item: { id: unknown; }) => {
                     map.set(item.id, item);
                 });
                 setComment([...map.values()]);

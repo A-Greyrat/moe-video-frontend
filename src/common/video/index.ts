@@ -1,4 +1,4 @@
-export const deleteComment = async (id: string) => {
+export const deleteComment = async (_id: string) => {
 
 };
 
@@ -134,6 +134,6 @@ export const getComments = async (videoId: string, p: number, size: number) => {
     };
 };
 
-export const addComment = async (videoId: string, toId: string, content: string) => {
+export const addComment = async (_videoId: string, _toId: string, _content: string) => {
 
 };

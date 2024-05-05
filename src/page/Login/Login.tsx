@@ -145,7 +145,7 @@ export const Captcha = () => {
         <div onClick={() => {
             if (captcha)
                 setCaptcha(undefined);
-            renewCaptcha([]);
+            renewCaptcha();
         }}>
             <input type="hidden" name="verifyCodeId" value={captcha?.verifyCodeId ?? ""}/>
             <Image src={captcha?.captcha} alt="验证码" width={100} height={40}/>
