@@ -1,12 +1,13 @@
 import {memo} from "react";
 import './VideoRecommendList.less'
 import PlaybackVolumeIcon from "../Icon/PlaybackVolumeIcon.tsx";
+import {Image} from "@natsume_shiki/mika-ui";
 
-interface VideoRecommendListProps {
+export interface VideoRecommendListProps {
     items: VideoRecommendListItemProps[]
 }
 
-interface VideoRecommendListItemProps {
+export interface VideoRecommendListItemProps {
     title: string,
     url: string,
     cover: string,
@@ -27,7 +28,7 @@ export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) 
     return (
         <a href={url} target='_blank' className="moe-video-video-page-recommend-item">
             <div className='moe-video-video-page-recommend-list-item-cover-background'></div>
-            <img src={getCover(cover)} alt={title}/>
+            <Image lazy src={getCover(cover)} alt={title}/>
             <div className="moe-video-video-page-recommend-item-info w-full justify-between">
                 <span className='line-clamp-2 text-base'>{title}</span>
                 <span className='text-gray-400'>{author}</span>

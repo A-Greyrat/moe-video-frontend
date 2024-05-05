@@ -6,7 +6,7 @@ import DanmakuIcon from "../Icon/DanmakuIcon.tsx";
 import FavoriteIcon from "../Icon/FavoriteIcon.tsx";
 import {useParams} from "react-router-dom";
 
-interface VideoPageInfoProps {
+export interface VideoPageInfoProps {
     title: string;
     tags: string[];
     playCount: string;

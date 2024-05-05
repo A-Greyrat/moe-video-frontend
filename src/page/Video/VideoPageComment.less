@@ -46,11 +46,6 @@
         background-color: mix(@primary-color, transparent, 20%);
       }
 
-      .moe-video-page-comment-input {
-        margin-bottom: 20px;
-
-      }
-
       .moe-video-page-comment-box-container {
         display: flex;
         gap: 10px;
@@ -61,6 +56,9 @@
           box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
           cursor: pointer;
           margin-top: 2px;
+
+          width: 2.2rem;
+          height: 2.2rem;
         }
 
         > div {
@@ -148,6 +146,7 @@
 .moe-video-page-comment-input {
   display: grid;
   gap: 10px;
+  margin-bottom: 20px;
   margin-top: 10px;
   grid-template-areas:  "avatar comment comment"
                         ". . submit";
@@ -161,6 +160,9 @@
     margin-top: 2px;
 
     grid-area: avatar;
+
+    width: 2rem;
+    height: 2rem;
   }
 
   > textarea {

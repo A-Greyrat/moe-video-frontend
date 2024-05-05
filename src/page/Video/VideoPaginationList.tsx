@@ -1,11 +1,11 @@
 import {memo} from "react";
 import './VideoPaginationList.less'
 
-interface VideoPaginationListProps {
+export interface VideoPaginationListProps {
     items: VideoPaginationListItemProps[]
 }
 
-interface VideoPaginationListItemProps {
+export interface VideoPaginationListItemProps {
     index: string;
     title: string;
     url: string;

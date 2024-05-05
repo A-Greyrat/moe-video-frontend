@@ -19,7 +19,7 @@ export const ChasingListItem = memo((props: ChasingListItem) => {
     return (
         <a href='#' className='moe-video-home-page-chasing-list-item relative overflow-hidden'>
             <div className='relative'>
-                <Image src={cover}/>
+                <Image src={cover} lazy/>
                 <div className='moe-video-home-page-chasing-list-item-cover-background'></div>
                 <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light'>
                     看到第三话 50%

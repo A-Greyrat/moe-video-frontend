@@ -6,234 +6,27 @@ import Footer from "../../component/footer/Footer";
 import './Video.less';
 import VideoPageComment from "./VideoPageComment.tsx";
 import {useParams} from "react-router-dom";
-import VideoPageInfo from "./VideoPageInfo.tsx";
-import VideoPaginationList from "./VideoPaginationList.tsx";
-import VideoRecommendList from "./VideoRecommendList.tsx";
-
-const item = {
-    avid: '1',
-    title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)\n',
-    tags: ['音乐', 'VOCALOID·UTAU', 'VOCALOID', '歌愛ユキ', '稲葉曇', 'ぬくぬくにぎりめし'],
-    playCount: '6821940',
-    likeCount: '82424',
-    danmakuCount: '1158',
-    favoriteCount: '62414',
-    recommendList: [
-        {
-            index: 1,
-            title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)',
-            url: '/video/BV1EE421M7zP',
-            cover: 'https://i1.hdslb.com/bfs/archive/3c9e5a95685493ce56ebbce4bf3d1375d016e014.jpg@320w_200h_1c_!web-space-upload-video.avif',
-            playCount: '68.0万',
-            update: '2021-09-10',
-            author: '稲葉曇',
-        },
-        {
-            index: 2,
-            title: '稲葉曇『ラグトレイン』Vo. 歌愛ユキ / 稻叶昙- Lagtrain (Vo. 歌爱雪)',
-            url: '/video/BV1fK4y1s7Qf',
-            cover: 'https://i2.hdslb.com/bfs/archive/81192e9411bc18bba5f00f17736126a804610679.jpg@320w_200h_1c_!web-space-upload-video.avif',
-            playCount: '57.0万',
-            update: '2023-01-20',
-            author: '稲葉曇',
-        },
-        {
-            index: 3,
-            title: '稲葉曇『ロストアンブレラ』Vo. 歌愛ユキ / 稻叶昙- Lost Umbrella (Vo. 歌爱雪)',
-            url: '/video/BV1CW411x7TC',
-            cover: 'https://i1.hdslb.com/bfs/archive/b77d62d50afc8ca9bb47fb39aadfe8f8bbd2e4ca.jpg@320w_200h_1c_!web-space-upload-video.avif',
-            playCount: '54.0万',
-            update: '2022-03-12',
-            author: '稲葉曇',
-        },
-        {
-            index: 4,
-            title: '稲葉曇『ハルノ寂寞』Vo. 弦巻マキ / 稻叶昙 - 春日寂寞 (Vo. Tsurumaki Maki)',
-            url: '/video/BV1Yq4y1774V',
-            cover: 'https://i1.hdslb.com/bfs/archive/b5045e7959337428c4bd99d2cba7c1bb7a02be67.jpg@320w_200h_1c_!web-space-upload-video.webp',
-            playCount: '48.0万',
-            update: '2021-11-10',
-            author: '稲葉曇',
-        },
-        {
-            index: 5,
-            title: '稲葉曇『期待通り』Vo. 音街ウナ / 稻叶昙 - 期待大街 (Vo. 音街鳗)',
-            url: '/video/BV1Cu411a7wo',
-            cover: 'https://i1.hdslb.com/bfs/archive/2bd5456b9b01e02cfccd7cf8a573181afadf5778.jpg@320w_200h_1c_!web-space-upload-video.webp',
-            playCount: '42.0万',
-            update: '2024-03-20',
-            author: '稲葉曇',
-        },
-        {
-            index: 6,
-            title: '稲葉曇『シンクタンク』Vo. 裏命 / 稻叶昙 - Sinktank (Vo. 裏命)',
-            url: '/video/BV1LP411L7zb',
-            cover: 'https://i1.hdslb.com/bfs/archive/f2dae45e7ce81387b008351af15a878d58c05ae1.jpg@320w_200h_1c_!web-space-upload-video.webp',
-            playCount: '38.0万',
-            update: '2022-05-10',
-            author: '稲葉曇',
-        },
-        {
-            index: 7,
-            title: '稲葉曇『フロートプレイ』Vo. 歌愛ユキ / 稻叶昙 - Float Play (Vo. 歌爱雪)\n',
-            url: '/video/BV1FK411y775',
-            cover: 'https://i2.hdslb.com/bfs/archive/cbab38c3662e855b51eb519cd7e992963a85a3db.jpg@320w_200h_1c_!web-space-upload-video.webp',
-            playCount: '34.0万',
-            update: '2021-12-10',
-            author: '稲葉曇',
-        },
-        {
-            index: 8,
-            title: '稲葉曇『レイニーブーツ』Vo. 歌愛ユキ / 稻叶昙- Rainy Boots (Vo. 歌爱雪)\n',
-            url: '/video/BV1yw411o76p',
-            cover: 'https://i0.hdslb.com/bfs/archive/faad7575a77d57ca6ba8be1e8492ef8be5d4f80f.jpg@320w_200h_1c_!web-space-upload-video.webp',
-            playCount: '30.0万',
-            update: '2022-05-02',
-            author: '稲葉曇',
-        },
-    ],
-    pagination: [
-        {
-            index: 'P1',
-            title: '稲葉曇『私は雨』Vo. 歌愛ユキ / 稻叶昙 - 我是雨 (Vo. 歌爱雪)',
-            url: '/video/BV1EE421M7zP',
-            duration: '04:00',
-        },
-        {
-            index: 'P2',
-            title: '稲葉曇『ラグトレイン』Vo. 歌愛ユキ / 稻叶昙- Lagtrain (Vo. 歌爱雪)',
-            url: '/video/BV1fK4y1s7Qf',
-            duration: '03:59',
-        },
-        {
-            index: 'P3',
-            title: '稲葉曇『ロストアンブレラ』Vo. 歌愛ユキ / 稻叶昙- Lost Umbrella (Vo. 歌爱雪)',
-            url: '/video/BV1CW411x7TC',
-            duration: '04:00',
-        },
-        {
-            index: 'P4',
-            title: '稲葉曇『ハルノ寂寞』Vo. 弦巻マキ / 稻叶昙 - 春日寂寞 (Vo. Tsurumaki Maki)',
-            url: '/video/BV1Yq4y1774V',
-            duration: '04:00',
-        },
-        {
-            index: 'P5',
-            title: '稲葉曇『期待通り』Vo. 音街ウナ / 稻叶昙 - 期待大街 (Vo. 音街鳗)',
-            url: '/video/BV1Cu411a7wo',
-            duration: '04:00',
-        },
-        {
-            index: 'P6',
-            title: '稲葉曇『シンクタンク』Vo. 裏命 / 稻叶昙 - Sinktank (Vo. 裏命)',
-            url: '/video/BV1LP411L7zb',
-            duration: '04:00',
-        },
-        {
-            index: 'P7',
-            title: '稲葉曇『フロートプレイ』Vo. 歌愛ユキ / 稻叶昙 - Float Play (Vo. 歌爱雪)\n',
-            url: '/video/BV1FK411y775',
-            duration: '04:00',
-        },
-        {
-            index: 'P8',
-            title: '稲葉曇『レイニーブーツ』Vo. 歌愛ユキ / 稻叶昙- Rainy Boots (Vo. 歌爱雪)\n',
-            url: '/video/BV1yw411o76p',
-            duration: '04:00',
-        },
-    ],
-    description: '我是稻叶昙。\n' +
-        '『プロジェクトセカイ カラフルステージ！ feat. 初音ミク』\n' +
-        '25時、ナイトコードで。への書き下ろし楽曲です。\n' +
-        '\n' +
-        '私は雨 / 25時、ナイトコードで。 × 鏡音レン\n' +
-        'https://www.youtube.com/watch?v=91E_W8JhSjs\n' +
-        '\n' +
-        'Playlist　https://www.youtube.com/playlist?list=PLU1XqNAUBP5Vp2fOpaUV3aYa6XwfkL73f\n' +
-        'Listen　coming soon\n' +
-        '\n' +
-        'X　https://twitter.com/inabakumori\n' +
-        'Instagram　https://www.instagram.com/inabakumori/\n' +
-        'Web　https://inabakumori.fanbox.cc/\n' +
-        'Goods　https://inabakumori.booth.pm/\n' +
-        'inst & lyrics file　https://bit.ly/2QMImD5\n' +
-        '\n' +
-        'Music : 稲葉曇\n' +
-        'Vocal : 歌愛ユキ\n' +
-        'Backing Vocal : 初音ミク\n' +
-        'Illustration & Animation : ぬくぬくにぎりめし　https://twitter.com/NKNK_NGRMS\n' +
-        'Movie : 稲葉曇\n' +
-        '\n' +
-        '------------------------------------\n' +
-        '『私は雨』\n' +
-        '\n' +
-        '私は誰　あなたの哀れ\n' +
-        '夜空の中で　名前を無くして\n' +
-        'うねりのない　水面に潜む景色を\n' +
-        '知らないまま　漂う雲\n' +
-        '昨日までは　漂う雲\n' +
-        '\n' +
-        '(霧になってしまっても\n' +
-        '別にいいのに　構わないのに)\n' +
-        '\n' +
-        '私はなぜ　真っすぐに落ちる\n' +
-        'だれかの手のひらを探すため\n' +
-        '空をできる限り　目に収めながら\n' +
-        '\n' +
-        '私は雨　弾かれて判る\n' +
-        'だれかのようにはなれない雨\n' +
-        '地球を困らせるほどの痛みを知らないから\n' +
-        '\n' +
-        '私は雨　セカイを暈す\n' +
-        '夜明けに導かれている雨\n' +
-        '流れ着いた海の隠し味を知るまで\n' +
-        '\n' +
-        '星を隠した雷鳴と\n' +
-        '視界からはみ出した　積乱雲\n' +
-        'できるだけ　できるだけ　できるだけ\n' +
-        '離れていたかった\n' +
-        '\n' +
-        '傘をさす　余裕はないし\n' +
-        'このままでもいいと思えるよ\n' +
-        'わからないから　染み込んでるの\n' +
-        '夜の強い雨で　目を覚ます\n' +
-        '\n' +
-        '私は雨　地球をなぞる\n' +
-        '一粒では気付くことのない雨\n' +
-        '夜空に飾り付ける　星を見つけて\n' +
-        '\n' +
-        '空に浮かんだり　地に足をつけたり\n' +
-        '消えかかったり　溢れかえったりする\n' +
-        '描けていたら　何も起きなかった\n' +
-        'セカイ的気候変動\n' +
-        '\n' +
-        '私は雨　滴って判る\n' +
-        'だれかのようにはなれない雨\n' +
-        '地球を困らせるほどの思いを知りたいから\n' +
-        '\n' +
-        '私は雨　セカイを暈す\n' +
-        '夜明けに導かれている雨\n' +
-        '流れ着いた海の隠し味になるまで\n' +
-        '\n' +
-        '私は雨\n' +
-        '\n' +
-        '辿り着くまでに\n' +
-        'おさらいを忘れないで\n' +
-        '凪の海で向かい合わせ\n' +
-        '違う景色　同じ模様の　答え合わせ\n' +
-        '\n' +
-        '------------------------------------\n' +
-        'inabakumori - I\'m the Rain (Vo. Kaai Yuki)\n' +
-        'BPM144',
-}
-const sess_data = "1443a408%2C1719124214%2Cb72e6%2Ac1CjDvyCp9vILksJqy6P2bYiAFgSgqe5SNZAZqtgODbz0Tw5PRo5uv9ZlLW5Sngurv7GMSVnpiSFE0X1pZQWE0Z2l2aHUzWFVVRzBvZm1Ma28zTmw3SDJLNkFzYWtKTkU4eHlXZlhNTDRLQl9XOTdOQ0NTZ3Y5SW41YXdaUnNZWXlwdkNzalZhU2V3IIEC";
+import VideoPageInfo, {VideoPageInfoProps} from "./VideoPageInfo.tsx";
+import VideoPaginationList, {VideoPaginationListItemProps} from "./VideoPaginationList.tsx";
+import VideoRecommendList, {VideoRecommendListItemProps} from "./VideoRecommendList.tsx";
 
 const video_proxy_url = 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=';
 const getUrl = (bv: string) => {
-    return 'https://b.erisu.moe/api/playurl/flv?bvid=' + bv + '&SESSDATA=' + sess_data;
+    return 'https://b.erisu.moe/api/playurl/flv?bvid=' + bv + '&SESSDATA=';
 };
 
-type VideoProps = typeof item;
+interface VideoProps {
+    title: string;
+    tags: string[];
+    playCount: number;
+    likeCount: number;
+    danmakuCount: number;
+    favoriteCount: number;
+    description: string;
+    pagination: VideoPaginationListItemProps[];
+    recommendList: VideoRecommendListItemProps[];
+    avid: string;
+}
 
 const proxy_url = 'https://b.erisu.moe/api/proxy?x-User-Agent=Android&x-Referer=https://www.bilibili.com&x-Host=';
 
@@ -261,7 +54,7 @@ const Video = memo(() => {
             setUrl(video_proxy_url + host + '&pUrl=' + encodeURIComponent(data.data.durl[0].url));
         });
 
-        fetch('https://b.erisu.moe/api/danmaku?bvid=' + bv + '&SESSDATA=' + sess_data).then(res => res.json()).then(data => {
+        fetch('https://b.erisu.moe/api/danmaku?bvid=' + bv + '&SESSDATA=').then(res => res.json()).then(data => {
             const newDanmakus: DanmakuAttr[] = [];
             for (const d of data) {
                 if (d.color === 0) d.color = 0xffffff;
@@ -326,8 +119,8 @@ const Video = memo(() => {
                                  gridArea: 'video',
                              }}
                 />
-                {void console.log(item)}
-                {item && <VideoPageInfo {...item}/>}
+
+                {item && <VideoPageInfo {...item as unknown as VideoPageInfoProps}/>}
                 {item && <VideoPageComment videoId={item.avid}/>}
                 {item && <VideoPaginationList items={item.pagination}/>}
                 {item && <VideoRecommendList items={item.recommendList}/>}

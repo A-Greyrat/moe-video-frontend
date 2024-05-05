@@ -38,7 +38,7 @@ const UserSection = () => {
             </div>}
         </div>} paddingTrigger={10} className="moe-video-header-user-dropdown">
             <div className="moe-video-header-user">
-                <Image src={avatar} width={42} height={42} alt="" onClick={() => {
+                <Image src={avatar} lazy width={42} height={42} alt="" onClick={() => {
                     nav(isUserLoggedIn ? "/space" : "/login");
                 }}/>
             </div>

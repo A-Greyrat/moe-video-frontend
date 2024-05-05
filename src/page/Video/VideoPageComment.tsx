@@ -56,7 +56,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
     return (
         <div className="moe-video-page-comment-box">
             <div className="moe-video-page-comment-box-container">
-                <Image lazy src={props.user.avatar} style={{width: '2.2rem', height: '2.2rem'}} error="/defaultAvatar.webp"/>
+                <Image lazy src={props.user.avatar} error="/defaultAvatar.webp"/>
                 <div>
                     <h3>{props.user.name}</h3>
                     <p>{props.time}</p>
@@ -78,7 +78,6 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
                     </div>
                     <VideoPageCommentReplyBox reply={props.reply} id={props.id}/>
                 </div>
-
             </div>
             {currentInputIndex === parseInt(props.id) && <VideoPageCommentInput vid={props.videoId} toId={replyTo}/>}
         </div>
@@ -112,7 +111,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReply) => {
     return (
         <div className="moe-video-page-comment-box reply">
             <div className="moe-video-page-comment-box-container">
-                <Image src={props.user.avatar} style={{width: '2rem', height: '2rem'}} error="/defaultAvatar.webp"/>
+                <Image src={props.user.avatar} lazy error="/defaultAvatar.webp"/>
                 <div>
                     <h3>{props.user.name}</h3>
                     <p>{props.time}</p>
@@ -248,7 +247,7 @@ const VideoPageCommentInput = memo((props: {
 
     return (
         <div className="moe-video-page-comment-input">
-            <Image style={{width: '2.2rem', height: '2.2rem'}} src="/defaultAvatar.webp" error="/defaultAvatar.webp"/>
+            <Image lazy src="/defaultAvatar.webp" error="/defaultAvatar.webp"/>
             <textarea placeholder="写下你的评论" ref={ref}/>
             <Button styleType="primary" onClick={reply}>评论</Button>
         </div>

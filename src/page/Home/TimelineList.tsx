@@ -19,7 +19,7 @@ export const TimelineListItem = memo((props: TimelineListItem) => {
     return (
         <div className='moe-video-home-page-timeline-list-item overflow-hidden'>
             <div className='relative'>
-                <Image src={cover}/>
+                <Image src={cover} lazy/>
                 <div className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic cursor-pointer'>
                     <span className='text-white'>
                         {score}
