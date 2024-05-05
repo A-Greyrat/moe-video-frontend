@@ -6,7 +6,8 @@ import {Image} from "@natsume_shiki/mika-ui";
 interface ChasingListItem {
     title: string;
     cover: string;
-    playbackCount: string;
+    watchProgress: string;
+    updateProgress: string;
 }
 
 interface ChasingListProps {
@@ -14,22 +15,22 @@ interface ChasingListProps {
 }
 
 export const ChasingListItem = memo((props: ChasingListItem) => {
-    const {title, cover} = props;
+    const {title, cover, watchProgress, updateProgress} = props;
 
     return (
-        <a href='#' className='moe-video-home-page-chasing-list-item relative overflow-hidden'>
+        <a href='#' className='moe-video-home-page-chasing-list-item overflow-hidden'>
             <div className='relative'>
                 <Image src={cover} lazy/>
                 <div className='moe-video-home-page-chasing-list-item-cover-background'></div>
                 <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light'>
-                    看到第三话 50%
+                    {watchProgress}
                 </div>
             </div>
             <div className='moe-video-home-page-chasing-list-item-title px-3 pt-2 pb-1'>
                 {title}
             </div>
             <div className='moe-video-home-page-chasing-list-item-last-update px-3 pb-3 text-gray-400'>
-                更新至第12话
+                {updateProgress}
             </div>
         </a>
     );

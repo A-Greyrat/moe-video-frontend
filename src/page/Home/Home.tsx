@@ -22,7 +22,7 @@ const carouselItem = [{
     title: '凉宫春日的',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
     desc: '圣诞节即将来临，SOS团火锅派对的活动拍板以后，阿虚就带着烦恼回家。第二天，阿虚如常上学，但他很快注意到，学校发生了与平日完全不同的事。应该在后面的座位的凉宫春日不在，却换上了理应让长门有希消灭了的朝仓凉子；不仅是这样，全世界也都变了……'
-}, ]
+},]
 
 const indexList = [{
     title: '番剧索引',
@@ -41,79 +41,120 @@ const indexList = [{
 const chasingList = [{
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '4.6万',
-} ,{
+    watchProgress: '看到第3话 50%',
+    updateProgress: '更新至第12话',
+}, {
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '300',
-} ,{
+    watchProgress: '看到第11话 100%',
+    updateProgress: '已完结',
+}, {
     title: '凉宫春日的消失',
     cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '2400',
-} ,]
+    watchProgress: '还未观看',
+    updateProgress: '更新至第12话',
+},]
 
-const timeLineList = [{
+const timeLineList = [[{
     title: '迷宫饭',
     cover: '/img.png',
     updateTime: '18:00',
     updateTo: '更新至第12话',
-    score: 9.8,
-} ,{
+    score: 9.1,
+}, {
     title: '迷宫饭',
     cover: '/img.png',
     updateTime: '18:00',
     updateTo: '更新至第12话',
-    score: 9.6,
-} ,{
+    score: 9.2,
+}], [{
+    title: '迷宫饭',
+    cover: '/img.png',
+    updateTime: '18:00',
+    updateTo: '更新至第12话',
+    score: 9.3,
+}, {
     title: '迷宫饭',
     cover: '/img.png',
     updateTime: '18:00',
     updateTo: '更新至第12话',
     score: 9.4,
-} ,]
+}], [{
+    title: '迷宫饭',
+    cover: '/img.png',
+    updateTime: '18:00',
+    updateTo: '更新至第12话',
+    score: 9.5,
+}], [], [
+    {
+        title: '迷宫饭',
+        cover: '/img.png',
+        updateTime: '18:00',
+        updateTo: '更新至第12话',
+        score: 9.6,
+    }
+], [], []]
 
 const recommendList = [{
-    title: '迷宫饭',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '4.6万',
-    likeCount: '5.1万',
-    lastUpdate: {set: 9, time: '2024-05-05'},
+    data: {
+        title: '迷宫饭',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '4.6万',
+        likeCount: '5.1万',
+        lastUpdate: {set: 9, time: '2024-05-05'},
+    },
+    type: 'bangumi',
 }, {
-    title: '迷宫饭1111111',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '3万',
-    likeCount: '6666',
-    offer: '免费',
-    uploadTime: '2024-05-06'
+    data: {
+        title: '迷宫饭1111111',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '3万',
+        likeCount: '6666',
+        author: '免费',
+        uploadTime: '2024-05-06',
+    },
+    type: 'video'
 }, {
-    title: '迷宫饭1111111',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '3万',
-    likeCount: '6666',
-    offer: '免费',
-    uploadTime: '2024-05-06'
+    data: {
+        title: '迷宫饭1111111',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '3万',
+        likeCount: '6666',
+        author: '免费',
+        uploadTime: '2024-05-06',
+    },
+    type: 'video'
 }, {
-    title: '迷宫饭1111111',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '3万',
-    likeCount: '6666',
-    offer: '免费',
-    uploadTime: '2024-05-06'
+    data: {
+        title: '迷宫饭1111111',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '3万',
+        likeCount: '6666',
+        author: '免费',
+        uploadTime: '2024-05-06',
+    },
+    type: 'video'
 }, {
-    title: '迷宫饭1111111',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '3万',
-    likeCount: '6666',
-    offer: '免费',
-    uploadTime: '2024-05-06'
+    data: {
+        title: '迷宫饭1111111',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '3万',
+        likeCount: '6666',
+        author: '免费',
+        uploadTime: '2024-05-06',
+    },
+    type: 'video'
 }, {
-    title: '迷宫饭1111111',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playbackCount: '3万',
-    likeCount: '6666',
-    offer: '免费',
-    uploadTime: '2024-05-06'
-} ]
+    data: {
+        title: '迷宫饭1111111',
+        cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
+        playbackCount: '3万',
+        likeCount: '6666',
+        author: '免费',
+        uploadTime: '2024-05-06',
+    },
+    type: 'video'
+}]
 
 const Home = () => {
     useTitle("首页");
@@ -134,7 +175,7 @@ const Home = () => {
                 <TimelineList items={timeLineList}/>
 
                 {/* 推荐列表 */}
-                {/*<RecommendList items={recommendList}/>*/}
+                <RecommendList items={recommendList}/>
             </div>
             <Footer/>
         </div>

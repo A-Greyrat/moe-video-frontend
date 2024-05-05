@@ -1,8 +1,8 @@
 import {memo} from "react";
 import './RecommendList.less'
-// import {Image} from "@natsume_shiki/mika-ui";
-// import PlaybackVolumeIcon from "../Icon/PlaybackVolumeIcon.tsx";
-// import LoveIcon from "../Icon/LoveIcon.tsx";
+import {Image} from "@natsume_shiki/mika-ui";
+import PlaybackVolumeIcon from "../Icon/PlaybackVolumeIcon.tsx";
+import LoveIcon from "../Icon/LoveIcon.tsx";
 
 interface RecommendListProps {
     items: RecommendListItemProps[]
@@ -25,19 +25,66 @@ export interface RecommendBangumiListItemProps {
     lastUpdate: { set: number, time: string };
 }
 
-interface RecommendListItemProps {
+export interface RecommendListItemProps {
     data: RecommendVideoListItemProps | RecommendBangumiListItemProps;
-    type?: 'video' | 'bangumi';
+    type?: string;
 }
 
-const RecommendBangumiListItem = memo((_props: RecommendBangumiListItemProps) => {
-    return (<>
-    </>);
+const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => {
+    const {title, cover, playbackCount, likeCount,lastUpdate} = props;
+    return (
+        <a href='#' className='moe-video-home-page-recommend-list-item overflow-hidden'>
+            <div className='relative'>
+                <Image src={cover} lazy/>
+                <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
+                <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
+                    <div className='flex items-center gap-1'>
+                        <PlaybackVolumeIcon/>
+                        <span>{playbackCount}</span>
+                    </div>
+                    <div className='flex items-center gap-1'>
+                        <LoveIcon/>
+                        <span>{likeCount}</span>
+                    </div>
+                </div>
+            </div>
+            <div className='moe-video-home-page-recommend-list-item-title px-3 pt-2 pb-1'>
+                {title}
+            </div>
+            <div className='px-3 pb-3 text-gray-400'>
+                {'更新至第' + lastUpdate?.set + '话 ' + lastUpdate?.time}
+            </div>
+        </a>
+    );
 });
 
 const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
-    return (<>
-    </>);
+    const {title, cover, playbackCount, likeCount, author, uploadTime} = _props;
+
+    return (
+        <a href='#' className='moe-video-home-page-recommend-list-item overflow-hidden'>
+            <div className='relative'>
+                <Image src={cover} lazy/>
+                <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
+                <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
+                    <div className='flex items-center gap-1'>
+                        <PlaybackVolumeIcon/>
+                        <span>{playbackCount}</span>
+                    </div>
+                    <div className='flex items-center gap-1'>
+                        <LoveIcon/>
+                        <span>{likeCount}</span>
+                    </div>
+                </div>
+            </div>
+            <div className='moe-video-home-page-recommend-list-item-title px-3 pt-2 pb-1'>
+                {title}
+            </div>
+            <div className='px-3 pb-3 text-gray-400'>
+                {author} {uploadTime}
+            </div>
+        </a>
+    );
 });
 
 export const RecommendListItem = memo((props: RecommendListItemProps) => {
@@ -76,6 +123,7 @@ export const RecommendListItem = memo((props: RecommendListItemProps) => {
 
 const RecommendList = memo((props: RecommendListProps) => {
     const {items} = props;
+
     return (
         <>
             <div className='flex items-center pb-2'>
