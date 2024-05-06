@@ -21,8 +21,8 @@ export const IndexListItem = memo((props: IndexListItemProps) => {
             </div>
             <div className='moe-video-home-page-index-item-list'>
                 {items.map((item, index) => {
-                    return (<div className='moe-video-home-page-index-item'>
-                        <a href='#' key={index}>{item}</a>
+                    return (<div className='moe-video-home-page-index-item' key={index}>
+                        <a href='#'>{item}</a>
                     </div>);
                 })}
             </div>

@@ -17,9 +17,9 @@ interface TimelineListItem {
 export const TimelineListItem = memo((props: TimelineListItem) => {
     const {title, cover, updateTime, updateTo, score} = props;
     return (
-        <a href='#' className='moe-video-home-page-timeline-list-item overflow-hidden'>
+        <a href='#' className='moe-video-home-page-timeline-list-item overflow-hidden max-w-52'>
             <div className='relative'>
-                <Image src={cover} lazy/>
+                <Image width='100%' style={{aspectRatio: '3 / 4'}} src={cover} lazy/>
                 <div className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic cursor-pointer'>
                     <span className='text-white'>
                         {score}
@@ -60,7 +60,7 @@ const TimelineList = memo((props: TimelineListProps) => {
             />
 
             <div className='moe-video-home-page-timeline-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
-                {items[activeIndex].map((item, index) => {
+                {items?.length > 0 && items[activeIndex].map((item, index) => {
                     return (<TimelineListItem key={index} {...item}/>)
                 })}
             </div>

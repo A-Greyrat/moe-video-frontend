@@ -57,8 +57,11 @@
           cursor: pointer;
           margin-top: 2px;
 
-          width: 2.2rem;
-          height: 2.2rem;
+          min-width: 2.25rem;
+          min-height: 2.25rem;
+
+          max-width: 2.25rem;
+          max-height: 2.25rem;
         }
 
         > div {
@@ -150,7 +153,7 @@
   margin-top: 10px;
   grid-template-areas:  "avatar comment comment"
                         ". . submit";
-  grid-template-columns: 36px 1fr 60px;
+  grid-template-columns: 2.25rem 1fr 3.75rem;
   grid-template-rows: auto auto;
 
   > :first-child {

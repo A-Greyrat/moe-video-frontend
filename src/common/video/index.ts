@@ -98,7 +98,7 @@ export const getComments = async (videoId: string, p: number, size: number) => {
 
     const url = getURL('https://api.bilibili.com/x/v2/reply?type=1&oid=' + videoId + '&pn=' + p + '&ps=' + size);
     const data = await (await fetch(url)).json();
-    const total = data.data.page.count;
+    let total = data.data.page.count;
     const records = data.data.replies.map((item: any) => {
         return {
             id: item.rpid_str,
