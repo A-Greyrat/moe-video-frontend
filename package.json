@@ -13,7 +13,7 @@
     "@natsume_shiki/mika-ui": "^1.0.7",
     "axios": "^1.6.8",
     "mika-store": "^1.0.5",
-    "mika-video-player": "^1.1.2",
+    "mika-video-player": "^1.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0"
