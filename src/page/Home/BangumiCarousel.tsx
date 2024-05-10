@@ -15,7 +15,7 @@ interface BangumiCarouselProps {
 export const BangumiCarouselItem = memo((props: BangumiCarouselItemProps) => {
     return (
         <div className="moe-video-home-page-carousel-item relative">
-            <Image src={props.cover} lazy/>
+            <Image width='100%' style={{aspectRatio: '5 / 2'}} src={props.cover} lazy/>
             <div className='absolute left-0 bottom-0 bg-black opacity-50 pt-4 pb-6 px-6 w-full'>
                 <div className='text-white text-3xl font-bold mb-2 flex items-baseline'>
                     <span>{props.title}</span>
@@ -37,7 +37,7 @@ const BangumiCarousel = memo((props: BangumiCarouselProps) => {
             items.map((item, index) => {
                 return <BangumiCarouselItem key={index} {...item}/>;
             })
-        } autoSwitchByTime={5000}/>
+        } autoSwitchByTime={0}/>
     );
 });
 

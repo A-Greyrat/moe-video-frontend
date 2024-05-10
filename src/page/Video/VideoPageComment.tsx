@@ -254,6 +254,17 @@ const VideoPageCommentInput = memo((props: {
     );
 });
 
+const calcItemNum = (comment: VideoPageCommentProps[]) => {
+    let num = 0;
+    for (let i = 0; i < comment.length; i++) {
+        num += 1;
+        if (comment[i].reply) {
+            num += comment[i].reply.length;
+        }
+    }
+    return num;
+}
+
 const VideoPageComment = memo(({videoId}: { videoId: string }) => {
     const [comment, setComment] = useStore<VideoPageCommentProps[]>(`video-page-comment`, []);
     const [total, setTotal] = useStore<number>(`video-page-comment-total`, 10);
@@ -288,7 +299,7 @@ const VideoPageComment = memo(({videoId}: { videoId: string }) => {
             <div>
                 <VideoPageCommentInput vid={videoId} toId={'-1'}/>
                 <InfinityList className="moe-video-page-comment-infinity-list"
-                              onIntersect={getCommentList} limit={total} itemNum={comment ? comment.length : 0}>
+                              onIntersect={getCommentList} limit={total} itemNum={comment ? calcItemNum(comment) : 0}>
                     {comment?.map((comment, _index) => {
                         return (
                             <VideoPageCommentBox key={comment.id} videoId={videoId} {...comment}/>
@@ -298,7 +309,7 @@ const VideoPageComment = memo(({videoId}: { videoId: string }) => {
 
                 <div style={{
                     textAlign: "center",
-                    display: total === comment?.length ? "block" : "none",
+                    display: total === (comment ? calcItemNum(comment) : 0) ? "block" : "none",
                     padding: "10px 0",
                     color: "#999",
                     userSelect: "none"

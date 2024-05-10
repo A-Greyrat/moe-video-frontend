@@ -31,11 +31,11 @@ export interface RecommendListItemProps {
 }
 
 const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => {
-    const {title, cover, playbackCount, likeCount,lastUpdate} = props;
+    const {title, cover, playbackCount, likeCount, lastUpdate} = props;
     return (
         <a href='#' className='moe-video-home-page-recommend-list-item overflow-hidden'>
             <div className='relative'>
-                <Image src={cover} lazy/>
+                <Image width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}} src={cover} lazy/>
                 <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
                 <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
                     <div className='flex items-center gap-1'>
@@ -52,7 +52,8 @@ const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => 
                 {title}
             </div>
             <div className='px-3 pb-3 text-gray-400'>
-                {'更新至第' + lastUpdate?.set + '话 ' + lastUpdate?.time}
+                <span className='mr-2'>{lastUpdate?.set}</span>
+                <span>{lastUpdate?.time}</span>
             </div>
         </a>
     );
@@ -64,7 +65,7 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
     return (
         <a href='#' className='moe-video-home-page-recommend-list-item overflow-hidden'>
             <div className='relative'>
-                <Image src={cover} lazy/>
+                <Image width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}} src={cover} lazy/>
                 <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
                 <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
                     <div className='flex items-center gap-1'>
@@ -98,27 +99,6 @@ export const RecommendListItem = memo((props: RecommendListItemProps) => {
         default:
             throw new Error('Invalid type');
     }
-
-    // return (
-    //     <div className='moe-video-home-page-recommend-list-item relative'>
-    //         <Image src={props.cover}/>
-    //         <div className='absolute left-0 bottom-12 pt-6 px-2 w-full flex items-center cursor-pointer'>
-    //             <PlaybackVolumeIcon/>
-    //             <span className='text-white text-sm pl-1 pr-2'>{props.playbackCount}</span>
-    //             <LoveIcon/>
-    //             <span className='text-white'>{props.likeCount}</span>
-    //         </div>
-    //         <span className='text-base font-bold text-ellipsis overflow-hidden whitespace-nowrap cursor-pointer pl-2'>
-    //             {props.title}
-    //         </span>
-    //         <div className='moe-video-home-page-recommend-list-item-info pl-2'>
-    //             {props?.author && <span className='pr-1'>{props?.author}</span>}
-    //             {props?.uploadTime && <span>{props?.uploadTime}</span>}
-    //             {props?.lastUpdate &&
-    //                 <span>{'更新至第' + props?.lastUpdate?.set + '话 ' + props?.lastUpdate?.time}</span>}
-    //         </div>
-    //     </div>
-    // );
 });
 
 const RecommendList = memo((props: RecommendListProps) => {

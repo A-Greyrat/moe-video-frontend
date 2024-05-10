@@ -10,7 +10,7 @@ import VideoPageInfo, {VideoPageInfoProps} from "./VideoPageInfo.tsx";
 import VideoPaginationList, {VideoPaginationListItemProps} from "./VideoPaginationList.tsx";
 import VideoRecommendList, {VideoRecommendListItemProps} from "./VideoRecommendList.tsx";
 
-const video_proxy_url = 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=';
+const video_proxy_url = 'https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pHost=';
 const getUrl = (bv: string) => {
     return 'https://b.erisu.moe/api/playurl/flv?bvid=' + bv + '&SESSDATA=';
 };

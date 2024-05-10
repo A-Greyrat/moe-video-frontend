@@ -12,7 +12,7 @@
 }
 
 html {
-    font-size: min(16px, calc(2vw + 2px));
+    font-size: min(16px, calc(3vw + 2px));
 }
 
 * {
