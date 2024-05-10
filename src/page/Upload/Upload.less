@@ -1,0 +1,49 @@
+@import "../../common/theme/theme";
+
+.moe-video-upload-page-content {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: @primary-color;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.moe-video-upload-page-content-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.moe-video-upload-page-content-form > form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.moe-video-upload-page-content-form-item {
+  > label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  > input, > textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0.25px 0.25px 1px @primary-color, 1px 1px 3px @primary-color;
+    box-sizing: border-box;
+
+    &:focus, &:focus-within {
+      outline: none;
+      border-color: darken(@primary-color, 10%);
+    }
+  }
+}

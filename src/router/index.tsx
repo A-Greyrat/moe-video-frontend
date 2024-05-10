@@ -7,6 +7,7 @@ const Register = React.lazy(() => import('../page/Login/Register'));
 const $404 = React.lazy(() => import('../page/404/404'));
 const Video = React.lazy(() => import('../page/Video/Video'));
 const Search = React.lazy(() => import('../page/Search/Search'));
+const Upload = React.lazy(() => import('../page/Upload/Upload'));
 
 export default createBrowserRouter([
     {
@@ -28,6 +29,10 @@ export default createBrowserRouter([
     {
         path: '/search/:id/:page',
         element: <Search/>,
+    },
+    {
+        path: '/upload',
+        element: <Upload/>,
     },
     {
         path: '*',

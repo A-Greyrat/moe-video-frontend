@@ -34,7 +34,7 @@ export interface VideoPageCommentProps {
 const proxy_url = 'https://b.erisu.moe/api/proxy?x-User-Agent=Android&x-Referer=https://www.bilibili.com&x-Host=';
 const getCover = (url: string) => {
     const host = url.split('/')[2];
-    return 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=' + host + '&pUrl=' + encodeURIComponent(url);
+    return 'https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pHost=' + host + '&pUrl=' + encodeURIComponent(url);
 }
 
 const getURL = (url: string) => {

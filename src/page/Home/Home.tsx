@@ -35,7 +35,7 @@ const getURL = (url: string) => {
 
 const getCover = (url: string) => {
     const host = url.split('/')[2];
-    return 'https://api.erisu.moe/proxy?pReferer=https://www.bilibili.com&pHost=' + host + '&pUrl=' + encodeURIComponent(url);
+    return 'https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pHost=' + host + '&pUrl=' + encodeURIComponent(url);
 };
 
 const convertCount = (count: number) => {
