@@ -320,11 +320,11 @@ const ImageUpload = memo(() => {
                 image.src = URL.createObjectURL(file);
                 image.onload = () => {
                     const ctx = canvas.current.getContext('2d');
-                    if (!ctx) {
+                    if (!ctx || !('drawImage' in ctx)) {
                         console.warn('Canvas 2D Context is not supported');
                         return;
                     }
-                    e
+
                     canvas.current.width = cropPos.current.width;
                     canvas.current.height = cropPos.current.height;
 
