@@ -183,6 +183,11 @@ const RegisterForm = () => {
             return;
         }
 
+        if (!emailRef.current!.checkValidity()) {
+            setError("邮箱格式错误");
+            return;
+        }
+
         invoke?.(emailTimeLimit, email);
     }, [invoke]);
 
@@ -210,6 +215,9 @@ const RegisterForm = () => {
             } else {
                 setError(res.msg);
             }
+        }).catch(() => {
+            setDisable(false);
+            setError("注册失败");
         });
     }, [nav]);
 

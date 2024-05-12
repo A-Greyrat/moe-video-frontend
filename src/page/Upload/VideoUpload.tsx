@@ -67,6 +67,11 @@ const VideoUpload = memo(() => {
         setFile(null);
         setVideoUrl(null);
 
+        // 添加水印
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+
         setTimeout(() => {
             setFile(file);
             setVideoUrl(URL.createObjectURL(file));

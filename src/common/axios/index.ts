@@ -68,10 +68,11 @@ export const httpPost = async <T, >(url: string, data?: unknown, config?: AxiosR
     return instance.post(url, data, config)
         .then(res => res.data as ResponseData<T>)
         .catch(res => {
+            console.log(res)
             return {
                 code: res.response?.status,
                 data: null,
-                msg: res.response?.data
+                msg: res.response?.data.msg
             }
         });
 }

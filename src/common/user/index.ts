@@ -47,6 +47,7 @@ interface RegisterRequest {
 export const register = async ({nickname, password, email, verifyCode}: RegisterRequest) => {
     password = await rsaEncrypt(password) as string;
 
+
     return httpPost<string>("/user/signup", {
         "nickname": nickname,
         "password": password,
@@ -58,7 +59,7 @@ export const register = async ({nickname, password, email, verifyCode}: Register
             isUserLoggedIn = true;
         }
         return res;
-    })
+    });
 
 }
 
