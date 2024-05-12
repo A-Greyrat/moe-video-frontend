@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {showModal, withLock} from "@natsume_shiki/mika-ui";
 import {isUserLoggedIn} from "../user";
 
-export const baseURL = import.meta.env.VITE_BASE_URL;
+export const baseURL = 'https://abdecd.xyz/moe';
 const instance = axios.create({
     baseURL: baseURL,
 });

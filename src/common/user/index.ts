@@ -92,6 +92,7 @@ let userInfo: {
     signature: ""
 } | null = null;
 
+
 export const getUserInfo = async () => {
     if (!isUserLoggedIn) {
         return null;
@@ -101,7 +102,10 @@ export const getUserInfo = async () => {
         return userInfo;
     }
 
-    return httpGet<typeof userInfo>("/reader").then(res => {
+    const jwt = localStorage.getItem("token").split(".")[1];
+    const payload = JSON.parse(atob(jwt));
+    const id = payload.claims.id;
+    return httpGet<typeof userInfo>("/plain-user?uid=" + id).then(res => {
         if (res.code === 200) {
             userInfo = res.data;
         }
@@ -120,3 +124,8 @@ export const useUser = () => {
     }, []);
     return user;
 }
+
+getUserInfo().then(res => {
+    console.log(res);
+
+});

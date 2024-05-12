@@ -1,4 +1,4 @@
-import {memo, useCallback, useEffect, useRef, useState} from "react";
+import {memo, useCallback, useRef, useState} from "react";
 
 import './VideoUpload.less';
 import VideoPlayer from "mika-video-player";
@@ -59,7 +59,7 @@ const VideoUpload = memo(() => {
         e.preventDefault();
         e.currentTarget.style.border = 'none';
         const file = e.dataTransfer.files[0];
-        if (!file.type.startsWith('video')) {
+        if (!file.type.startsWith('video') && !file.name.endsWith('.flv') && !file.name.endsWith('.mkv')) {
             showMessage({children: '请上传视频文件'});
             return;
         }
@@ -124,7 +124,7 @@ const VideoUpload = memo(() => {
             <>
                 <div className="moe-video-upload-container-loaded">
                     <input type="file" accept="video/*,.flv,.mkv" ref={inputRef} onChange={handleFileChange}/>
-                    <Button onClick={handleClick} >
+                    <Button onClick={handleClick}>
                         点击重新上传
                     </Button>
                     <Button>

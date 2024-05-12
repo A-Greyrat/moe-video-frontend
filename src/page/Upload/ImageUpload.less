@@ -1,6 +1,6 @@
 @import "../../common/theme/theme";
 
-.moe-video-image-upload-page-conrainer {
+.moe-video-image-upload-page-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,7 @@
 .moe-video-image-upload-page-button {
   width: 100%;
   height: 100%;
-  background-color: transparent;
+  background-color: hsl(0, 0%, 100%);
   border: none;
   color: inherit;
   font-size: 0.8rem;
@@ -28,4 +28,73 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.moe-video-image-trimmer {
+  position: relative;
+  user-select: none;
+  overscroll-behavior: contain;
+
+  > img {
+    width: auto;
+    max-height: 80vh;
+    object-fit: cover;
+  }
+
+  > .moe-video-image-trimmer-cropper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid @primary-color;
+    box-sizing: border-box;
+    cursor: move;
+
+    background: rgba(0, 0, 0, 0.2);
+
+    > .moe-video-image-trimmer-cropper-top-left {
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      width: 10px;
+      height: 10px;
+      border: 1px solid @primary-color;
+      background-color: white;
+      cursor: nwse-resize;
+    }
+
+    > .moe-video-image-trimmer-cropper-top-right {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      border: 1px solid @primary-color;
+      background-color: white;
+      cursor: nesw-resize;
+    }
+
+    > .moe-video-image-trimmer-cropper-bottom-left {
+      position: absolute;
+      bottom: -5px;
+      left: -5px;
+      width: 10px;
+      height: 10px;
+      border: 1px solid @primary-color;
+      background-color: white;
+      cursor: nesw-resize;
+    }
+
+    > .moe-video-image-trimmer-cropper-bottom-right {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      border: 1px solid @primary-color;
+      background-color: white;
+      cursor: nwse-resize;
+    }
+  }
 }

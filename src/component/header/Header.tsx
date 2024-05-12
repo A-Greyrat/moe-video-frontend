@@ -138,6 +138,9 @@ const Header = memo(() => {
                         <Button styleType="text" onClick={() => {
                             nav("/category");
                         }}>分类</Button>
+                        <Button styleType="text" onClick={() => {
+                            nav("/upload");
+                        }}>上传</Button>
                     </div>} position='right' paddingTrigger={10} className="moe-video-header-dropdown-container">
                     <div className="moe-video-header-ellipsis">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -147,6 +150,10 @@ const Header = memo(() => {
                         </svg>
                     </div>
                 </Dropdown>
+                <div className="moe-video-header-upload" onClick={() => {
+                    nav("/upload");
+                }}>上传
+                </div>
             </div>
         </header>
     );
