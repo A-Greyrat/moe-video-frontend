@@ -131,7 +131,7 @@ const ImageTrimmer = memo((props: ImageTrimProps) => {
         mouseY = clamp(mouseY, 0, parentHeight);
 
         const handleResizeTopLeft = (e: React.MouseEvent<HTMLDivElement>) => {
-            const width = cropper.offsetWidth + Math.floor(cropper.offsetLeft - mouseX);
+            const width = cropper.offsetWidth + cropper.offsetLeft - mouseX;
             const height = cropper.offsetHeight + cropper.offsetTop - mouseY;
 
             cropper.style.width = width + 'px';
@@ -168,7 +168,7 @@ const ImageTrimmer = memo((props: ImageTrimProps) => {
         }
 
         const handleResizeBottomLeft = (e: React.MouseEvent<HTMLDivElement>) => {
-            const width = cropper.offsetWidth + Math.floor(cropper.offsetLeft - mouseX);
+            const width = cropper.offsetWidth + cropper.offsetLeft - mouseX;
             const height = mouseY - cropper.offsetTop;
 
             cropper.style.width = width + 'px';
@@ -236,6 +236,10 @@ const ImageTrimmer = memo((props: ImageTrimProps) => {
 
     const cropperMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
+
+        if (movingCornerIndex.current !== -1) {
+            return;
+        }
 
         moveOrigin.current = getRelativePosition(e, e.currentTarget);
     }, [getRelativePosition]);
