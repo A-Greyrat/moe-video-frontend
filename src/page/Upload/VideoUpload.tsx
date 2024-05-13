@@ -1,9 +1,11 @@
-import {memo, useCallback, useRef, useState} from "react";
+import React, {memo, useCallback, useRef, useState} from "react";
 
 import './VideoUpload.less';
 import VideoPlayer from "mika-video-player";
 import {useTitle} from "../../common/hooks";
 import {Button, showMessage} from "@natsume_shiki/mika-ui";
+import {uploadFileToOss} from "../../common/oss";
+import {useStore} from "mika-store";
 
 const VideoIcon = memo(() => {
 
@@ -25,8 +27,11 @@ const VideoUpload = memo(() => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [_uploadVideoUrl, setUploadVideoUrl] = useStore('uploadVideoUrl');
 
-    const handleClick = useCallback((e) => {
+    const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (inputRef.current) {
@@ -43,19 +48,18 @@ const VideoUpload = memo(() => {
             setFile(file);
             setVideoUrl(URL.createObjectURL(file));
         }, 0);
-        console.log(file);
-    }, []);
+        }, []);
 
-    const handleDragEnter = useCallback((e) => {
+    const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     }, []);
 
-    const handleDragOver = useCallback((e) => {
+    const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.currentTarget.style.border = '2px dashed #ccc';
     }, []);
 
-    const handleDrop = useCallback((e) => {
+    const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.currentTarget.style.border = 'none';
         const file = e.dataTransfer.files[0];
@@ -66,11 +70,6 @@ const VideoUpload = memo(() => {
 
         setFile(null);
         setVideoUrl(null);
-
-        // 添加水印
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-
 
         setTimeout(() => {
             setFile(file);
@@ -88,41 +87,20 @@ const VideoUpload = memo(() => {
             showMessage({children: '请上传视频文件'});
             return;
         }
-        // 分片上传
-        const chunkSize = 1024 * 1024 * 5;
-        const chunkCount = Math.ceil(file.size / chunkSize);
-        const chunks: Blob[] = [];
-        for (let i = 0; i < chunkCount; i++) {
-            chunks.push(file.slice(i * chunkSize, (i + 1) * chunkSize));
+        if (uploading) {
+            showMessage({children: '正在上传'});
+            return;
         }
 
-        for (let i = 0; i < chunkCount; i++) {
-
-            // Range
-            const start = i * chunkSize;
-            const end = Math.min((i + 1) * chunkSize, file.size);
-
-            // binary
-            const reader = new FileReader();
-            reader.onload = () => {
-                const binary = reader.result;
-                console.log(binary);
-            };
-
-            reader.readAsArrayBuffer(chunks[i]);
-
-            fetch('https://b.erisu.moe/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/octet-stream',
-                    'Content-Range': `bytes ${start}-${end - 1}/${file.size}`,
-                },
-                body: chunks[i],
-            }).then(res => {
-                console.log(res);
-            });
-        }
-    }, [file]);
+        uploadFileToOss(file, (progress) => {
+            setUploadProgress(progress);
+        }).then(r => {
+            setUploading(true);
+            setUploadVideoUrl(r);
+        }).catch(e => {
+            showMessage({children: e.message});
+        });
+    }, [file, uploading]);
 
     if (file) {
         return (
@@ -132,9 +110,15 @@ const VideoUpload = memo(() => {
                     <Button onClick={handleClick}>
                         点击重新上传
                     </Button>
-                    <Button>
+                    <Button onClick={handleUpload}>
                         确认上传
                     </Button>
+                    {uploading && (
+                        <div>
+                            <div>上传中</div>
+                            <div>{uploadProgress}%</div>
+                        </div>
+                    )}
                 </div>
 
                 <VideoPlayer src={videoUrl} controls style={{

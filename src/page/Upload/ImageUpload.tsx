@@ -2,6 +2,8 @@ import React, {memo, useCallback, useEffect, useRef, useState} from "react";
 
 import './ImageUpload.less';
 import {Button, showMessage, showModal} from "@natsume_shiki/mika-ui";
+import {uploadImg} from "../../common/oss";
+import {useStore} from "mika-store";
 
 const ImageIcon = memo(() => {
 
@@ -299,7 +301,8 @@ const ImageUpload = memo(() => {
     const [file, setFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const cropPos = useRef({x: 0, y: 0, width: 0, height: 0});
-    // const canvas = useRef(OffscreenCanvas ? new OffscreenCanvas(1, 1) : document.createElement('canvas'));
+    const [_uploadCoverUrl, setUploadCoverUrl] = useStore('uploadCoverUrl');
+
     const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -345,11 +348,21 @@ const ImageUpload = memo(() => {
                     if (canvas.current instanceof HTMLCanvasElement) {
                         const dataUrl = canvas.current.toDataURL('image/jpeg');
                         setImageUrl(dataUrl);
-                        setFile(new File([dataUrl], file.name));
+                        const _file = new File([dataUrl], file.name)
+                        setFile(_file);
+
+                        uploadImg(_file).then(res => {
+                            setUploadCoverUrl(res);
+                        });
                     } else {
-                        canvas.current.convertToBlob({type: 'image/jpeg'}).then(blob => {
-                            setFile(new File([blob], file.name));
+                        canvas.current.convertToBlob({type: 'image/jpeg', quality: 0.7}).then(blob => {
+                            const _file = new File([blob], file.name);
+                            setFile(_file);
                             setImageUrl(URL.createObjectURL(blob));
+
+                            uploadImg(_file).then(res => {
+                                setUploadCoverUrl(res);
+                            });
                         });
                     }
                 };
@@ -390,6 +403,7 @@ const ImageUpload = memo(() => {
             <>
                 <input type="file" ref={inputRef} accept="image/png, image/jpeg, image/webp"
                        style={{display: 'none'}} onChange={handleFileChange}/>
+
                 <Button onClick={handleClick}>
                     <span>重新上传</span>
                 </Button>
