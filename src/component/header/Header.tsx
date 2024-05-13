@@ -79,7 +79,7 @@ const SearchSection = () => {
             }} onSubmit={(item) => {
                 if (!item) return;
                 nav(`/search/${item}/1`);
-            }}/>
+            }} ref={inputRef}/>
         </div>
     );
 }
