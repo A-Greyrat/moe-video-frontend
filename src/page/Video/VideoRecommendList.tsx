@@ -26,7 +26,7 @@ export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) 
     const {url, cover, title, playCount, update, author} = props;
 
     return (
-        <a href={url} target='_blank' className="moe-video-video-page-recommend-item">
+        <a href={url} className="moe-video-video-page-recommend-item">
             <div className='moe-video-video-page-recommend-list-item-cover-background'></div>
             <Image lazy src={getCover(cover)} alt={title}/>
             <div className="moe-video-video-page-recommend-item-info w-full justify-between">

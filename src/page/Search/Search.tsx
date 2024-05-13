@@ -218,4 +218,5 @@ const Search = memo(() => {
     );
 });
 
+Search.displayName = 'Search';
 export default Search;

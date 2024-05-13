@@ -75,7 +75,7 @@ interface CaptchaData {
 
 
 export const Captcha = () => {
-    const [captcha, setCaptcha] = useState<CaptchaData | undefined>(undefined);
+    const [captcha, setCaptcha] = useStore<CaptchaData | undefined>('captcha', undefined);
     const lock = useRef(false);
 
     const resetCaptcha = useCallback(() => {
@@ -85,7 +85,8 @@ export const Captcha = () => {
         lock.current = true;
         getCaptcha().then(res => {
             if (res.code === 200) {
-                setCaptcha(res.data!);
+                console.log(res.data)
+                setCaptcha(res.data);
             } else {
                 setCaptcha({
                     verifyCodeId: null,
@@ -95,11 +96,18 @@ export const Captcha = () => {
         }).finally(() => {
             lock.current = false;
         });
-    }, []);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_resetCaptchaCallback, _setResetCaptchaCallback] = useStore('reset-captcha', () => () => resetCaptcha);
+
+    }, [setCaptcha]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const renewCaptcha = useCallback(throttle(resetCaptcha, 1000), [resetCaptcha]);
+    const renewCaptcha: (arg: unknown) => void = useCallback(throttle(resetCaptcha, 1000), [resetCaptcha]);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_resetCaptchaCallback, _setResetCaptchaCallback] = useStore<() => unknown>('reset-captcha', () => {
+        return () => {
+            resetCaptcha();
+        };
+    });
 
     useEffect(() => {
         document.title = "登录";
@@ -107,14 +115,16 @@ export const Captcha = () => {
         resetCaptcha();
     }, [resetCaptcha]);
 
+    console.log(captcha)
+
     return (
         <div onClick={() => {
             if (captcha)
                 setCaptcha(undefined);
-            renewCaptcha();
+            renewCaptcha([]);
         }}>
             <input type="hidden" name="verifyCodeId" value={captcha?.verifyCodeId ?? ""}/>
-            <Image src={captcha?.captcha} alt="验证码" width={100} height={40}/>
+            <Image src={captcha?.captcha} alt="验证码" width='100px' height='40px'/>
         </div>
     );
 }
@@ -124,7 +134,29 @@ export const SubmitButton = () => {
     const [disable, setDisable] = useState(false);
     const nav = useNavigate();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [resetCaptchaCallback, _setResetCaptchaCallback] = useStore<() => unknown>('reset-captcha');
+    const [_captcha, setCaptcha] = useStore<CaptchaData | undefined>('captcha', undefined);
+    const lock = useRef(false);
+
+    const resetCaptcha = useCallback(() => {
+        if (lock.current) {
+            return;
+        }
+        lock.current = true;
+        getCaptcha().then(res => {
+            if (res.code === 200) {
+                console.log(res.data)
+                setCaptcha(res.data);
+            } else {
+                setCaptcha({
+                    verifyCodeId: null,
+                    captcha: null
+                });
+            }
+        }).finally(() => {
+            lock.current = false;
+        });
+
+    }, [setCaptcha]);
 
     const loginCallback = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -148,14 +180,15 @@ export const SubmitButton = () => {
 
         return login(data).then(res => {
             setDisable(false);
+
             if (res.code === 200) {
                 nav(-1);
             } else {
                 setShowError(res.msg);
-                resetCaptchaCallback?.();
+                resetCaptcha();
             }
         });
-    }, [nav, resetCaptchaCallback]);
+    }, [nav, resetCaptcha]);
 
     return (<>
             <div className="moe-video-login-form-error">

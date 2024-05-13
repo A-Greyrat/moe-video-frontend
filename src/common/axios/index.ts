@@ -54,7 +54,7 @@ export const httpGet = async <T, >(url: string, config?: AxiosRequestConfig): Pr
             return {
                 code: res.response?.status || 400,
                 data: null,
-                msg: res.response?.data
+                msg: res.response?.data?.msg || ''
             }
         });
 }
@@ -68,7 +68,6 @@ export const httpPost = async <T, >(url: string, data?: unknown, config?: AxiosR
     return instance.post(url, data, config)
         .then(res => res.data as ResponseData<T>)
         .catch(res => {
-            console.log(res)
             return {
                 code: res.response?.status,
                 data: null,
@@ -76,6 +75,23 @@ export const httpPost = async <T, >(url: string, data?: unknown, config?: AxiosR
             }
         });
 }
+
+export const httpPostForm = async <T, >(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ResponseData<T | null>> => {
+    config = config || {};
+    config.headers = {
+        'Content-Type': 'multipart/form-data'
+    };
+
+    return instance.post(url, data, config)
+        .then(res => res.data as ResponseData<T>)
+        .catch(res => {
+            return {
+                code: res.response?.status,
+                data: null,
+                msg: res.response?.data.msg
+            }
+        });
+};
 
 export interface ResponseData<T> {
     code: number;

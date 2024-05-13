@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@natsume_shiki/mika-ui": "^1.0.10",
+    "@types/ali-oss": "^6.16.11",
+    "ali-oss": "^6.20.0",
     "axios": "^1.6.8",
     "mika-store": "^1.0.5",
     "mika-video-player": "^1.1.4",

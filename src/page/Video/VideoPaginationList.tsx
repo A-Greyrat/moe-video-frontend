@@ -28,11 +28,13 @@ const VideoPaginationList = memo((props: VideoPaginationListProps) => {
     const {items} = props;
 
     return (
-        <div className="moe-video-video-page-pagination-list">
+        <div className="moe-video-video-page-pagination-list-wrapper">
             <p className="moe-video-video-page-pagination-title">视频列表</p>
-            {items?.length && items.map((item, index) => {
-                return (<VideoPaginationListItem key={index} {...item}/>)
-            })}
+            <div className="moe-video-video-page-pagination-list">
+                {items?.length && items.map((item, index) => {
+                    return (<VideoPaginationListItem key={index} {...item}/>)
+                })}
+            </div>
         </div>
     );
 });
