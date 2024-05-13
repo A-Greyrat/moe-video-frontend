@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {showModal, withLock} from "@natsume_shiki/mika-ui";
 import {isUserLoggedIn} from "../user";
 
-export const baseURL = import.meta.env.VITE_BASE_URL;
+export const baseURL = 'https://abdecd.xyz/moe';
 const instance = axios.create({
     baseURL: baseURL,
 });
@@ -68,10 +68,11 @@ export const httpPost = async <T, >(url: string, data?: unknown, config?: AxiosR
     return instance.post(url, data, config)
         .then(res => res.data as ResponseData<T>)
         .catch(res => {
+            console.log(res)
             return {
                 code: res.response?.status,
                 data: null,
-                msg: res.response?.data
+                msg: res.response?.data.msg
             }
         });
 }

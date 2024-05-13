@@ -208,7 +208,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isUserLoggedIn) {
-            nav(-1);
+            nav('/');
         }
     }, [nav]);
 
