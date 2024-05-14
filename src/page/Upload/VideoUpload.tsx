@@ -83,7 +83,7 @@ const VideoUpload = memo(() => {
         e.currentTarget.style.border = 'none';
     }, []);
 
-    const handleUpload = useCallback(() => {
+    const handleUpload = useCallback(async () => {
         if (!file) {
             showMessage({children: '请上传视频文件'});
             return;
@@ -93,7 +93,7 @@ const VideoUpload = memo(() => {
             return;
         }
 
-        uploadFileToOss(file, (progress) => {
+        return uploadFileToOss(file, (progress) => {
             setUploadProgress(progress);
         }).then(r => {
             setUploading(true);
@@ -111,13 +111,12 @@ const VideoUpload = memo(() => {
                     <Button onClick={handleClick}>
                         点击重新上传
                     </Button>
-                    <Button onClick={handleUpload}>
+                    {!uploading && <Button onClick={handleUpload}>
                         确认上传
-                    </Button>
+                    </Button>}
                     {uploading && (
                         <div style={{display: 'flex'}}>
-                            <div>上传中</div>
-                            <div>{uploadProgress}%</div>
+                            <div>上传完毕</div>
                         </div>
                     )}
                 </div>

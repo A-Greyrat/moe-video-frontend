@@ -1,7 +1,7 @@
 import {memo, useCallback, useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../component/header/Header.tsx";
-import {TabList, Pagination} from "@natsume_shiki/mika-ui";
+import {TabList, Pagination, Skeleton} from "@natsume_shiki/mika-ui";
 import './Search.less';
 import Footer from "../../component/footer/Footer.tsx";
 import SearchList, {BangumiItemProps, VideoItemProps} from "./SearchList.tsx";
