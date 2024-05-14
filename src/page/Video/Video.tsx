@@ -8,7 +8,7 @@ import VideoPageComment from "./VideoPageComment.tsx";
 import {useParams} from "react-router-dom";
 import VideoPageInfo, {VideoPageInfoProps} from "./VideoPageInfo.tsx";
 import VideoPaginationList from "./VideoPaginationList.tsx";
-import {getDanmaku, getVideoInfo, getVideoURL, VideoInfo} from "../../common/video";
+import {getDanmaku, getVideoInfo, getVideoUrl, VideoInfo} from "../../common/video";
 import VideoRecommendList from "./VideoRecommendList.tsx";
 
 const Video = memo(() => {
@@ -19,21 +19,22 @@ const Video = memo(() => {
     const [item, setItem] = React.useState<VideoInfo>();
 
     useEffect(() => {
-        const bv = param.id ?? 'BV1fK4y1s7Qf';
+        const vid = param.id ?? 'BV1fK4y1s7Qf';
         const query = new URLSearchParams(window.location.search);
         const p = query.get('p');
         const sess_data = query.get('SESSDATA') ?? '';
 
-        getVideoURL(bv, p, sess_data).then(res => {
-            setUrl(res);
-        });
+        // getDanmaku(vid, p, sess_data).then(res => {
+        //     setDanmakus(res);
+        // });
 
-        getDanmaku(bv, p, sess_data).then(res => {
-            setDanmakus(res);
-        });
-
-        getVideoInfo(bv).then(res => {
+        getVideoInfo(vid).then(res => {
             setItem(res);
+            const index = p ? parseInt(p) - 1 : 0;
+            console.log(res)
+            getVideoUrl(res.pagination[index].videoId).then(res => {
+                setUrl(res);
+            });
         });
     }, [param.SESSDATA, param.id, param.p]);
 

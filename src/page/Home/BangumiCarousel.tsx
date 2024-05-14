@@ -1,31 +1,36 @@
 import {memo} from "react";
-import './BangumiCarousel.less';
 import {Carousel, Image} from "@natsume_shiki/mika-ui";
+import './BangumiCarousel.less';
 
-interface BangumiCarouselItemProps {
+export interface BangumiCarouselItemProps {
     title: string;
     cover: string;
     desc: string;
+    url: string;
 }
 
-interface BangumiCarouselProps {
+export interface BangumiCarouselProps {
     items: BangumiCarouselItemProps[];
 }
 
 export const BangumiCarouselItem = memo((props: BangumiCarouselItemProps) => {
     return (
-        <div className="moe-video-home-page-carousel-item relative">
+        <a href={props.url} className="moe-video-home-page-carousel-item relative">
             <Image width='100%' style={{aspectRatio: '5 / 2'}} src={props.cover} lazy/>
             <div className='absolute left-0 bottom-0 bg-black opacity-50 pt-4 pb-6 px-6 w-full'>
                 <div className='text-white text-3xl font-bold mb-2 flex items-baseline'>
-                    <span>{props.title}</span>
+                    <span className='line-clamp-1' style={{
+                        maxWidth: '80%',
+                    }}>
+                        {props.title}
+                    </span>
                     <span className='text-base font-normal ml-2.5 bg-red-500 px-2 py-0.5 rounded-lg'>9.9分</span>
                 </div>
                 <div className='text-white text-base line-clamp-2'>
                     {props.desc}
                 </div>
             </div>
-        </div>
+        </a>
     );
 });
 
