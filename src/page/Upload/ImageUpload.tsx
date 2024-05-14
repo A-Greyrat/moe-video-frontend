@@ -369,7 +369,7 @@ const ImageUpload = memo(() => {
             }
         });
 
-    }, []);
+    }, [setUploadCoverUrl]);
 
     const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();

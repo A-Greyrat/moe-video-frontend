@@ -56,7 +56,7 @@ const Upload = memo(() => {
                 title: title.value,
                 description: description.value,
                 cover: uploadCoverUrl,
-                link: 'http://resource.abdecd.xyz/' + uploadVideoUrl
+                link: uploadVideoUrl
             }).then(r => {
                 if (r.code === 200) {
                     showMessage({children: '上传成功'});

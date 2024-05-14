@@ -47,7 +47,6 @@ interface RegisterRequest {
 export const register = async ({nickname, password, email, verifyCode}: RegisterRequest) => {
     password = await rsaEncrypt(password) as string;
 
-
     return httpPost<string>("/user/signup", {
         "nickname": nickname,
         "password": password,
@@ -125,8 +124,3 @@ export const useUser = () => {
     }, []);
     return user;
 }
-
-getUserInfo().then(res => {
-    console.log(res);
-
-});

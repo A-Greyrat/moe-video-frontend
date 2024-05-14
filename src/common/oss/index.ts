@@ -1,6 +1,7 @@
 import {httpGet, httpPost, httpPostForm} from "../axios";
 import OSS from "ali-oss";
 import {getUserInfo} from "../user";
+import {showMessage} from "@natsume_shiki/mika-ui";
 
 export interface OssToken {
     accessKeyId: string;
@@ -20,7 +21,8 @@ export const getOssToken = async (filename: string) => {
 export const uploadFileToOss = async (file: File, onProgress: (progress: number) => void) => {
     const user = await getUserInfo();
     if (!user) {
-        throw new Error("用户未登录");
+        showMessage({children: '请先登录'});
+        return;
     }
 
     const path = 'tmp/user' + user.userId + '/';
@@ -56,7 +58,7 @@ export const uploadFileToOss = async (file: File, onProgress: (progress: number)
 export const uploadImg = async (file: File) => {
     const data = new FormData();
     data.append("file", file);
-    return httpPostForm("https://abdecd.xyz/moe/common/upload-image", data).then(res => {
+    return httpPostForm("/common/upload-image", data).then(res => {
         if (res.code === 200) {
             return res.data;
         } else {

@@ -17,11 +17,9 @@ const proxyUrl = (url: string) => {
 };
 
 /* Video Comment */
-export const deleteComment = async (_id: string) => {
 
-};
 
-export interface VideoPageCommentReply {
+export type VideoPageCommentReplyItem = {
     parent?: string;
 
     id: string;
@@ -36,14 +34,42 @@ export interface VideoPageCommentReply {
         name: string;
         avatar: string;
     }
+};
+
+export type VideoPageCommentProps = {
+    id: string;
+    time: string;
+    content: string;
+    user: {
+        id: string;
+        name: string;
+        avatar: string;
+    };
+    reply: VideoPageCommentReplyItem[];
+};
+
+export interface Comment {
+    id: number;
+    userDetail: {
+        id: number;
+        nickname: string;
+        avatar: string;
+    };
+    toId: number;
+    toUserDetail: {
+        id: number;
+        nickname: string;
+        avatar: string;
+    } | null;
+    content: string;
+    timestamp: string;
 }
 
-export const getComments = async (videoId: string, p: number, size: number) => {
-    return {
-        total: 0,
-        records: []
-    };
+export const deleteComment = async (id: string) => {
+    return httpPost("/video/comment/delete", {id});
+};
 
+export const getComments_v1 = async (videoId: string, p: number, size: number) => {
     const url = proxyUrl('https://api.bilibili.com/x/v2/reply?type=1&oid=' + videoId + '&pn=' + p + '&ps=' + size);
     const data = await (await fetch(url)).json();
     const total = data.data.page.count;
@@ -80,10 +106,60 @@ export const getComments = async (videoId: string, p: number, size: number) => {
         total,
         records
     };
+}
+
+export const getComments_v2 = async (videoId: string, p: number, size: number) => {
+    return httpGet(`/video/comment?videoId=${videoId}&page=${p}&pageSize=${size}`).then((res) => {
+        const data = res.data as { total: number, records: Comment[][] };
+        const ret: VideoPageCommentProps[] = [];
+        data?.records?.forEach((item) => {
+            const father: VideoPageCommentProps = {
+                id: item[0].id.toString(),
+                time: item[0].timestamp.replace(/-/g, "/").replace("T", " ").replace(/\.\d+/, ""),
+                content: item[0].content,
+                user: {
+                    id: item[0].userDetail.id.toString(),
+                    name: item[0].userDetail.nickname,
+                    avatar: item[0].userDetail.avatar
+                },
+                reply: []
+            }
+            ret.push(father);
+            item?.slice(1).forEach((reply) => {
+                father.reply?.push({
+                    id: reply.id.toString(),
+                    time: reply.timestamp.replace(/-/g, "/").replace("T", " ").replace(/\.\d+/, ""),
+                    content: reply.content,
+                    replyTo: {
+                        id: reply.toUserDetail?.id.toString() || "0",
+                        name: reply.toUserDetail?.nickname || "我"
+                    },
+                    user: {
+                        id: reply.userDetail.id.toString(),
+                        name: reply.userDetail.nickname,
+                        avatar: reply.userDetail.avatar
+                    }
+                });
+            });
+        });
+
+        return {
+            total: data.total,
+            records: ret
+        };
+    });
 };
 
-export const addComment = async (_videoId: string, _toId: string, _content: string) => {
+export const getComments = async (videoId: string, p: number, size: number) => {
+    return getComments_v2(videoId, p, size);
+};
 
+export const addComment = async (videoId: string, toId: string, content: string) => {
+    return httpPost("/video/comment/add", {
+        videoId: videoId,
+        toId: toId,
+        content: content
+    });
 };
 
 /* Video Info */
@@ -97,7 +173,7 @@ export interface VideoInfo {
     description: string;
     pagination: VideoPaginationListItemProps[];
     recommendList: VideoRecommendListItemProps[];
-    avid: string;
+    extra_id: string;
 }
 
 export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
@@ -130,12 +206,36 @@ export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
                         update: new Date(item.pubdate * 1000).toLocaleDateString(),
                     }
                 }),
-                avid: data.View.aid,
+                extra_id: data.View.aid,
             };
         });
 };
 
+
+export const getRelatedVideos = async (videoId: string, nums = 10): Promise<VideoRecommendListItemProps[]> => {
+    return httpGet<any>('/video-group/related', {
+        params: {
+            id: videoId,
+            num: nums
+        }
+    }).then(res => {
+        return res.data.map((item: any) => {
+            return {
+                title: item.title,
+                cover: item.cover,
+                playCount: item.watchCnt,
+                likeCount: item.likeCnt,
+                url: '/video/' + item.id,
+                update: new Date(item.createTime).toLocaleDateString(),
+                author: item.uploader?.nickname || '未知用户',
+            }
+        });
+    });
+};
+
 export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
+    const recommendList = await getRelatedVideos(videoId);
+
     return httpGet<any>('/video-group', {
         params: {
             id: videoId
@@ -146,7 +246,7 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
             tags: res.data.tags?.map((tag: any) => tag.name),
             playCount: res.data.watchCnt,
             likeCount: res.data.likeCnt,
-            danmakuCount: 0,
+            danmakuCount: res.data.danmakuCnt,
             favoriteCount: res.data.favoriteCnt,
             description: res.data.description,
             pagination: res.data.contents.map((page: any) => {
@@ -158,8 +258,8 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
                     duration: '',
                 };
             }),
-            recommendList: [],
-            avid: videoId,
+            recommendList: recommendList,
+            extra_id: res.data.bvid,
         }
     });
 }
@@ -171,6 +271,11 @@ export const getVideoInfo = async (videoId: string): Promise<VideoInfo> => {
 export const getDanmaku_v1 = async (videoId: string, p?: string, SESSDATA?: string) => {
     return fetch('https://b.erisu.moe/api/danmaku?bvid=' + videoId + '&SESSDATA=' + SESSDATA + (p ? '&p=' + p : '')).then(res => res.json()).then(data => {
         const newDanmakus: DanmakuAttr[] = [];
+        if (data.error) {
+            console.warn(data.error);
+            return newDanmakus;
+        }
+
         for (const d of data) {
             if (d.color === 0) d.color = 0xffffff;
             newDanmakus.push({
@@ -193,8 +298,8 @@ export const getDanmaku_v2 = async (videoId: string, p?: string, SESSDATA?: stri
 }
 
 export const getDanmaku = async (videoId: string, p?: string, SESSDATA?: string) => {
-    // return getDanmaku_v1(videoId, p, SESSDATA);
-    return getDanmaku_v2(videoId, p, SESSDATA);
+    return getDanmaku_v1(videoId, p, SESSDATA);
+    // return getDanmaku_v2(videoId, p, SESSDATA);
 };
 
 export const getVideoUrl_v1 = async (videoId: string, p?: string, extra?: string) => {
@@ -277,7 +382,7 @@ export const getRecommendList = async (num: number = 10): Promise<RecommendListI
                     playCount: item.watchCnt,
                     likeCount: item.likeCnt,
                     author: item.uploader?.nickname || '未知用户',
-                    uploadTime: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toLocaleDateString(),
+                    uploadTime: new Date(item.createTime).toLocaleDateString(),
                 }
             };
         });
@@ -310,7 +415,7 @@ export const searchVideo = async (keyword: string, page: number, pageSize: numbe
                     playCount: item.watchCnt,
                     likeCount: item.likeCnt,
                     author: item.uploader?.nickname || '未知用户',
-                    uploadTime: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toLocaleDateString(),
+                    uploadTime: new Date(item.createTime).toLocaleDateString(),
                     url: '/video/' + item.id,
                 }
             })
