@@ -1,4 +1,4 @@
-    import {memo} from "react";
+import {memo} from "react";
 import './RecommendList.less'
 import {Image} from "@natsume_shiki/mika-ui";
 import PlayCountIcon from "../Icon/PlaybackVolumeIcon.tsx";
@@ -43,7 +43,7 @@ const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => 
     return (
         <a href={url} className='moe-video-home-page-recommend-list-item overflow-hidden'>
             <div className='relative'>
-                <Image width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}} src={cover} lazy/>
+                <Image lazy width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}} src={cover} />
                 <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
                 <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
                     <div className='flex items-center gap-1'>
@@ -90,9 +90,8 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
                 <div className='moe-video-home-page-recommend-list-item-title px-3 pt-2 mb-3 line-clamp-2'>
                     {title}
                 </div>
-                <div className='px-3 pb-3 text-gray-400 flex justify-between'>
-                    <span>{author}</span>
-                    <span>{uploadTime}</span>
+                <div className='px-3 pb-3 text-gray-400'>
+                    {author} {uploadTime}
                 </div>
             </div>
         </a>

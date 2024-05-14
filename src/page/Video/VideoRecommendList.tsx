@@ -31,12 +31,14 @@ export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) 
             <Image lazy src={getCover(cover)} alt={title}/>
             <div className="moe-video-video-page-recommend-item-info w-full justify-between">
                 <span className='line-clamp-2 text-base'>{title}</span>
-                <span className='text-gray-400'>{author}</span>
-                <span className='flex justify-between'>
+                <div>
+                    <span className='text-gray-400'>{author}</span>
+                    <span className='flex justify-between'>
                     <span className='text-gray-400 flex items-center gap-1'><PlaybackVolumeIcon
                         fill='currentColor'/>{playCount}</span>
                     <span className='text-gray-400'>{update}</span>
                 </span>
+                </div>
             </div>
         </a>
     );

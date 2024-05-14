@@ -16,7 +16,7 @@ export interface BangumiCarouselProps {
 export const BangumiCarouselItem = memo((props: BangumiCarouselItemProps) => {
     return (
         <a href={props.url} className="moe-video-home-page-carousel-item relative">
-            <Image width='100%' style={{aspectRatio: '5 / 2'}} src={props.cover} lazy/>
+            <Image lazy width='100%' style={{aspectRatio: '5 / 2'}} src={props.cover} />
             <div className='absolute left-0 bottom-0 bg-black opacity-50 pt-4 pb-6 px-6 w-full'>
                 <div className='text-white text-3xl font-bold mb-2 flex items-baseline'>
                     <span className='line-clamp-1' style={{
