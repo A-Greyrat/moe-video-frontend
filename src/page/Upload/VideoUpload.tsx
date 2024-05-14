@@ -44,12 +44,13 @@ const VideoUpload = memo(() => {
         const file = e.target.files[0];
         setFile(null);
         setVideoUrl(null);
+        setUploading(false);
 
         setTimeout(() => {
             setFile(file);
             setVideoUrl(URL.createObjectURL(file));
         }, 0);
-        }, []);
+    }, []);
 
     const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
