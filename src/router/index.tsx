@@ -28,7 +28,15 @@ export default createBrowserRouter([
         element: <Video/>,
     },
     {
+        path: '/search/:type/:id/:page',
+        element: <Search/>,
+    },
+    {
         path: '/search/:id/:page',
+        element: <Search/>,
+    },
+    {
+        path: '/search/:id',
         element: <Search/>,
     },
     {
