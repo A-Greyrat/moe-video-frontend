@@ -75,7 +75,7 @@ interface CaptchaData {
 
 
 export const Captcha = () => {
-    const [captcha, setCaptcha] = useStore<CaptchaData | undefined>('captcha', undefined);
+    const [captcha, setCaptcha] = useStore<CaptchaData>('captcha');
     const lock = useRef(false);
 
     const resetCaptcha = useCallback(() => {
@@ -115,12 +115,12 @@ export const Captcha = () => {
         resetCaptcha();
     }, [resetCaptcha]);
 
-    console.log(captcha)
-
     return (
         <div onClick={() => {
-            if (captcha)
-                setCaptcha(undefined);
+            setCaptcha({
+                verifyCodeId: null,
+                captcha: null
+            });
             renewCaptcha([]);
         }}>
             <input type="hidden" name="verifyCodeId" value={captcha?.verifyCodeId ?? ""}/>
@@ -134,7 +134,7 @@ export const SubmitButton = () => {
     const [disable, setDisable] = useState(false);
     const nav = useNavigate();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_captcha, setCaptcha] = useStore<CaptchaData | undefined>('captcha', undefined);
+    const [_captcha, setCaptcha] = useStore<CaptchaData>('captcha');
     const lock = useRef(false);
 
     const resetCaptcha = useCallback(() => {

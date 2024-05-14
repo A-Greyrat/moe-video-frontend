@@ -82,6 +82,7 @@ const SearchSection = () => {
                 nav(`/search/${item}/1`);
             }} onSubmit={(item) => {
                 if (!item) return;
+                item = encodeURIComponent(item);
                 nav(`/search/${item}/1`);
             }} ref={inputRef}/>
         </div>

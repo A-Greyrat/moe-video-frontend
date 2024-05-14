@@ -314,7 +314,15 @@ export const getVideoUrl_v2 = async (videoId: string, p?: string, extra?: string
     return httpGet<any>('/video', {
         params: {id: videoId}
     }).then(res => {
-        return res.data.src[0].src;
+        return {
+            srcs: res.data?.src?.reverse().map((item: any) => {
+                return {
+                    url: item.src,
+                    type: item.srcName
+                };
+            }),
+            default: 0
+        }
     });
 };
 
