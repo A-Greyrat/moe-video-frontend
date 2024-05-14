@@ -10,6 +10,7 @@ export interface BangumiItemProps {
     score: string;
     desc: string;
     tags: string[];
+    url: string;
 }
 
 export interface VideoItemProps {
@@ -19,6 +20,7 @@ export interface VideoItemProps {
     likeCount: string;
     author: string;
     uploadTime: string;
+    url: string;
 }
 
 interface SearchListProps {
@@ -27,14 +29,15 @@ interface SearchListProps {
 }
 
 export const BangumiItem = memo((props: BangumiItemProps) => {
-    const {title, cover, score, desc, tags} = props;
+    const {title, cover, score, desc, tags, url} = props;
 
     return (
         <div className='moe-video-search-page-bangumi-list-item flex py-2 px-2'>
-            <a href='#'
+            <a href={url}
                className='moe-video-search-page-bangumi-list-item-cover overflow-hidden mr-4'>
                 <div className='relative w-full h-full'>
-                    <Image width='100%' className='moe-video-search-page-bangumi-list-item-cover-img' style={{aspectRatio: '3 / 4'}} src={cover} lazy/>
+                    <Image width='100%' className='moe-video-search-page-bangumi-list-item-cover-img'
+                           style={{aspectRatio: '3 / 4'}} src={cover} lazy/>
                     <div
                         className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic'>
                         <span className='text-white'>{score}</span>
@@ -86,10 +89,10 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
 });
 
 export const VideoItem = memo((props: VideoItemProps) => {
-    const {title, cover, playCount, likeCount, author, uploadTime} = props;
+    const {title, cover, playCount, likeCount, author, uploadTime, url} = props;
 
     return (
-        <a href='#'
+        <a href={url}
            className='moe-video-search-page-video-list-item overflow-hidden'>
             <div className='relative'>
                 <Image width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}}
@@ -107,11 +110,14 @@ export const VideoItem = memo((props: VideoItemProps) => {
                     </div>
                 </div>
             </div>
-            <div className='moe-video-search-page-video-list-item-title px-3 pt-2 pb-1'>
-                {title}
-            </div>
-            <div className='px-3 pb-3 text-gray-400'>
-                {author} {uploadTime}
+            <div className='flex flex-col justify-between flex-auto'>
+                <div className='moe-video-search-page-video-list-item-title px-3 pt-2 mb-3 line-clamp-2'>
+                    {title}
+                </div>
+                <div className='px-3 pb-3 text-gray-400 flex justify-between w-full'>
+                    <span>{author}</span>
+                    <span>{uploadTime}</span>
+                </div>
             </div>
         </a>
     );
@@ -122,16 +128,22 @@ const SearchList = memo((props: SearchListProps) => {
 
     return (
         <div>
-            <div className='moe-video-search-page-bangumi-list mb-12 gap-4 w-full'>
-                {bangumiList.length > 0 && bangumiList.map((item, index) => {
-                    return (<BangumiItem key={index} {...item}/>)
-                })}
-            </div>
-            <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
-                {videoList.length > 0 && videoList.map((item, index) => {
-                    return (<VideoItem key={index} {...item}/>)
-                })}
-            </div>
+            {bangumiList.length > 0 &&
+                <div className='moe-video-search-page-bangumi-list mb-12 gap-4 w-full'>
+                    {bangumiList.map((item, index) => {
+                        return (<BangumiItem key={index} {...item}/>)
+                    })}
+                </div>
+            }
+
+            {videoList.length > 0 &&
+                <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
+                    {videoList.map((item, index) => {
+                        return (<VideoItem key={index} {...item}/>)
+                    })}
+                </div>
+            }
+
         </div>
     )
 });

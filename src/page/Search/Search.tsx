@@ -1,171 +1,67 @@
 import {memo, useCallback, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../component/header/Header.tsx";
 import {TabList, Pagination} from "@natsume_shiki/mika-ui";
 import './Search.less';
 import Footer from "../../component/footer/Footer.tsx";
 import SearchList, {BangumiItemProps, VideoItemProps} from "./SearchList.tsx";
-import {httpGet} from "../../common/axios";
+import {searchBangumi, searchVideo} from "../../common/video";
 
 // import SearchTypeTabList from "./SearchTypeTabList.tsx";
 
-export interface SearchItemProps {
-    title: string;
-    playCount: number;
-    likeCount: number;
-    cover: string;
-    score?: string;
-    desc?: string;
-    tags?: string[];
-    author?: string;
-    uploadTime?: string;
-}
-
-const bangumiList1 = [
-    {
-        title: '迷宫饭',
-        cover: '/img.png',
-        score: '9.6',
-        desc: '迷宫饭。是“吃”，还是“被吃”，这是一个问题。在迷宫深处，莱欧斯眼看着红龙吃掉了妹妹，自己在将死之际回到了地面。尽管他想要马上再次挑战迷宫，但是钱和粮食都被留在了最深处。面对妹妹可能会被消化掉的危机，莱欧斯下定了决心。“食物就在迷宫中自给自足吧！”史莱姆，蛇尾鸡，宝箱怪，还有龙！吃着来袭的魔物们，打通迷宫吧，冒险者！',
-        tags: ['搞笑', '漫画改', '美食', '美食', '漫画改', '漫画改']
-    },
-    {
-        title: '迷宫饭',
-        cover: '/img.png',
-        score: '9.6',
-        desc: '迷宫饭。是“吃”，还是“被吃”，这是一个问题。在迷宫深处，莱欧斯眼看着红龙吃掉了妹妹，自己在将死之际回到了地面。尽管他想要马上再次挑战迷宫，但是钱和粮食都被留在了最深处。面对妹妹可能会被消化掉的危机，莱欧斯下定了决心。“食物就在迷宫中自给自足吧！”史莱姆，蛇尾鸡，宝箱怪，还有龙！吃着来袭的魔物们，',
-        tags: ['搞笑', '漫画改', '美食']
-    },
-    {
-        title: '迷宫饭',
-        cover: '/img.png',
-        score: '9.6',
-        desc: '迷宫饭。是“吃”，还是“被吃”，这是一个问题。在迷宫深处，莱欧斯眼看着红龙吃掉了妹妹，自己在将死之际回到了地面。尽管他想要马上再次挑战迷宫，但是钱和粮食都被留在了最深处。面对妹妹可能会被消化掉的危机，莱欧斯下定了决心。“食物就在迷宫中自给自足吧！”史莱姆，蛇尾鸡，宝箱怪，还有龙！吃着来袭的魔物们，',
-        tags: ['搞笑', '漫画改', '美食']
-    }
-]
-
-const videoList1 = [{
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我独自升级',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}]
-
-const videoList2 = [{
-    title: '我',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}, {
-    title: '我',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    likeCount: '5.2万',
-    author: '纳豆',
-    uploadTime: '2024-5-10'
-}]
-
-
 const Search = memo(() => {
-    const {id, page} = useParams();
-    const [items, setItems] = useState<SearchItemProps[]>([]);
-    const [activeIndex, setActiveIndex] = useState(0);
+    const {id, page = '1', type = ''} = useParams();
+    const [activeIndex, setActiveIndex] = useState(
+        type === 'video' ? 1 : type === 'bangumi' ? 2 : 0
+    );
     const [bangumiList, setBangumiList] = useState<BangumiItemProps[]>([]);
     const [videoList, setVideoList] = useState<VideoItemProps[]>([]);
     const [pageInfo, setPageInfo] = useState({
-        total: 6,
-        currentPage: 1,
-        pageSize: 3,
+        total: 0,
+        currentPage: parseInt(page),
+        pageSize: 15,
     });
-
-    useEffect(() => {
-        if (activeIndex === 0) {
-            if (pageInfo.currentPage === 1) {
-                setBangumiList(bangumiList1);
-                setVideoList(videoList1);
-            } else {
-                setBangumiList([]);
-                setVideoList(videoList2);
-            }
-        } else if (activeIndex === 1) {
-            setBangumiList([]);
-            if (pageInfo.currentPage === 1) {
-                setVideoList(videoList1);
-            } else {
-                setVideoList(videoList2);
-            }
-        } else if (activeIndex === 2) {
-            setBangumiList(bangumiList1);
-            setVideoList([]);
-        }
-    }, [activeIndex, pageInfo]);
+    const navigate = useNavigate();
 
     const handlePageInfo = useCallback((key: string, newInfo: any) => {
         const newPageInfo = {...pageInfo};
         newPageInfo[key] = newInfo;
         setPageInfo(newPageInfo);
     }, [pageInfo]);
+
+    useEffect(() => {
+        if (activeIndex === 0) {
+            setBangumiList([]);
+            setVideoList([]);
+            if (pageInfo.currentPage === 1) {
+                // searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                //     console.log(res)
+                // })
+                searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                    handlePageInfo('total', res.total);
+                    setVideoList(res.items);
+                });
+            } else {
+                searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                    handlePageInfo('total', res.total);
+                    setVideoList(res.items);
+                });
+            }
+        } else if (activeIndex === 1) {
+            setBangumiList([]);
+            setVideoList([]);
+            searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                handlePageInfo('total', res.total);
+                setVideoList(res.items);
+            });
+        } else if (activeIndex === 2) {
+            setBangumiList([]);
+            setVideoList([]);
+            searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                setBangumiList(res.items);
+            });
+        }
+    }, [pageInfo.currentPage, activeIndex, id]);
 
     return (
         <div>
@@ -176,6 +72,8 @@ const Search = memo(() => {
                          activeIndex={activeIndex}
                          onChange={(index) => {
                              setActiveIndex(index);
+                             const type = index === 0 ? '' : index === 1 ? '/video' : '/bangumi';
+                             navigate(`/search${type}/${id}/1`);
                              handlePageInfo('currentPage', 1);
                          }}
                          className='moe-video-search-page-list-tab'
@@ -192,11 +90,12 @@ const Search = memo(() => {
                 {
                     activeIndex !== 2 && <Pagination
                         key={activeIndex}
+                        initIndex={parseInt(page)}
                         pageNum={Math.ceil(pageInfo.total / pageInfo.pageSize)}
                         onChange={(index) => {
                             handlePageInfo('currentPage', index);
-                            setBangumiList([]);
-                            setVideoList([]);
+                            const type = activeIndex === 0 ? '' : activeIndex === 1 ? '/video' : '/bangumi';
+                            navigate(`/search${type}/${id}/${index}`);
                         }}
                         style={{
                             width: 'fit-content',

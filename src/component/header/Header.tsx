@@ -62,7 +62,11 @@ const SearchSection = () => {
     useEffect(() => {
         if (location.pathname.startsWith("/search")) {
             if (inputRef.current) {
-                inputRef.current.value = decodeURIComponent(location.pathname.split("/")[2]);
+                const temp =  location.pathname.split("/");
+                if (temp.length < 5) {
+                    inputRef.current.value = decodeURIComponent(temp[2]);
+                }
+                else inputRef.current.value = decodeURIComponent(temp[3]);
             }
         }
     }, [location.pathname, nav]);

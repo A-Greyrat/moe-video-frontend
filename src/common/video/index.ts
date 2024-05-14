@@ -397,7 +397,7 @@ export interface SearchList<T extends VideoItemProps | BangumiItemProps> {
 }
 
 export const searchVideo = async (keyword: string, page: number, pageSize: number): Promise<SearchList<VideoItemProps>> => {
-    return httpGet<any>('/video-group/search', {
+    return httpGet<any>('/search', {
         params: {
             q: keyword,
             type: 0,
@@ -424,7 +424,7 @@ export const searchVideo = async (keyword: string, page: number, pageSize: numbe
 };
 
 export const searchBangumi = async (keyword: string, page: number, pageSize: number): Promise<SearchList<BangumiItemProps>> => {
-    return httpGet<any>('/video-group/search', {
+    return httpGet<any>('/search', {
         params: {
             q: keyword,
             type: 1,
