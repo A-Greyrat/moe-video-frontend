@@ -2,8 +2,15 @@
 
 .moe-video-home-page-recommend-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  grid-template-columns: repeat(4, auto);
 
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, auto);
+  }
 
   > div {
     box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
@@ -17,6 +24,10 @@
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   border-radius: 0.5rem;
   flex: 0 0 18rem;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .moe-video-home-page-recommend-list-item-cover-background {

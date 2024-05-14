@@ -126,6 +126,7 @@ const videoList2 = [{
     uploadTime: '2024-5-10'
 }]
 
+
 const Search = memo(() => {
     const {id, page} = useParams();
     const [items, setItems] = useState<SearchItemProps[]>([]);
@@ -139,13 +140,6 @@ const Search = memo(() => {
     });
 
     useEffect(() => {
-        // fetch(`/api/search/${id}/${page}`).then(res => {
-        //     console.log(res);
-        // });
-        // httpGet(`/search?q=${id}&page=${page}&pageSize=${pageInfo.pageSize}`).then(res => {
-        //     console.log(res.data)
-        // })
-
         if (activeIndex === 0) {
             if (pageInfo.currentPage === 1) {
                 setBangumiList(bangumiList1);

@@ -29,6 +29,7 @@ const VideoUpload = memo(() => {
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_uploadVideoUrl, setUploadVideoUrl] = useStore('uploadVideoUrl');
 
     const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -100,7 +101,7 @@ const VideoUpload = memo(() => {
         }).catch(e => {
             showMessage({children: e.message});
         });
-    }, [file, uploading]);
+    }, [file, setUploadVideoUrl, uploading]);
 
     if (file) {
         return (

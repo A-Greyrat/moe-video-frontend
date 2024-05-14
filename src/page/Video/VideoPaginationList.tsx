@@ -8,6 +8,7 @@ export interface VideoPaginationListProps {
 export interface VideoPaginationListItemProps {
     index: string;
     title: string;
+    videoId: string;
     url: string;
     duration: string;
 }

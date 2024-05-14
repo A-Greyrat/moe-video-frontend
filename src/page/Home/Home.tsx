@@ -11,6 +11,7 @@ import TimelineList from "./TimelineList.tsx";
 import RecommendList from "./RecommendList.tsx";
 import {useEffect, useState} from "react";
 import LoadingPage from "../Loading/LoadingPage.tsx";
+import {getCarouselList, getRecommendList} from "../../common/video";
 
 const indexList = [{
     title: '番剧索引',
@@ -52,50 +53,58 @@ const Home = () => {
     const [recommendList, setRecommendList] = useState([]);
 
     useEffect(() => {
-        fetch(getURL('https://api.bilibili.com/pgc/page/pc/bangumi/tab?is_refresh=0'))
-            .then(res => res.json())
-            .then(res => {
-                const data = res.data.modules[1].items;
-                setCarouselItems(data.map((item: any) => {
-                    return {
-                        title: item.title,
-                        cover: getCover(item.cover),
-                        desc: item.desc,
-                    }
-                }));
+        // fetch(getURL('https://api.bilibili.com/pgc/page/pc/bangumi/tab?is_refresh=0'))
+        //     .then(res => res.json())
+        //     .then(res => {
+        //         const data = res.data.modules[1].items;
+        //         setCarouselItems(data.map((item: any) => {
+        //             return {
+        //                 title: item.title,
+        //                 cover: getCover(item.cover),
+        //                 desc: item.desc,
+        //             }
+        //         }));
+        //
+        //         setChasingList(data.map((item: any) => {
+        //             return {
+        //                 title: item.title,
+        //                 cover: getCover(item.cover),
+        //                 watchProgress: '看到第' + Math.floor(Math.random() * 12) + '话 ' + Math.floor(Math.random() * 100) + '%',
+        //                 updateProgress: '更新至第' + Math.floor(Math.random() * 12) + '话',
+        //             }
+        //         }));
+        //
+        //         setTimeLineList(data.map((item: any) => {
+        //             return [{
+        //                 title: item.title,
+        //                 cover: getCover(item.cover),
+        //                 updateTime: Math.floor(Math.random() * 24) + ':00',
+        //                 updateTo: '更新至第' + Math.floor(Math.random() * 12) + '话',
+        //                 score: ((Math.random() / 2 + 0.5) * 10).toFixed(1),
+        //             }]
+        //         }));
+        //
+        //         setRecommendList(data.map((item: any) => {
+        //             return {
+        //                 data: {
+        //                     title: item.title,
+        //                     cover: getCover(item.cover),
+        //                     playbackCount:  convertCount(item.stat.view),
+        //                     likeCount: convertCount(item.stat.follow),
+        //                     lastUpdate: {set: item.bottom_right_badge.text, time: '2024-05-05'},
+        //                 },
+        //                 type: 'bangumi',
+        //             }
+        //         }));
+        //     });
 
-                setChasingList(data.map((item: any) => {
-                    return {
-                        title: item.title,
-                        cover: getCover(item.cover),
-                        watchProgress: '看到第' + Math.floor(Math.random() * 12) + '话 ' + Math.floor(Math.random() * 100) + '%',
-                        updateProgress: '更新至第' + Math.floor(Math.random() * 12) + '话',
-                    }
-                }));
+        getCarouselList().then(res => {
+            setCarouselItems(res);
+        });
 
-                setTimeLineList(data.map((item: any) => {
-                    return [{
-                        title: item.title,
-                        cover: getCover(item.cover),
-                        updateTime: Math.floor(Math.random() * 24) + ':00',
-                        updateTo: '更新至第' + Math.floor(Math.random() * 12) + '话',
-                        score: ((Math.random() / 2 + 0.5) * 10).toFixed(1),
-                    }]
-                }));
-
-                setRecommendList(data.map((item: any) => {
-                    return {
-                        data: {
-                            title: item.title,
-                            cover: getCover(item.cover),
-                            playbackCount:  convertCount(item.stat.view),
-                            likeCount: convertCount(item.stat.follow),
-                            lastUpdate: {set: item.bottom_right_badge.text, time: '2024-05-05'},
-                        },
-                        type: 'bangumi',
-                    }
-                }));
-            });
+        getRecommendList().then(res => {
+            setRecommendList(res);
+        });
     }, []);
 
     if (carouselItems.length === 0) return (<LoadingPage/>);

@@ -5,6 +5,7 @@ import LikeIcon from "../Icon/LikeIcon.tsx";
 import DanmakuIcon from "../Icon/DanmakuIcon.tsx";
 import FavoriteIcon from "../Icon/FavoriteIcon.tsx";
 import {useParams} from "react-router-dom";
+import {useTitle} from "../../common/hooks";
 
 export interface VideoPageInfoProps {
     title: string;
@@ -16,8 +17,6 @@ export interface VideoPageInfoProps {
     description: string;
 }
 
-const proxy_url = 'https://b.erisu.moe/api/proxy?url=';
-
 const isTextOverflow = (element: HTMLElement | null, line: number) => {
     if (element === null) return false;
     const lineHeight = parseInt(getComputedStyle(element).lineHeight);
@@ -25,12 +24,11 @@ const isTextOverflow = (element: HTMLElement | null, line: number) => {
 }
 
 const VideoPageInfo = memo((props: VideoPageInfoProps) => {
+    const { tags, playCount, likeCount, danmakuCount, favoriteCount, title, description} = props;
+
+    useTitle(props.title);
     const [showMore, setShowMore] = useState(false);
     const [displayMoreButton, setDisplayMoreButton] = useState(false);
-    const { tags, playCount, likeCount, danmakuCount, favoriteCount} = props;
-    const bv = useParams().id;
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
 
     useEffect(() => {
         const resizeObserver = new ResizeObserver(() => {
@@ -42,17 +40,6 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
             resizeObserver.disconnect();
         };
     }, []);
-
-    useEffect(() => {
-        fetch(proxy_url + encodeURIComponent('https://api.bilibili.com/x/web-interface/view?bvid=' + bv))
-            .then(res => res.json())
-            .then(res => {
-                const data = res.data;
-                setTitle(data.title);
-                document.title = data.title + ' - Moe Video';
-                setDescription(data.desc);
-            });
-    }, [bv]);
 
     return (
         <div className='moe-video-video-page-info'>
