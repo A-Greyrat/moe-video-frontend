@@ -36,8 +36,8 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
             <a href={url}
                className='moe-video-search-page-bangumi-list-item-cover overflow-hidden mr-4'>
                 <div className='relative w-full h-full'>
-                    <Image width='100%' className='moe-video-search-page-bangumi-list-item-cover-img'
-                           style={{aspectRatio: '3 / 4'}} src={cover} lazy/>
+                    <img loading='lazy' width='100%' className='moe-video-search-page-bangumi-list-item-cover-img'
+                           style={{aspectRatio: '3 / 4'}} src={cover} />
                     <div
                         className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic'>
                         <span className='text-white'>{score}</span>
@@ -95,8 +95,8 @@ export const VideoItem = memo((props: VideoItemProps) => {
         <a href={url}
            className='moe-video-search-page-video-list-item overflow-hidden'>
             <div className='relative'>
-                <Image width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}}
-                       src={cover} lazy/>
+                <img loading='lazy' width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}}
+                       src={cover} />
                 <div className='moe-video-search-page-video-list-item-cover-background'></div>
                 <div
                     className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
