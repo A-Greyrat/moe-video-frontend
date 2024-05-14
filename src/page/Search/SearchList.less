@@ -31,6 +31,14 @@
   box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   border-radius: 0.5rem;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 3px 5px 5px 0 mix(@primary-color, transparent, 35%),
+      -5px -5px 15px 0 mix(@primary-color, transparent, 35%);
+
+    transform: translateY(-5px) scale(1.02);
+  }
 }
 
 .moe-video-search-page-bangumi-list-item-cover {
@@ -87,6 +95,15 @@
   flex: 0 0 18rem;
   display: flex;
   flex-direction: column;
+
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 3px 5px 5px 0 mix(@primary-color, transparent, 35%),
+      -5px -5px 15px 0 mix(@primary-color, transparent, 35%);
+
+    transform: translateY(-5px) scale(1.02);
+  }
 }
 
 .moe-video-search-page-video-list-item-cover-background {
