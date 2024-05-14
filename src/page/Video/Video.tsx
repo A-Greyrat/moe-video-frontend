@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useMemo} from "react";
-import VideoPlayer, {DanmakuAttr} from "mika-video-player";
+import VideoPlayer, {DanmakuAttr, VideoSrc} from "mika-video-player";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
 
@@ -16,7 +16,7 @@ const Video = memo(() => {
     const query = useMemo(() => new URLSearchParams(window.location.search), []);
     const p = useMemo(() => query.get('p'), [query]);
 
-    const [url, setUrl] = React.useState<string | undefined>(undefined);
+    const [url, setUrl] = React.useState<string | VideoSrc | undefined>(undefined);
     const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
     const [item, setItem] = React.useState<VideoInfo>();
 
@@ -43,7 +43,7 @@ const Video = memo(() => {
             <Header/>
             <div className="moe-video-video-page-wrapper">
                 <div className='moe-video-page-video-container'>
-                    <VideoPlayer src={url ? url : undefined}
+                    <VideoPlayer src={url}
                                  danmaku={danmakus}
                                  controls
                                  style={{
