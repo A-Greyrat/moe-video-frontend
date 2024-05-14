@@ -1,39 +1,17 @@
 import {Button, Image, InfinityList, Pagination, showMessage, withLockTime} from "@natsume_shiki/mika-ui";
 import {useStore} from "mika-store";
 import {memo, useCallback, useRef, useState} from "react";
-import {addComment, deleteComment, getComments} from "../../common/video";
+import {
+    addComment,
+    deleteComment,
+    getComments,
+    VideoPageCommentProps,
+    VideoPageCommentReplyItem
+} from "../../common/video";
 import {useUser} from "../../common/user";
 
 import './VideoPageComment.less';
 
-type VideoPageCommentReply = {
-    parent?: string;
-
-    id: string;
-    time: string;
-    content: string;
-    replyTo: {
-        id: string;
-        name: string;
-    }
-    user: {
-        id: string;
-        name: string;
-        avatar: string;
-    }
-};
-
-type VideoPageCommentProps = {
-    id: string;
-    time: string;
-    content: string;
-    user: {
-        id: string;
-        name: string;
-        avatar: string;
-    };
-    reply: VideoPageCommentReply[];
-};
 
 const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: string }) => {
     const [currentInputIndex, setCurrentInputIndex] = useStore('video-page-current-input-index', -1);
@@ -84,7 +62,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
     );
 });
 
-const VideoPageCommentReply = (props: VideoPageCommentReply) => {
+const VideoPageCommentReply = (props: VideoPageCommentReplyItem) => {
     const [currentInputIndex, setCurrentInputIndex] = useStore('video-page-current-input-index', -1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_replyTo, setReplyTo] = useStore('video-page-reply-to', '-1');
@@ -137,7 +115,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReply) => {
     );
 };
 
-const VideoPageCommentReplyBox = (props: { reply?: VideoPageCommentReply[], id: string }) => {
+const VideoPageCommentReplyBox = (props: { reply?: VideoPageCommentReplyItem[], id: string }) => {
     const [activePage, setActivePage] = useState(1);
     if (!props.reply) {
         return null;
@@ -195,47 +173,47 @@ const VideoPageCommentInput = memo((props: {
         ref.current!.value = '';
         ref.current!.blur();
 
-        return addComment(props.vid, props.toId, content).then((_res) => {
-            // if (res.code === 401) {
-            //     showMessage({children: '请先登录'});
-            //     return;
-            // }
-            //
-            // if (res.code !== 200) {
-            //     showMessage({children: '评论失败'});
-            //     return;
-            // }
-            //
-            // if (props.toId !== '-1') {
-            //     const item = findCommentItem(comment, props.toId);
-            //     item?.parent.reply.push({
-            //         id: (res.data as number).toString(),
-            //         time: new Date().toLocaleString(),
-            //         content: content,
-            //         replyTo: {
-            //             id: item.toUserId,
-            //             name: item.toUserName
-            //         },
-            //         user: {
-            //             id: userInfo?.userId.toString() || '0',
-            //             name: userInfo?.nickname || '我',
-            //             avatar: userInfo?.avatar || '/defaultAvatar.webp'
-            //         }
-            //     });
-            //     setComment([...comment]);
-            // } else {
-            //     setComment([...comment, {
-            //         id: (res.data as number).toString(),
-            //         time: new Date().toLocaleString(),
-            //         content: content,
-            //         user: {
-            //             id: userInfo?.userId.toString() || '0',
-            //             name: userInfo?.nickname || '我',
-            //             avatar: userInfo?.avatar || '/defaultAvatar.webp'
-            //         },
-            //         reply: []
-            //     }]);
-            // }
+        return addComment(props.vid, props.toId, content).then((res) => {
+            if (res.code === 401) {
+                showMessage({children: '请先登录'});
+                return;
+            }
+
+            if (res.code !== 200) {
+                showMessage({children: '评论失败'});
+                return;
+            }
+
+            if (props.toId !== '-1') {
+                const item = findCommentItem(comment, props.toId);
+                item?.parent.reply.push({
+                    id: (res.data as number).toString(),
+                    time: new Date().toLocaleString(),
+                    content: content,
+                    replyTo: {
+                        id: item.toUserId,
+                        name: item.toUserName
+                    },
+                    user: {
+                        id: userInfo?.userId.toString() || '0',
+                        name: userInfo?.nickname || '我',
+                        avatar: userInfo?.avatar || '/defaultAvatar.webp'
+                    }
+                });
+                setComment([...comment]);
+            } else {
+                setComment([...comment, {
+                    id: (res.data as number).toString(),
+                    time: new Date().toLocaleString(),
+                    content: content,
+                    user: {
+                        id: userInfo?.userId.toString() || '0',
+                        name: userInfo?.nickname || '我',
+                        avatar: userInfo?.avatar || '/defaultAvatar.webp'
+                    },
+                    reply: []
+                }]);
+            }
 
             setCurrentInputIndex(-1);
             setReplyTo('-1');

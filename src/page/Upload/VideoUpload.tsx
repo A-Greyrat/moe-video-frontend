@@ -115,7 +115,7 @@ const VideoUpload = memo(() => {
                         确认上传
                     </Button>
                     {uploading && (
-                        <div>
+                        <div style={{display: 'flex'}}>
                             <div>上传中</div>
                             <div>{uploadProgress}%</div>
                         </div>

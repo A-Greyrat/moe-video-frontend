@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from "react";
+import React, {memo, useEffect, useMemo} from "react";
 import VideoPlayer, {DanmakuAttr} from "mika-video-player";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
@@ -13,6 +13,8 @@ import VideoRecommendList from "./VideoRecommendList.tsx";
 
 const Video = memo(() => {
     const param = useParams();
+    const query = useMemo(() => new URLSearchParams(window.location.search), []);
+    const p = useMemo(() => query.get('p'), [query]);
 
     const [url, setUrl] = React.useState<string | undefined>(undefined);
     const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
@@ -20,23 +22,21 @@ const Video = memo(() => {
 
     useEffect(() => {
         const vid = param.id ?? 'BV1fK4y1s7Qf';
-        const query = new URLSearchParams(window.location.search);
-        const p = query.get('p');
         const sess_data = query.get('SESSDATA') ?? '';
-
-        // getDanmaku(vid, p, sess_data).then(res => {
-        //     setDanmakus(res);
-        // });
 
         getVideoInfo(vid).then(res => {
             setItem(res);
             const index = p ? parseInt(p) - 1 : 0;
-            console.log(res)
+
             getVideoUrl(res.pagination[index].videoId).then(res => {
                 setUrl(res);
             });
+
+            res.extra_id && getDanmaku(res.extra_id, p, sess_data).then(res => {
+                setDanmakus(res);
+            });
         });
-    }, [param.SESSDATA, param.id, param.p]);
+    }, [p, param.SESSDATA, param.id, query]);
 
     return (
         <div className="moe-video-video-page-root">
@@ -56,8 +56,8 @@ const Video = memo(() => {
 
                     {item && <VideoPageInfo {...item as unknown as VideoPageInfoProps}/>}
                 </div>
-                {item && <VideoPageComment videoId={item.avid}/>}
-                {item && <VideoPaginationList items={item.pagination}/>}
+                {item && <VideoPageComment videoId={param.id}/>}
+                {item && <VideoPaginationList items={item.pagination} activeIndex={parseInt(p || '1') - 1}/>}
                 {item && <VideoRecommendList items={item.recommendList}/>}
 
             </div>
