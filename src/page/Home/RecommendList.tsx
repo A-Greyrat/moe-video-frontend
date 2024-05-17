@@ -80,7 +80,7 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
                         <PlayCountIcon/>
                         <span>{playCount}</span>
                     </div>
-                    <div className='flex items-center gap-1'>
+                    <div className='flex items-center'>
                         <LoveIcon/>
                         <span>{likeCount}</span>
                     </div>

@@ -173,6 +173,8 @@ export interface VideoInfo {
     description: string;
     pagination: VideoPaginationListItemProps[];
     recommendList: VideoRecommendListItemProps[];
+    isUserLiked: boolean;
+    isUserFavorite: boolean;
     extra_id: string;
 }
 
@@ -207,6 +209,8 @@ export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
                     }
                 }),
                 extra_id: data.View.aid,
+                isUserFavorite: false,
+                isUserLiked: false,
             };
         });
 };
@@ -243,11 +247,11 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     }).then(res => {
         return {
             title: res.data.title,
-            tags: res.data.tags?.map((tag: any) => tag.name),
+            tags: res.data?.tags.length > 0 ? res.data.tags.split(';') : [],
             playCount: res.data.watchCnt,
-            likeCount: res.data.likeCnt,
+            likeCount: res.data.likeCnt - (res.data.userLike ? 1 : 0),
             danmakuCount: res.data.danmakuCnt,
-            favoriteCount: res.data.favoriteCnt,
+            favoriteCount: res.data.favoriteCnt - (res.data.userFavorite ? 1 : 0),
             description: res.data.description,
             pagination: res.data.contents.map((page: any) => {
                 return {
@@ -260,8 +264,11 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
             }),
             recommendList: recommendList,
             extra_id: res.data.bvid,
+            isUserLiked: res.data.userLike,
+            isUserFavorite: res.data.userFavorite,
         }
     });
+
 }
 
 export const getVideoInfo = async (videoId: string): Promise<VideoInfo> => {
@@ -455,4 +462,21 @@ export const searchBangumi = async (keyword: string, page: number, pageSize: num
             })
         }
     });
+};
+
+
+export const likeVideoGroup = async (id: string, status: boolean) => {
+    return httpPost('/video-group/like', {
+        id: id,
+        status: status ? 1 : 0
+    });
+};
+
+export const favoriteVideoGroup = async (id: string) => {
+    return httpPost('/plain-user/favorites/add', {videoGroupId: id});
+};
+
+
+export const removeFavoriteVideoGroup = async (ids: string[]) => {
+    return httpPost('/plain-user/favorites/delete', {videoGroupIds: ids});
 };
