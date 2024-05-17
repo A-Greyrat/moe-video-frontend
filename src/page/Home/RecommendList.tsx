@@ -90,8 +90,9 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
                 <div className='moe-video-home-page-recommend-list-item-title px-3 pt-2 mb-3 line-clamp-2'>
                     {title}
                 </div>
-                <div className='px-3 pb-3 text-gray-400'>
-                    {author} {uploadTime}
+                <div className='px-3 pb-3 text-gray-400 flex justify-between'>
+                    <span>{author}</span>
+                    <span>{uploadTime}</span>
                 </div>
             </div>
         </a>
@@ -104,10 +105,10 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
         switch (type) {
             case 'video':
                 return <RecommendVideoListItem {...(data as RecommendVideoListItemProps)}/>;
-        case 'bangumi':
-            return <RecommendBangumiListItem {...(data as RecommendBangumiListItemProps)}/>;
-        default:
-            throw new Error('Invalid type');
+            case 'bangumi':
+                return <RecommendBangumiListItem {...(data as RecommendBangumiListItemProps)}/>;
+            default:
+                throw new Error('Invalid type');
     }
 });
 
