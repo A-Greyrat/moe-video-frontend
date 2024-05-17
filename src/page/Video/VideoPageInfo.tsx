@@ -6,6 +6,7 @@ import DanmakuIcon from "../Icon/DanmakuIcon.tsx";
 import FavoriteIcon from "../Icon/FavoriteIcon.tsx";
 import {useParams} from "react-router-dom";
 import {useTitle} from "../../common/hooks";
+import ReportIcon from "../Icon/ReportIcon.tsx";
 
 export interface VideoPageInfoProps {
     title: string;
@@ -52,6 +53,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
                 <span><LikeIcon/>{likeCount}</span>
                 <span><DanmakuIcon/>{danmakuCount}</span>
                 <span><FavoriteIcon/>{favoriteCount}</span>
+                <span><ReportIcon/></span>
             </div>
 
             <div className={'moe-video-video-page-description ' + (showMore ? '' : 'line-clamp-5')}>
