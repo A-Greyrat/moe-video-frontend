@@ -48,6 +48,26 @@ export default createBrowserRouter([
         element: <Space/>,
     },
     {
+        path: '/space/favor',
+        element: <Space/>,
+    },
+    {
+        path: '/space/bangumi',
+        element: <Space/>,
+    },
+    {
+        path: '/space/upload',
+        element: <Space/>,
+    },
+    {
+        path: '/space/history',
+        element: <Space/>,
+    },
+    {
+        path: '/space/setting',
+        element: <Space/>,
+    },
+    {
         path: '*',
         element: <$404/>,
     },
