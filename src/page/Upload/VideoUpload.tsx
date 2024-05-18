@@ -28,7 +28,7 @@ const VideoUpload = memo(() => {
     const [file, setFile] = useState<File | null>(null);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
+    const [_uploadProgress, setUploadProgress] = useState(0);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_uploadVideoUrl, setUploadVideoUrl] = useStore('uploadVideoUrl');
 

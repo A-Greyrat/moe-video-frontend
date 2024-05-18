@@ -1,16 +1,16 @@
 import {memo, useCallback, useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../component/header/Header.tsx";
-import {TabList, Pagination, Skeleton} from "@natsume_shiki/mika-ui";
+import {TabList, Pagination} from "@natsume_shiki/mika-ui";
 import './Search.less';
 import Footer from "../../component/footer/Footer.tsx";
 import SearchList, {BangumiItemProps, VideoItemProps} from "./SearchList.tsx";
 import {searchBangumi, searchVideo} from "../../common/video";
-
-// import SearchTypeTabList from "./SearchTypeTabList.tsx";
+import {useTitle} from "../../common/hooks";
 
 const Search = memo(() => {
     const {id, page = '1', type = ''} = useParams();
+    useTitle('搜索 - ' + id);
     const [activeIndex, setActiveIndex] = useState(
         type === 'video' ? 1 : type === 'bangumi' ? 2 : 0
     );
