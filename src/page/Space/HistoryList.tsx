@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import './HistoryList.less';
-import {Button, Image, InfinityList} from "@natsume_shiki/mika-ui";
-import {getHistoryList} from "../../common/video";
-import {useTitle} from "../../common/hooks";
+import { Button, Image, InfinityList } from '@natsume_shiki/mika-ui';
+import { getHistoryList } from '../../common/video';
+import { useTitle } from '../../common/hooks';
 
 export interface HistoryListItemProps {
   type: 'video' | 'bangumi';
@@ -66,6 +66,7 @@ const HistoryList = memo(() => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = useRef(10);
   const [total, setTotal] = useState(0);
+  useTitle('历史记录');
 
   useEffect(() => {
     getHistoryList(currentPage, pageSize.current).then((res) => {
