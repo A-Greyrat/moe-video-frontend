@@ -49,7 +49,7 @@ const Video = memo(() => {
         });
       };
 
-      videoRef.current?.addEventListener('loadedmetadata', fn);
+      videoRef.current?.addEventListener('play', fn);
 
       getVideoUrl(res.pagination[index].videoId).then((res) => {
         setUrl(res);
@@ -63,7 +63,7 @@ const Video = memo(() => {
     });
 
     return () => {
-      videoRef.current?.removeEventListener('loadedmetadata', fn);
+      videoRef.current?.removeEventListener('play', fn);
     };
   }, [p, param.SESSDATA, param.id, query]);
 
