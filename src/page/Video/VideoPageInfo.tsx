@@ -48,7 +48,6 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
 
     const [userLiked, setuserLiked] = React.useState(isUserLiked);
     const [userFavorite, setUserFavorite] = React.useState(isUserFavorite);
-
     const formRef = React.useRef<HTMLFormElement>(null);
 
     const likeVideo = useCallback(() => {

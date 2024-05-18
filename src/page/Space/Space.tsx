@@ -159,7 +159,7 @@ const Space = memo(() => {
         } else if (activeIndex === 2) {
             setUploadList(uploadList1);
         } else if (activeIndex === 3) {
-            getHistoryList(1,10).then(res => {
+            getHistoryList(1, 10).then(res => {
                 setHistoryList(res.items);
             })
         }
@@ -274,9 +274,12 @@ const Space = memo(() => {
                     <div className='moe-video-space-page-upload-list gap-4'>
                         {uploadList.map((item, index) => {
                             return (
-                                <a href={item.url} className='moe-video-space-page-upload-list-item overflow-hidden' key={index}>
-                                    <Image lazy width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}} src={item.cover}/>
-                                    <div className='moe-video-space-page-upload-list-item-title px-3 pt-1 mb-1 line-clamp-2'>{item.title}</div>
+                                <a href={item.url} className='moe-video-space-page-upload-list-item overflow-hidden'
+                                   key={index}>
+                                    <Image lazy width='100%' style={{aspectRatio: '5 / 3', objectFit: 'cover'}}
+                                           src={item.cover}/>
+                                    <div
+                                        className='moe-video-space-page-upload-list-item-title px-3 pt-1 mb-1 line-clamp-2'>{item.title}</div>
                                     <div className='flex justify-between px-3 pb-1'>
                                         <div className='flex items-center gap-1 text-gray-400'>
                                             <PlaybackVolumeIcon fill={'currentColor'}/>
@@ -291,7 +294,7 @@ const Space = memo(() => {
                 }
 
                 {/*历史记录*/}
-                <HistoryList historyList={historyList}/>
+                {activeIndex === 3 && <HistoryList/>}
 
                 {/*设置*/}
                 {activeIndex === 4 &&

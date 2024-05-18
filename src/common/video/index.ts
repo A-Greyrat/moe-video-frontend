@@ -174,6 +174,8 @@ export interface VideoInfo {
     description: string;
     pagination: VideoPaginationListItemProps[];
     recommendList: VideoRecommendListItemProps[];
+    isUserLiked: boolean;
+    isUserFavorite: boolean;
     extra_id: string;
 }
 
@@ -208,6 +210,8 @@ export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
                     }
                 }),
                 extra_id: data.View.aid,
+                isUserFavorite: false,
+                isUserLiked: false,
             };
         });
 };
@@ -244,11 +248,11 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     }).then(res => {
         return {
             title: res.data.title,
-            tags: res.data.tags?.map((tag: any) => tag.name),
+            tags: res.data?.tags.length > 0 && res.data.tags.split(';'),
             playCount: res.data.watchCnt,
-            likeCount: res.data.likeCnt,
+            likeCount: (res.data.userLike ? -1 : 0) + parseInt(res.data.likeCnt),
             danmakuCount: res.data.danmakuCnt,
-            favoriteCount: res.data.favoriteCnt,
+            favoriteCount: (res.data.userFavorite ? -1 : 0) + parseInt(res.data.favoriteCnt),
             description: res.data.description,
             pagination: res.data.contents.map((page: any) => {
                 return {
@@ -261,6 +265,8 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
             }),
             recommendList: recommendList,
             extra_id: res.data.bvid,
+            isUserLiked: res.data.userLike,
+            isUserFavorite: res.data.userFavorite,
         }
     });
 }
@@ -503,4 +509,15 @@ export const getHistoryList = async (page: number, pageSize: number): Promise<Hi
             })
         }
     });
-}
+};
+
+export const postWatchProgress = async (videoId: string, progress: number) => {
+    return httpPost('/statistic/video-play', {
+        videoId,
+        watchTime: progress
+    });
+};
+
+export const getLastWatchedProgress = async (videoId: string) => {
+    return httpGet<any>('/plain-user/history/video-last-watch-time', {params: {videoId}}).then(res => res.data);
+};
