@@ -1,10 +1,11 @@
-@import "../../common/theme/theme.less";
+@import '../../common/theme/theme.less';
 
 .panel-style {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+  box-shadow:
+    3px 3px 3px 0 mix(@primary-color, transparent, 15%),
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   box-sizing: border-box;
 }
@@ -49,7 +50,6 @@
       .moe-video-page-comment-box-container {
         display: flex;
         gap: 10px;
-
 
         > :first-child {
           border-radius: 50%;
@@ -116,7 +116,6 @@
           &:has(span) {
             font-size: 0.8rem;
           }
-
         }
       }
     }
@@ -151,8 +150,9 @@
   gap: 10px;
   margin-bottom: 20px;
   margin-top: 10px;
-  grid-template-areas:  "avatar comment comment"
-                        ". . submit";
+  grid-template-areas:
+    'avatar comment comment'
+    '. . submit';
   grid-template-columns: 2.25rem 1fr 3.75rem;
   grid-template-rows: auto auto;
 
@@ -186,7 +186,6 @@
       outline: none;
       border-color: mix(@primary-color, transparent, 60%);
     }
-
   }
 
   :is(button) {

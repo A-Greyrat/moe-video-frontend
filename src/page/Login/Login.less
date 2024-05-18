@@ -1,4 +1,4 @@
-@import "../../common/theme/theme";
+@import '../../common/theme/theme';
 
 .moe-video-login-root {
   display: flex;
@@ -116,15 +116,15 @@
 
   gap: 20px;
 
-  input[type="text"],
-  input[type="password"],
-  input[type="email"]
-  {
+  input[type='text'],
+  input[type='password'],
+  input[type='email'] {
     width: 100%;
     padding: 10px;
     border: none;
-    box-shadow: 0.25px 0.25px 1px @primary-color,
-    1px 1px 3px @primary-color;
+    box-shadow:
+      0.25px 0.25px 1px @primary-color,
+      1px 1px 3px @primary-color;
 
     box-sizing: border-box;
     border-radius: 5px;
@@ -133,8 +133,9 @@
 
     &:focus {
       outline: none;
-      box-shadow: -1px -1px 3px @primary-color,
-       -0.25px -0.25px 1px @primary-color;
+      box-shadow:
+        -1px -1px 3px @primary-color,
+        -0.25px -0.25px 1px @primary-color;
 
       &::placeholder {
         color: transparent;
@@ -146,21 +147,21 @@
     }
   }
 
-   .moe-video-login-form-captcha {
-     display: flex;
-     justify-content: space-between;
-     width: 100%;
-     gap: 20px;
-     align-items: center;
+  .moe-video-login-form-captcha {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
 
-     > div {
-       height: 40px;
-       flex: 0 0 100px;
-       > * {
-         border-radius: 5px;
-       }
-     }
-   }
+    > div {
+      height: 40px;
+      flex: 0 0 100px;
+      > * {
+        border-radius: 5px;
+      }
+    }
+  }
 
   .moe-video-login-form-error {
     color: @error-color;

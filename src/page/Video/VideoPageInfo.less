@@ -1,9 +1,10 @@
-@import "../../common/theme/theme.less";
+@import '../../common/theme/theme.less';
 
 .moe-video-video-page-info {
   padding: 1rem 1.5rem;
   border-radius: 10px;
-  box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+  box-shadow:
+    3px 3px 3px 0 mix(@primary-color, transparent, 15%),
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
 
   // avoid margin collapse
@@ -54,7 +55,7 @@
     font-weight: 500;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       left: -1rem;
       top: 50%;
@@ -99,14 +100,14 @@
       transition: all 0.3s;
 
       &:after {
-        content: "展开";
+        content: '展开';
         color: @primary-color;
         cursor: pointer;
       }
 
       &.focus {
         &:after {
-          content: "收起";
+          content: '收起';
         }
       }
     }
@@ -142,10 +143,10 @@
     margin: 0.5rem 0;
     transition: 0.3s;
 
-    &:focus, &:active {
+    &:focus,
+    &:active {
       outline: none;
       box-shadow: 0 0 0 2px mix(@primary-color, transparent, 15%);
-
     }
   }
 
@@ -160,12 +161,10 @@
 
     transition: 0.3s;
 
-    &:focus, &:active {
+    &:focus,
+    &:active {
       outline: none;
       box-shadow: 0 0 0 2px mix(@primary-color, transparent, 15%);
     }
-
-
   }
-
 }
