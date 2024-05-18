@@ -1,5 +1,5 @@
-import {createBrowserRouter} from "react-router-dom";
-import React from "react";
+import { createBrowserRouter } from 'react-router-dom';
+import React from 'react';
 
 const Home = React.lazy(() => import('../page/Home/Home'));
 const Login = React.lazy(() => import('../page/Login/Login'));
@@ -11,64 +11,64 @@ const Upload = React.lazy(() => import('../page/Upload/Upload'));
 const Space = React.lazy(() => import('../page/Space/Space'));
 
 export default createBrowserRouter([
-    {
-        path: '/',
-        element: <Home/>,
-    },
-    {
-        path: '/login',
-        element: <Login/>,
-    },
-    {
-        path: '/register',
-        element: <Register/>,
-    },
-    {
-        path: '/video/:id',
-        element: <Video/>,
-    },
-    {
-        path: '/search/:type/:id/:page',
-        element: <Search/>,
-    },
-    {
-        path: '/search/:id/:page',
-        element: <Search/>,
-    },
-    {
-        path: '/search/:id',
-        element: <Search/>,
-    },
-    {
-        path: '/upload',
-        element: <Upload/>,
-    },
-    {
-        path: '/space',
-        element: <Space/>,
-    },
-    {
-        path: '/space/favor',
-        element: <Space/>,
-    },
-    {
-        path: '/space/bangumi',
-        element: <Space/>,
-    },
-    {
-        path: '/space/upload',
-        element: <Space/>,
-    },
-    {
-        path: '/space/history',
-        element: <Space/>,
-    },
-    {
-        path: '/space/setting',
-        element: <Space/>,
-    },
-    {
-        path: '*',
-        element: <$404/>,
-    },
+  {
+    path: '/',
+    element: <Home />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/video/:id',
+    element: <Video />,
+  },
+  {
+    path: '/search/:type/:id/:page',
+    element: <Search />,
+  },
+  {
+    path: '/search/:id/:page',
+    element: <Search />,
+  },
+  {
+    path: '/search/:id',
+    element: <Search />,
+  },
+  {
+    path: '/upload',
+    element: <Upload />,
+  },
+  {
+    path: '/space',
+    element: <Space />,
+  },
+  {
+    path: '/space/favor',
+    element: <Space />,
+  },
+  {
+    path: '/space/bangumi',
+    element: <Space />,
+  },
+  {
+    path: '/space/upload',
+    element: <Space />,
+  },
+  {
+    path: '/space/history',
+    element: <Space />,
+  },
+  {
+    path: '/space/setting',
+    element: <Space />,
+  },
+  {
+    path: '*',
+    element: <$404 />,
+  },
 ]);

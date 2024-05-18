@@ -1,4 +1,4 @@
-@import "../../common/theme/theme";
+@import '../../common/theme/theme';
 
 .moe-video-upload-page-content {
   display: flex;
@@ -34,14 +34,18 @@
     margin-bottom: 5px;
   }
 
-  > input, > textarea {
+  > input,
+  > textarea {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0.25px 0.25px 1px @primary-color, 1px 1px 3px @primary-color;
+    box-shadow:
+      0.25px 0.25px 1px @primary-color,
+      1px 1px 3px @primary-color;
     box-sizing: border-box;
 
-    &:focus, &:focus-within {
+    &:focus,
+    &:focus-within {
       outline: none;
       border-color: darken(@primary-color, 10%);
     }

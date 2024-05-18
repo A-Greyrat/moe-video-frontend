@@ -1,11 +1,13 @@
-@import "../../common/theme/theme";
+@import '../../common/theme/theme';
 
 .moe-video-upload-container {
   width: 100%;
   aspect-ratio: 16 / 5;
   margin: 0 auto;
   border-radius: 0.5rem;
-  box-shadow: 0.25px 0.25px 1px @primary-color, 1px 1px 3px @primary-color;
+  box-shadow:
+    0.25px 0.25px 1px @primary-color,
+    1px 1px 3px @primary-color;
   overflow: hidden;
   color: @primary-color;
   cursor: pointer;
@@ -24,15 +26,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
   }
 
-  > input[type="file"] {
+  > input[type='file'] {
     display: none;
   }
 
   * {
-    &:focus, &:focus-within {
+    &:focus,
+    &:focus-within {
       outline: none;
     }
   }
@@ -42,7 +44,7 @@
   display: flex;
   gap: 0.5rem;
 
-  > input[type="file"] {
+  > input[type='file'] {
     display: none;
   }
 
@@ -51,9 +53,9 @@
   }
 
   * {
-    &:focus, &:focus-within {
+    &:focus,
+    &:focus-within {
       outline: none;
     }
   }
 }
-

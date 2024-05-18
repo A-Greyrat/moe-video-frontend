@@ -1,4 +1,4 @@
-@import "../../common/theme/theme.less";
+@import '../../common/theme/theme.less';
 
 .moe-video-video-page-wrapper {
   width: 90%;
@@ -9,21 +9,22 @@
   grid-gap: 1.5rem;
 
   grid-template-columns: 3fr 1fr;
-  grid-template-areas: "video pagination"
-                       "video recommend"
-                       "comment recommend";
+  grid-template-areas:
+    'video pagination'
+    'video recommend'
+    'comment recommend';
 
   grid-auto-rows: auto auto minmax(auto, 1fr);
 
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
-    grid-template-areas: "video"
-                         "info"
-                         "pagination"
-                         "recommend"
-                         "comment";
+    grid-template-areas:
+      'video'
+      'info'
+      'pagination'
+      'recommend'
+      'comment';
   }
-
 }
 
 .moe-video-page-video-container {

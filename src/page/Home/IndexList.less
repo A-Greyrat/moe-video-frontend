@@ -1,8 +1,9 @@
-@import "../../common/theme/theme.less";
+@import '../../common/theme/theme.less';
 
 .moe-video-home-page-index-wrapper {
   > div {
-    box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+    box-shadow:
+      3px 3px 3px 0 mix(@primary-color, transparent, 15%),
       -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
     flex: 1;
     border-radius: 0.5rem;
@@ -23,7 +24,7 @@
   line-height: 1;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 0.35rem;
     height: 100%;
@@ -40,7 +41,6 @@
   display: grid;
 
   grid-template-columns: 1fr 1fr 1fr;
-
 
   @media (max-width: 1200px) {
     grid-template-columns: 1fr 1fr;

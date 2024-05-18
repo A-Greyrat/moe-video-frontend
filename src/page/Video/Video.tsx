@@ -1,130 +1,132 @@
-import React, {memo, useEffect, useMemo, useRef} from "react";
-import VideoPlayer, {DanmakuAttr, VideoSrc} from "mika-video-player";
-import Header from "../../component/header/Header";
-import Footer from "../../component/footer/Footer";
+import React, { memo, useEffect, useMemo, useRef } from 'react';
+import VideoPlayer, { DanmakuAttr, VideoSrc } from 'mika-video-player';
+import Header from '../../component/header/Header';
+import Footer from '../../component/footer/Footer';
+import VideoPageComment from './VideoPageComment.tsx';
+import { useParams } from 'react-router-dom';
+import VideoPageInfo, { VideoPageInfoProps } from './VideoPageInfo.tsx';
+import VideoPaginationList from './VideoPaginationList.tsx';
+import {
+  getDanmaku,
+  getLastWatchedProgress,
+  getVideoInfo,
+  getVideoUrl,
+  postWatchProgress,
+  VideoInfo,
+} from '../../common/video';
+import VideoRecommendList from './VideoRecommendList.tsx';
+import { showMessage } from '@natsume_shiki/mika-ui';
 
 import './Video.less';
-import VideoPageComment from "./VideoPageComment.tsx";
-import {useParams} from "react-router-dom";
-import VideoPageInfo, {VideoPageInfoProps} from "./VideoPageInfo.tsx";
-import VideoPaginationList from "./VideoPaginationList.tsx";
-import {
-    getDanmaku,
-    getLastWatchedProgress,
-    getVideoInfo,
-    getVideoUrl,
-    postWatchProgress,
-    VideoInfo
-} from "../../common/video";
-import VideoRecommendList from "./VideoRecommendList.tsx";
-import {showMessage} from "@natsume_shiki/mika-ui";
 
 const Video = memo(() => {
-    const param = useParams();
-    const query = useMemo(() => new URLSearchParams(window.location.search), []);
-    const p = useMemo(() => query.get('p'), [query]);
-    const videoRef = React.useRef<HTMLVideoElement>(null);
-    const [url, setUrl] = React.useState<string | VideoSrc | undefined>(undefined);
-    const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
-    const [item, setItem] = React.useState<VideoInfo>();
+  const param = useParams();
+  const query = useMemo(() => new URLSearchParams(window.location.search), []);
+  const p = useMemo(() => query.get('p'), [query]);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [url, setUrl] = React.useState<string | VideoSrc | undefined>(undefined);
+  const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
+  const [item, setItem] = React.useState<VideoInfo>();
 
-    const timer = useRef<number | null>(null);
+  const timer = useRef<number | null>(null);
 
-    useEffect(() => {
-        const vid = param.id ?? 'BV1fK4y1s7Qf';
-        const sess_data = query.get('SESSDATA') ?? '';
+  useEffect(() => {
+    const vid = param.id;
+    let fn: () => void;
 
-        getVideoInfo(vid).then(res => {
-            setItem(res);
-            const index = p ? parseInt(p) - 1 : 0;
+    getVideoInfo(vid).then((res) => {
+      setItem(res);
+      const index = p ? parseInt(p, 10) - 1 : 0;
 
-            getVideoUrl(res.pagination[index].videoId).then(res => {
-                setUrl(res);
+      fn = () => {
+        getLastWatchedProgress(res.pagination[index].videoId).then((res) => {
+          if (res > 0 && videoRef.current) {
+            videoRef.current.currentTime = res;
+            showMessage({
+              children: `上次观看到${new Date(res * 1000).toISOString().substr(11, 8)}，已为您自动跳转`,
             });
-
-            res.extra_id && getDanmaku(res.extra_id, p, sess_data).then(res => {
-                setDanmakus(res);
-            });
+          }
         });
-    }, [p, param.SESSDATA, param.id, query]);
+      };
 
-    useEffect(() => {
-        const fn = () => {
-            getLastWatchedProgress(param.id).then(res => {
-                if (res > 0 && videoRef.current) {
-                    videoRef.current.currentTime = res;
-                    showMessage({children: '上次观看到' + new Date(res * 1000).toISOString().substr(11, 8) + '，已为您自动跳转'});
-                }
-            });
-        };
+      videoRef.current?.addEventListener('loadedmetadata', fn);
 
-        videoRef.current?.addEventListener('loadedmetadata', fn);
-        return () => {
-            videoRef.current?.removeEventListener('loadedmetadata', fn);
-        };
-    }, [param.id]);
+      getVideoUrl(res.pagination[index].videoId).then((res) => {
+        setUrl(res);
+      });
 
-    useEffect(() => {
-        const gotoNext = () => {
-            setTimeout(() => {
-                const index = p ? parseInt(p) : 1;
-                if (index < item?.pagination.length) {
-                    window.location.href = `/video/${param.id}?p=${index + 1}`;
-                }
-            }, 1000);
-        };
+      // eslint-disable-next-line no-unused-expressions
+      res.extra_id &&
+        getDanmaku(res.extra_id, p).then((res) => {
+          setDanmakus(res);
+        });
+    });
 
-        const postProgress = () => {
-            clearInterval(timer.current);
-            timer.current = setInterval(() => {
-                const currentTime = videoRef.current?.currentTime;
-                postWatchProgress(param.id, currentTime).then(undefined);
-            }, 8000);
-        };
+    return () => {
+      videoRef.current?.removeEventListener('loadedmetadata', fn);
+    };
+  }, [p, param.SESSDATA, param.id, query]);
 
-        if (videoRef.current) {
-            videoRef.current.addEventListener('ended', gotoNext);
-            videoRef.current.addEventListener('play', postProgress);
+  useEffect(() => {
+    const gotoNext = () => {
+      setTimeout(() => {
+        const index = p ? parseInt(p, 10) : 1;
+        if (index < item?.pagination.length) {
+          window.location.href = `/video/${param.id}?p=${index + 1}`;
         }
+      }, 1000);
+    };
 
-        return () => {
-            if (videoRef.current) {
-                videoRef.current.removeEventListener('ended', gotoNext);
-                videoRef.current.removeEventListener('play', postProgress);
-            }
+    const postProgress = () => {
+      clearInterval(timer.current);
+      timer.current = setInterval(() => {
+        const currentTime = videoRef.current?.currentTime;
+        postWatchProgress(param.id, currentTime).then(undefined);
+      }, 8000);
+    };
 
-            clearInterval(timer.current);
-        }
+    if (videoRef.current) {
+      videoRef.current.addEventListener('ended', gotoNext);
+      videoRef.current.addEventListener('play', postProgress);
+    }
 
-    }, [item?.pagination.length, p, param.id]);
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('ended', gotoNext);
+        videoRef.current.removeEventListener('play', postProgress);
+      }
 
-    return (
-        <div className="moe-video-video-page-root">
-            <Header/>
-            <div className="moe-video-video-page-wrapper">
-                <div className='moe-video-page-video-container'>
-                    <VideoPlayer src={url}
-                                 danmaku={danmakus}
-                                 controls
-                                 style={{
-                                     borderRadius: '15px',
-                                     height: 'fit-content',
-                                     overflow: 'hidden',
-                                     width: '100%',
-                                 }}
-                                 ref={videoRef}
-                    />
+      clearInterval(timer.current);
+    };
+  }, [item?.pagination.length, p, param.id]);
 
-                    {item && <VideoPageInfo {...item as unknown as VideoPageInfoProps}/>}
-                </div>
-                {item && <VideoPageComment videoId={param.id}/>}
-                {item && <VideoPaginationList items={item.pagination} activeIndex={parseInt(p || '1') - 1}/>}
-                {item && <VideoRecommendList items={item.recommendList}/>}
+  return (
+    <div className='moe-video-video-page-root'>
+      <Header />
+      <div className='moe-video-video-page-wrapper'>
+        <div className='moe-video-page-video-container'>
+          <VideoPlayer
+            src={url}
+            danmaku={danmakus}
+            controls
+            style={{
+              borderRadius: '15px',
+              height: 'fit-content',
+              overflow: 'hidden',
+              width: '100%',
+            }}
+            ref={videoRef}
+          />
 
-            </div>
-            <Footer/>
+          {item && <VideoPageInfo {...(item as unknown as VideoPageInfoProps)} />}
         </div>
-    );
+        {item && <VideoPageComment videoId={param.id} />}
+        {item && <VideoPaginationList items={item.pagination} activeIndex={parseInt(p || '1', 10) - 1} />}
+        {item && <VideoRecommendList items={item.recommendList} />}
+      </div>
+      <Footer />
+    </div>
+  );
 });
 
 export default Video;
