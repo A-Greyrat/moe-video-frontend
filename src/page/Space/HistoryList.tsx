@@ -1,6 +1,7 @@
-import {memo} from "react";
+import {memo, useEffect, useRef, useState} from "react";
 import './HistoryList.less';
-import {Button, Image} from "@natsume_shiki/mika-ui";
+import {Button, Image, InfinityList} from "@natsume_shiki/mika-ui";
+import {getHistoryList} from "../../common/video";
 
 export interface HistoryListProps {
     historyList: HistoryListItemProps[];
@@ -60,11 +61,35 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
     );
 });
 
-const HistoryList = memo((props: HistoryListProps) => {
-    const {historyList} = props;
+const HistoryList = memo(() => {
+    const [historyList, setHistoryList] = useState<HistoryListItemProps[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = useRef(1);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        getHistoryList(currentPage, pageSize.current).then((res) => {
+            setHistoryList(res.items);
+            setTotal(res.total);
+        });
+    }, []);
+
+    if (total === 0) {
+        return (
+            <div className='moe-video-space-page-history-list flex flex-col gap-4'>
+                <div className='text-center text-gray-400'>暂无历史记录</div>
+            </div>
+        );
+    }
 
     return (
-        <div>
+        <InfinityList onIntersect={async (unloading) => {
+            getHistoryList(currentPage, pageSize.current).then((res) => {
+                setHistoryList([...historyList, ...res.items]);
+                setCurrentPage(currentPage + 1);
+                unloading();
+            });
+        }} limit={total} itemNum={historyList.length}>
             {historyList.length > 0 &&
                 <div className='moe-video-space-page-history-list flex flex-col gap-4'>
                     {historyList.map((item, index) => {
@@ -72,7 +97,7 @@ const HistoryList = memo((props: HistoryListProps) => {
                     })}
                 </div>
             }
-        </div>
+        </InfinityList>
     );
 });
 

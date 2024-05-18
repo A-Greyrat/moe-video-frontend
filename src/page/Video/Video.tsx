@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo} from "react";
+import React, {memo, useEffect, useMemo, useRef} from "react";
 import VideoPlayer, {DanmakuAttr, VideoSrc} from "mika-video-player";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
@@ -8,17 +8,27 @@ import VideoPageComment from "./VideoPageComment.tsx";
 import {useParams} from "react-router-dom";
 import VideoPageInfo, {VideoPageInfoProps} from "./VideoPageInfo.tsx";
 import VideoPaginationList from "./VideoPaginationList.tsx";
-import {getDanmaku, getVideoInfo, getVideoUrl, VideoInfo} from "../../common/video";
+import {
+    getDanmaku,
+    getLastWatchedProgress,
+    getVideoInfo,
+    getVideoUrl,
+    postWatchProgress,
+    VideoInfo
+} from "../../common/video";
 import VideoRecommendList from "./VideoRecommendList.tsx";
+import {showMessage} from "@natsume_shiki/mika-ui";
 
 const Video = memo(() => {
     const param = useParams();
     const query = useMemo(() => new URLSearchParams(window.location.search), []);
     const p = useMemo(() => query.get('p'), [query]);
-
+    const videoRef = React.useRef<HTMLVideoElement>(null);
     const [url, setUrl] = React.useState<string | VideoSrc | undefined>(undefined);
     const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
     const [item, setItem] = React.useState<VideoInfo>();
+
+    const timer = useRef<number | null>(null);
 
     useEffect(() => {
         const vid = param.id ?? 'BV1fK4y1s7Qf';
@@ -38,6 +48,56 @@ const Video = memo(() => {
         });
     }, [p, param.SESSDATA, param.id, query]);
 
+    useEffect(() => {
+        const fn = () => {
+            getLastWatchedProgress(param.id).then(res => {
+                if (res > 0 && videoRef.current) {
+                    videoRef.current.currentTime = res;
+                    showMessage({children: '上次观看到' + new Date(res * 1000).toISOString().substr(11, 8) + '，已为您自动跳转'});
+                }
+            });
+        };
+
+        videoRef.current?.addEventListener('loadedmetadata', fn);
+        return () => {
+            videoRef.current?.removeEventListener('loadedmetadata', fn);
+        };
+    }, [param.id]);
+
+    useEffect(() => {
+        const gotoNext = () => {
+            setTimeout(() => {
+                const index = p ? parseInt(p) : 1;
+                if (index < item?.pagination.length) {
+                    window.location.href = `/video/${param.id}?p=${index + 1}`;
+                }
+            }, 1000);
+        };
+
+        const postProgress = () => {
+            clearInterval(timer.current);
+            timer.current = setInterval(() => {
+                const currentTime = videoRef.current?.currentTime;
+                postWatchProgress(param.id, currentTime).then(undefined);
+            }, 8000);
+        };
+
+        if (videoRef.current) {
+            videoRef.current.addEventListener('ended', gotoNext);
+            videoRef.current.addEventListener('play', postProgress);
+        }
+
+        return () => {
+            if (videoRef.current) {
+                videoRef.current.removeEventListener('ended', gotoNext);
+                videoRef.current.removeEventListener('play', postProgress);
+            }
+
+            clearInterval(timer.current);
+        }
+
+    }, [item?.pagination.length, p, param.id]);
+
     return (
         <div className="moe-video-video-page-root">
             <Header/>
@@ -52,6 +112,7 @@ const Video = memo(() => {
                                      overflow: 'hidden',
                                      width: '100%',
                                  }}
+                                 ref={videoRef}
                     />
 
                     {item && <VideoPageInfo {...item as unknown as VideoPageInfoProps}/>}
