@@ -1,4 +1,4 @@
-import { httpGet, httpPost } from '../axios';
+import { baseURL, httpGet, httpPost } from '../axios';
 import { rsaEncrypt } from './encrypt';
 import { useEffect, useState } from 'react';
 
@@ -112,17 +112,35 @@ export const getUserInfo = async () => {
   });
 };
 
-export const modifyUserInfo = async (data: typeof userInfo) =>
-  httpPost('/plain-user/update', {
-    nickname: data.nickname,
-    avatar: data.avatar,
-    signature: data.signature,
-  }).then((res) => {
-    if (res.code === 200) {
-      userInfo = data;
-    }
-    return res;
-  });
+export const modifyUserInfo = async (data: { nickname?: string; signature?: string; avatar?: File }) => {
+  const formData = new FormData();
+  data.nickname && formData.append('nickname', data.nickname);
+  data.signature && formData.append('signature', data.signature);
+  data.avatar && formData.append('avatar', data.avatar);
+
+  return fetch(`${baseURL}/plain-user/update`, {
+    method: 'POST',
+    headers: {
+      Token: `${localStorage.getItem('token')}`,
+    },
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code === 200) {
+        const jwt = localStorage.getItem('token').split('.')[1];
+        const payload = JSON.parse(atob(jwt));
+        const { id } = payload.claims;
+        return httpGet<typeof userInfo>(`/plain-user?uid=${id}`).then((res) => {
+          if (res.code === 200) {
+            userInfo = res.data;
+          }
+          return userInfo;
+        });
+      }
+      return res;
+    });
+};
 
 export const useUser = () => {
   const [user, setUser] = useState(userInfo);

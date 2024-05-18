@@ -8,7 +8,18 @@ import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import HistoryList from './HistoryList.tsx';
 import Setting from './Setting.tsx';
 import FavorList from './FavorList.tsx';
-import BangumiList from "./BangumiList.tsx";
+import BangumiList from './BangumiList.tsx';
+
+const TypeIndexMapping: {
+  [key: string]: number;
+} = {
+  space: 0,
+  favor: 0,
+  bangumi: 1,
+  upload: 2,
+  history: 3,
+  setting: 4,
+};
 
 const Space = memo(() => {
   const { pathname } = useLocation();
@@ -18,19 +29,7 @@ const Space = memo(() => {
 
   useEffect(() => {
     // get user favor list, history list, etc.
-    setActiveIndex(
-      pathname.split('/')[2] === 'favor'
-        ? 0
-        : pathname.split('/')[2] === 'bangumi'
-          ? 1
-          : pathname.split('/')[2] === 'upload'
-            ? 2
-            : pathname.split('/')[2] === 'history'
-              ? 3
-              : pathname.split('/')[2] === 'setting'
-                ? 4
-                : 0,
-    );
+    setActiveIndex(TypeIndexMapping[pathname.split('/').pop() || 'favor']);
   }, [pathname, activeIndex]);
 
   return (

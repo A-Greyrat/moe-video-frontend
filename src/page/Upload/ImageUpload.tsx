@@ -32,7 +32,7 @@ export interface ImageTrimProps {
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
-const ImageTrimmer = memo((props: ImageTrimProps) => {
+export const ImageTrimmer = memo((props: ImageTrimProps) => {
   const movingCornerIndex = useRef(-1);
   const cropperRef = useRef<HTMLDivElement>(null);
   const moveOrigin = useRef({ x: NaN, y: NaN });
