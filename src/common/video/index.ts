@@ -7,7 +7,7 @@ import { BangumiCarouselItemProps } from '../../page/Home/BangumiCarousel.tsx';
 import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.tsx';
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
-import {BangumiListItemProps} from "../../page/Space/BangumiList.tsx";
+import { BangumiListItemProps } from '../../page/Space/BangumiList.tsx';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -450,10 +450,10 @@ export interface HistoryList {
   items: HistoryListItemProps[];
 }
 
-export const getHistoryList = async (page: number, pageSize: number): Promise<HistoryList> =>
+export const getHistoryList = async (index: number, pageSize: number): Promise<HistoryList> =>
   httpGet<any>('/plain-user/history', {
     params: {
-      page,
+      index,
       pageSize,
     },
   }).then((res) => {
@@ -478,7 +478,7 @@ export const deleteHistory = async (ids: string[]) => httpPost('/plain-user/hist
 export const postWatchProgress = async (videoId: string, progress: number) =>
   httpPost('/statistic/video-play', {
     videoId,
-    watchTime: progress,
+    watchProgress: Math.floor(progress),
   });
 
 export const getLastWatchedProgress = async (videoId: string) =>
@@ -511,7 +511,8 @@ export const getVideoFavoriteList = async (page: number, pageSize: number): Prom
     };
   });
 
-export const deleteVideoFavorite = async (ids: string[]) => httpPost('/plain-user/favorites/delete', { videoGroupIds: ids });
+export const deleteVideoFavorite = async (ids: string[]) =>
+  httpPost('/plain-user/favorites/delete', { videoGroupIds: ids });
 
 export interface bangumiFavoriteList {
   total: number;

@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import './FavorList.less';
 import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
 import { useTitle } from '../../common/hooks';
@@ -44,9 +44,9 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
               deleteVideoFavorite([id]).then((r) => {
                 if (r.code === 200) {
                   showMessage({ children: '取消收藏' });
-                  if (favorList.length % pageSize === 0 && currentPage > 1) {
+                  if (favorList.length === 1 && currentPage > 1) {
                     setCurrentPage(currentPage - 1);
-                    getVideoFavoriteList(currentPage, pageSize).then((res) => {
+                    getVideoFavoriteList(currentPage - 1, pageSize).then((res) => {
                       setFavorList(res.items);
                       setTotal(res.total);
                     });
@@ -75,14 +75,24 @@ const FavorList = memo(() => {
   const pageSize = useRef(10);
   const [total, setTotal] = useStore('moe-video-space-page-favor-list-total', 0);
 
-  useEffect(() => {
-    getVideoFavoriteList(currentPage, pageSize.current).then((res) => {
+  const handlePageChange = useCallback((index: number) => {
+    setCurrentPage(index);
+
+    getVideoFavoriteList(index, pageSize.current).then((res) => {
       setFavorList(res.items);
       setTotal(res.total);
     });
-  }, [currentPage]);
+  }, []);
 
-  if (total === 0) {
+  useEffect(() => {
+    if (favorList.length > 0) {
+      return;
+    }
+
+    handlePageChange(currentPage);
+  }, []);
+
+  if (total === 0 || !favorList || favorList.length === 0) {
     return (
       <div className='moe-video-space-page-history-list flex flex-col gap-4'>
         <div className='text-center text-gray-400'>暂无收藏</div>
@@ -100,9 +110,10 @@ const FavorList = memo(() => {
         </div>
       )}
       <Pagination
+        key={total}
         pageNum={Math.ceil(total / pageSize.current)}
         onChange={(index) => {
-          setCurrentPage(index);
+          handlePageChange(index);
         }}
         style={{
           width: 'fit-content',

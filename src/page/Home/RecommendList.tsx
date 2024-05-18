@@ -71,7 +71,7 @@ const RecommendVideoListItem = memo((_props: RecommendVideoListItemProps) => {
   return (
     <a href={url} className='moe-video-home-page-recommend-list-item overflow-hidden'>
       <div className='relative flex-grow-0 flex-shrink-0'>
-        <Image width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} lazy />
+        <Image key={url} width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} lazy />
         <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
         <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
           <div className='flex items-center gap-1'>

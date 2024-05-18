@@ -5,9 +5,13 @@ import { AutoComplete, Button, debounceAsync, Dropdown, Image } from '@natsume_s
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const UserSection = () => {
-  const [avatar] = useState('/defaultAvatar.webp');
+  const [avatar, setAvatar] = useState('/defaultAvatar.webp');
   const userInfo = useUser();
   const nav = useNavigate();
+
+  useEffect(() => {
+    setAvatar(userInfo?.avatar || '/defaultAvatar.webp');
+  }, [userInfo]);
 
   return (
     <Dropdown
@@ -180,14 +184,6 @@ const Header = memo(() => {
         <UserSection />
         <FavorDropdown />
         <HistoryDropdown />
-        <div
-          className='moe-video-header-category'
-          onClick={() => {
-            nav('/category');
-          }}
-        >
-          分类
-        </div>
         <Dropdown
           menu={
             <div className='moe-video-header-dropdown'>
@@ -198,14 +194,6 @@ const Header = memo(() => {
                 styleType='text'
               >
                 个人中心
-              </Button>
-              <Button
-                styleType='text'
-                onClick={() => {
-                  nav('/category');
-                }}
-              >
-                分类
               </Button>
               <Button
                 styleType='text'

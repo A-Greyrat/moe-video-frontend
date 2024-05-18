@@ -37,7 +37,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
   const [showMore, setShowMore] = useState(false);
   const [displayMoreButton, setDisplayMoreButton] = useState(false);
 
-  const [userLiked, setuserLiked] = React.useState(isUserLiked);
+  const [userLiked, setUserLiked] = React.useState(isUserLiked);
   const [userFavorite, setUserFavorite] = React.useState(isUserFavorite);
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -48,7 +48,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
         return;
       }
 
-      setuserLiked(!userLiked);
+      setUserLiked(!userLiked);
       showMessage({ children: !userLiked ? '点赞成功' : '取消点赞成功' });
     });
   }, [param.id, userLiked]);

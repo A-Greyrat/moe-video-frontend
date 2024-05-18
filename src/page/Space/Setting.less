@@ -1,0 +1,18 @@
+@import '../../common/theme/theme.less';
+
+.moe-video-space-page-feedback-textarea {
+  width: 100%;
+  height: 10rem;
+  padding: 0.5rem;
+  border: 1px solid @primary-color;
+  border-radius: 0.5rem;
+  resize: none;
+
+  transition: box-shadow 0.3s;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px mix(@primary-color, transparent, 15%);
+  }
+}

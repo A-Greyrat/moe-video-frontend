@@ -32,12 +32,13 @@ const Video = memo(() => {
 
   useEffect(() => {
     const vid = param.id;
+    const heartbeatSendTime = 7000;
     let fn: () => void;
+    let postProgress: () => void;
 
     getVideoInfo(vid).then((res) => {
       setItem(res);
       const index = p ? parseInt(p, 10) - 1 : 0;
-
       fn = () => {
         getLastWatchedProgress(res.pagination[index].videoId).then((res) => {
           if (res > 0 && videoRef.current) {
@@ -49,13 +50,21 @@ const Video = memo(() => {
         });
       };
 
-      videoRef.current?.addEventListener('play', fn);
+      postProgress = () => {
+        clearInterval(timer.current);
+        timer.current = setInterval(() => {
+          const currentTime = videoRef.current?.currentTime;
+          postWatchProgress(res.pagination[index].videoId, currentTime).then(undefined);
+        }, heartbeatSendTime);
+      };
+
+      videoRef.current?.addEventListener('play', fn, { once: true });
+      videoRef.current?.addEventListener('play', postProgress);
 
       getVideoUrl(res.pagination[index].videoId).then((res) => {
         setUrl(res);
       });
 
-      // eslint-disable-next-line no-unused-expressions
       res.extra_id &&
         getDanmaku(res.extra_id, p).then((res) => {
           setDanmakus(res);
@@ -64,6 +73,8 @@ const Video = memo(() => {
 
     return () => {
       videoRef.current?.removeEventListener('play', fn);
+      videoRef.current?.removeEventListener('play', postProgress);
+      clearInterval(timer.current);
     };
   }, [p, param.SESSDATA, param.id, query]);
 
@@ -77,23 +88,13 @@ const Video = memo(() => {
       }, 1000);
     };
 
-    const postProgress = () => {
-      clearInterval(timer.current);
-      timer.current = setInterval(() => {
-        const currentTime = videoRef.current?.currentTime;
-        postWatchProgress(param.id, currentTime).then(undefined);
-      }, 8000);
-    };
-
     if (videoRef.current) {
       videoRef.current.addEventListener('ended', gotoNext);
-      videoRef.current.addEventListener('play', postProgress);
     }
 
     return () => {
       if (videoRef.current) {
         videoRef.current.removeEventListener('ended', gotoNext);
-        videoRef.current.removeEventListener('play', postProgress);
       }
 
       clearInterval(timer.current);

@@ -16,6 +16,10 @@ export interface HistoryListItemProps {
   url: string;
 }
 
+export interface HistoryListProps {
+  historyList: HistoryListItemProps[];
+}
+
 export const HistoryListItem = memo((props: HistoryListItemProps) => {
   const { type, videoGroupId, title, cover, lastWatchedTime, index, videoTitle, url } = props;
   const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
@@ -75,20 +79,22 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
 
 const HistoryList = memo(() => {
   const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
-  const [currentPage, setCurrentPage] = useStore('moe-video-history-list-current-page', 1);
-  const pageSize = useRef(1);
+  const pageSize = useRef(5);
   const [total, setTotal] = useStore('moe-video-history-list-total', 0);
   useTitle('历史记录');
 
   useEffect(() => {
-    getHistoryList(currentPage, pageSize.current).then((res) => {
+    if (historyList.length > 0) {
+      return;
+    }
+
+    getHistoryList(historyList.length, pageSize.current).then((res) => {
       setHistoryList(res.items);
       setTotal(res.total);
-      setCurrentPage(currentPage + 1);
     });
   }, []);
 
-  if (total === 0) {
+  if (total === 0 || !historyList || historyList.length === 0) {
     return (
       <div className='moe-video-space-page-history-list flex flex-col gap-4'>
         <div className='text-center text-gray-400'>暂无历史记录</div>
@@ -99,9 +105,8 @@ const HistoryList = memo(() => {
   return (
     <InfinityList
       onIntersect={async (unloading) => {
-        getHistoryList(currentPage, pageSize.current).then((res) => {
+        getHistoryList(historyList.length, pageSize.current).then((res) => {
           setHistoryList([...historyList, ...res.items]);
-          setCurrentPage(currentPage + 1);
           unloading();
         });
       }}

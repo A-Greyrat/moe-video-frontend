@@ -34,6 +34,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/order': 'off',
+    'no-unused-expressions': 'off',
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     // 关闭variable必须全部大写规则
@@ -46,7 +47,7 @@ module.exports = {
       },
     ],
     'react/react-in-jsx-scope': 'off',
-    'camelcase': 'off',
+    camelcase: 'off',
     'no-nested-ternary': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
