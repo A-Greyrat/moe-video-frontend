@@ -5,6 +5,7 @@ import {httpGet, httpPost} from "../axios";
 import {RecommendListItemProps} from "../../page/Home/RecommendList.tsx";
 import {BangumiCarouselItemProps} from "../../page/Home/BangumiCarousel.tsx";
 import {BangumiItemProps, VideoItemProps} from "../../page/Search/SearchList.tsx";
+import {HistoryListItemProps, HistoryListProps} from "../../page/Space/HistoryList.tsx";
 
 const proxyImg = (url: string) => {
     return 'https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=' + encodeURIComponent(url);
@@ -173,8 +174,6 @@ export interface VideoInfo {
     description: string;
     pagination: VideoPaginationListItemProps[];
     recommendList: VideoRecommendListItemProps[];
-    isUserLiked: boolean;
-    isUserFavorite: boolean;
     extra_id: string;
 }
 
@@ -209,8 +208,6 @@ export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
                     }
                 }),
                 extra_id: data.View.aid,
-                isUserFavorite: false,
-                isUserLiked: false,
             };
         });
 };
@@ -247,11 +244,11 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     }).then(res => {
         return {
             title: res.data.title,
-            tags: res.data?.tags.length > 0 ? res.data.tags.split(';') : [],
+            tags: res.data.tags?.map((tag: any) => tag.name),
             playCount: res.data.watchCnt,
-            likeCount: res.data.likeCnt - (res.data.userLike ? 1 : 0),
+            likeCount: res.data.likeCnt,
             danmakuCount: res.data.danmakuCnt,
-            favoriteCount: res.data.favoriteCnt - (res.data.userFavorite ? 1 : 0),
+            favoriteCount: res.data.favoriteCnt,
             description: res.data.description,
             pagination: res.data.contents.map((page: any) => {
                 return {
@@ -264,11 +261,8 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
             }),
             recommendList: recommendList,
             extra_id: res.data.bvid,
-            isUserLiked: res.data.userLike,
-            isUserFavorite: res.data.userFavorite,
         }
     });
-
 }
 
 export const getVideoInfo = async (videoId: string): Promise<VideoInfo> => {
@@ -456,7 +450,7 @@ export const searchBangumi = async (keyword: string, page: number, pageSize: num
                     cover: item.cover,
                     desc: item.description,
                     score: item.score,
-                    tags: item.tags?.map((tag: any) => tag.name),
+                    tags: item?.tags?.length > 0 && item.tags.split(';'),
                     url: '/video/' + item.id,
                 }
             })
@@ -480,3 +474,33 @@ export const favoriteVideoGroup = async (id: string) => {
 export const removeFavoriteVideoGroup = async (ids: string[]) => {
     return httpPost('/plain-user/favorites/delete', {videoGroupIds: ids});
 };
+
+export interface HistoryList {
+    total: number;
+    items: HistoryListItemProps[];
+}
+
+export const getHistoryList = async (page: number, pageSize: number): Promise<HistoryList> => {
+    return httpGet<any>('/plain-user/history', {
+        params: {
+            page,
+            pageSize
+        }
+    }).then(res => {
+        const data = res.data;
+        return {
+            total: data.total,
+            items: data.records.map((item: any) => {
+                return {
+                    type: item.videoGroupType ? 'bangumi' : 'video',
+                    title: item.videoGroupTitle,
+                    cover: item.videoGroupCover,
+                    videoTitle: item.videoTitle,
+                    lastWatchedTime: new Date(item.timestamp).toLocaleString(),
+                    index: item.videoIndex,
+                    url: '/video/' + item.videoGroupId,
+                }
+            })
+        }
+    });
+}

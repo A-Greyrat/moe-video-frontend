@@ -47,7 +47,7 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
             <div className='flex flex-col justify-between overflow-hidden'>
                 <div>
                     <div
-                        className='moe-video-search-page-bangumi-list-item-title pb-2'>{title}</div>
+                        className='moe-video-search-page-bangumi-list-item-title pb-1 line-clamp-1'>{title}</div>
                     <div className='flex gap-1 flex-wrap h-7 overflow-hidden'>
                         {tags.length > 0 && tags.map((tag, index) => {
                             return (
@@ -137,7 +137,7 @@ const SearchList = memo((props: SearchListProps) => {
             }
 
             {videoList.length > 0 &&
-                <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
+                <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4'>
                     {videoList.map((item, index) => {
                         return (<VideoItem key={index} {...item}/>)
                     })}
