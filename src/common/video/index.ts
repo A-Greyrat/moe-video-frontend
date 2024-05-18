@@ -7,6 +7,7 @@ import { BangumiCarouselItemProps } from '../../page/Home/BangumiCarousel.tsx';
 import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.tsx';
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
+import {BangumiListItemProps} from "../../page/Space/BangumiList.tsx";
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -461,6 +462,7 @@ export const getHistoryList = async (page: number, pageSize: number): Promise<Hi
       total: data.total,
       items: data.records.map((item: any) => ({
         type: item.videoGroupType ? 'bangumi' : 'video',
+        videoGroupId: item.videoGroupId,
         title: item.videoGroupTitle,
         cover: item.videoGroupCover,
         videoTitle: item.videoTitle,
@@ -470,6 +472,8 @@ export const getHistoryList = async (page: number, pageSize: number): Promise<Hi
       })),
     };
   });
+
+export const deleteHistory = async (ids: string[]) => httpPost('/plain-user/history/delete', { videoGroupIds: ids });
 
 export const postWatchProgress = async (videoId: string, progress: number) =>
   httpPost('/statistic/video-play', {
@@ -498,10 +502,42 @@ export const getVideoFavoriteList = async (page: number, pageSize: number): Prom
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
+        id: item.id.toString(),
         title: item.title,
         cover: item.cover,
         favorTime: new Date(item.createTime).toLocaleString(),
         url: `/video/${item.id}`,
+      })),
+    };
+  });
+
+export const deleteVideoFavorite = async (ids: string[]) => httpPost('/plain-user/favorites/delete', { videoGroupIds: ids });
+
+export interface bangumiFavoriteList {
+  total: number;
+  items: BangumiListItemProps[];
+}
+
+export const getBangumiFavoriteList = async (page: number, pageSize: number): Promise<bangumiFavoriteList> =>
+  httpGet<any>('/plain-user/favorites', {
+    params: {
+      type: 1,
+      page,
+      pageSize,
+    },
+  }).then((res) => {
+    const { data } = res;
+
+    return {
+      total: data.total,
+      items: data.records.map((item: any) => ({
+        id: item.id.toString(),
+        title: item.title,
+        cover: item.cover,
+        desc: item.description,
+        url: `/video/${item.id}`,
+        lastWatchedIndex: item.lastWatchVideoIndex,
+        lastWatchedTitle: item.lastWatchVideoTitle,
       })),
     };
   });

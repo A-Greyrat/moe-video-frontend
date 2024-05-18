@@ -1,11 +1,13 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import './HistoryList.less';
-import { Button, Image, InfinityList } from '@natsume_shiki/mika-ui';
-import { getHistoryList } from '../../common/video';
+import { Button, Image, InfinityList, showMessage } from '@natsume_shiki/mika-ui';
+import { deleteHistory, getHistoryList } from '../../common/video';
 import { useTitle } from '../../common/hooks';
+import { useStore } from 'mika-store';
 
 export interface HistoryListItemProps {
   type: 'video' | 'bangumi';
+  videoGroupId: number;
   title: string;
   cover: string;
   videoTitle: string;
@@ -14,12 +16,12 @@ export interface HistoryListItemProps {
   url: string;
 }
 
-export interface HistoryListProps {
-  historyList: HistoryListItemProps[];
-}
-
 export const HistoryListItem = memo((props: HistoryListItemProps) => {
-  const { type, title, cover, lastWatchedTime, index, videoTitle, url } = props;
+  const { type, videoGroupId, title, cover, lastWatchedTime, index, videoTitle, url } = props;
+  const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
+  const [total, setTotal] = useStore('moe-video-history-list-total', 0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_currentPage, setCurrentPage] = useStore('moe-video-history-list-current-page', 1);
 
   return (
     <>
@@ -50,6 +52,16 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
                 height: 'fit-content',
                 fontSize: '1rem',
               }}
+              onClick={() => {
+                deleteHistory([videoGroupId.toString()]).then((r) => {
+                  if (r.code === 200) {
+                    showMessage({ children: '删除成功' });
+                    setHistoryList(historyList.filter((item) => item.videoGroupId !== videoGroupId));
+                    setTotal(total - 1);
+                    setCurrentPage((c) => c - 1);
+                  }
+                });
+              }}
             >
               删除
             </Button>
@@ -62,10 +74,10 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
 });
 
 const HistoryList = memo(() => {
-  const [historyList, setHistoryList] = useState<HistoryListItemProps[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = useRef(10);
-  const [total, setTotal] = useState(0);
+  const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
+  const [currentPage, setCurrentPage] = useStore('moe-video-history-list-current-page', 1);
+  const pageSize = useRef(1);
+  const [total, setTotal] = useStore('moe-video-history-list-total', 0);
   useTitle('历史记录');
 
   useEffect(() => {
@@ -94,7 +106,7 @@ const HistoryList = memo(() => {
         });
       }}
       limit={total}
-      itemNum={historyList.length}
+      itemNum={historyList?.length}
     >
       {historyList.length > 0 && (
         <div className='moe-video-space-page-history-list flex flex-col gap-4'>
