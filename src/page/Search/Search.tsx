@@ -19,7 +19,7 @@ const Search = memo(() => {
     const [pageInfo, setPageInfo] = useState({
         total: 0,
         currentPage: parseInt(page),
-        pageSize: 15,
+        pageSize: 16,
     });
     const navigate = useNavigate();
 
@@ -34,9 +34,10 @@ const Search = memo(() => {
             setBangumiList([]);
             setVideoList([]);
             if (pageInfo.currentPage === 1) {
-                // searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-                //     console.log(res)
-                // })
+                searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+                    console.log(res)
+                    setBangumiList(res.items);
+                })
                 searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
                     handlePageInfo('total', res.total);
                     setVideoList(res.items);

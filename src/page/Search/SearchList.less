@@ -1,18 +1,5 @@
 @import "../../common/theme/theme.less";
 
-.moe-video-search-page-list-tab {
-  //box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
-  //  -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
-  //border-radius: 0.5rem;
-  justify-content: flex-start !important;
-  gap: 5rem;
-
-  > li {
-    font-size: 1.2rem;
-    font-weight: 800 !important;
-  }
-}
-
 .moe-video-search-page-bangumi-list {
   display: flex;
   flex-wrap: wrap;
@@ -31,6 +18,8 @@
   box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 15%),
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   border-radius: 0.5rem;
+
+
 }
 
 .moe-video-search-page-bangumi-list-item-cover {
@@ -87,6 +76,15 @@
   flex: 0 0 18rem;
   display: flex;
   flex-direction: column;
+
+  transition: 0.3s;
+
+  &:hover {
+    box-shadow: 3px 3px 3px 0 mix(@primary-color, transparent, 45%),
+      -3px -3px 15px 0 mix(@primary-color, transparent, 45%);
+
+    scale: 1.02;
+  }
 }
 
 .moe-video-search-page-video-list-item-cover-background {
