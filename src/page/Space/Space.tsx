@@ -1,98 +1,19 @@
 import { memo, useEffect, useState } from 'react';
 import Header from '../../component/header/Header.tsx';
 import Footer from '../../component/footer/Footer.tsx';
-import { Button, Image, TabList } from '@natsume_shiki/mika-ui';
+import { Image, TabList } from '@natsume_shiki/mika-ui';
 import './Space.less';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import HistoryList from './HistoryList.tsx';
 import Setting from './Setting.tsx';
 import FavorList from './FavorList.tsx';
-
-const bangumiList1 = [
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/img.png',
-    desc: '《名侦探柯南：犯人犯泽先生》改编自同名漫画。该动画的主人公犯人犯泽先生身穿紧身服、全身漆黑。为了收拾某个人，他拼命打工赚钱，攒够钱后，他告别母亲，独自离开老家岛根县的出云，来到犯罪率极高的米花町准备复仇。外表凶悍的犯泽先生其实是个老实人，没有任何的犯罪经验，而且还非常胆小。从乡下来到大都市的他本以为能顺顺利利地展开计划，但现实并不美好，他面临租房、工作、人际关系等问题。在一次次的遭遇挫折后，他没有灰心丧气，仍不畏艰难地一步步解决生活中出现的问题，并最终在米花町租到了合适的房子，结交了新的朋友，还找到了满意的工作，让生活步上了正轨。然而，他却始终找不到自己要找的人。犯泽先生最终是否能顺利完成自己的计划呢？',
-    lastWatchedAt: '第5话 迷宫与妖精',
-    updateTo: '更新至第19话',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/img.png',
-    desc: '《名侦探柯南：犯人犯泽先生》改编自同名漫画。该动画的主人公犯人犯泽先生身穿紧身服、全身漆黑。为了收拾某个人，他拼命打工赚钱，攒够钱后，他告别母亲，独自离开老家岛根县的出云，来到犯罪率极高的米花町准备复仇。外表凶悍的犯泽先生其实是个老实人，没有任何的犯罪经验，而且还非常胆小。从乡下来到大都市的他本以为能顺顺利利地展开计划，但现实并不美好，他面临租房、工作、人际关系等问题。在一次次的遭遇挫折后，他没有灰心丧气，仍不畏艰难地一步步解决生活中出现的问题，并最终在米花町租到了合适的房子，结交了新的朋友，还找到了满意的工作，让生活步上了正轨。然而，他却始终找不到自己要找的人。犯泽先生最终是否能顺利完成自己的计划呢？',
-    lastWatchedAt: '第5话 迷宫与妖精',
-    updateTo: '已完结',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/img.png',
-    desc: '《名侦探柯南：犯人犯泽先生》改编自同名漫画。该动画的主人公犯人犯泽先生身穿紧身服、全身漆黑。为了收拾某个人，他拼命打工赚钱，攒够钱后，他告别母亲，独自离开老家岛根县的出云，来到犯罪率极高的米花町准备复仇。外表凶悍的犯泽先生其实是个老实人，没有任何的犯罪经验，而且还非常胆小。从乡下来到大都市的他本以为能顺顺利利地展开计划，但现实并不美好，他面临租房、工作、人际关系等问题。在一次次的遭遇挫折后，他没有灰心丧气，仍不畏艰难地一步步解决生活中出现的问题，并最终在米花町租到了合适的房子，结交了新的朋友，还找到了满意的工作，让生活步上了正轨。然而，他却始终找不到自己要找的人。犯泽先生最终是否能顺利完成自己的计划呢？',
-    lastWatchedAt: '第5话 迷宫与妖精',
-    updateTo: '全20话',
-    url: '#',
-  },
-];
-
-const uploadList1 = [
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    playCount: '1.2万',
-    uploadTime: '2024-5-16',
-    url: '#',
-  },
-];
+import BangumiList from "./BangumiList.tsx";
 
 const Space = memo(() => {
   const { pathname } = useLocation();
   const nav = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [bangumiList, setBangumiList] = useState([]);
   const [uploadList, setUploadList] = useState([]);
 
   useEffect(() => {
@@ -110,11 +31,6 @@ const Space = memo(() => {
                 ? 4
                 : 0,
     );
-    if (activeIndex === 1) {
-      setBangumiList(bangumiList1);
-    } else if (activeIndex === 2) {
-      setUploadList(uploadList1);
-    }
   }, [pathname, activeIndex]);
 
   return (
@@ -142,53 +58,10 @@ const Space = memo(() => {
         {activeIndex === 0 && <FavorList />}
 
         {/* 追番列表 */}
-        {bangumiList.length > 0 && (
-          <div className='moe-video-space-page-bangumi-list gap-4'>
-            {bangumiList.map((item, index) => (
-              <div className='moe-video-space-page-bangumi-list-item flex py-4 px-2' key={index}>
-                <a href={item.url} className='moe-video-space-page-bangumi-list-item-cover mr-4 overflow-hidden'>
-                  <Image lazy width='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={item.cover} />
-                </a>
-                <div className='flex flex-col justify-between overflow-hidden'>
-                  <div>
-                    <div className='moe-video-space-page-bangumi-list-item-title pb-1 line-clamp-1'>{item.title}</div>
-                    <div className='text-gray-400 text-xs line-clamp-1'>{item.updateTo}</div>
-                    <div className='text-sm text-gray-550 line-clamp-4 whitespace-break-spaces pt-1 mb-2'>
-                      {item.desc}
-                    </div>
-                    <div className='text-gray-400 text-xs line-clamp-1 mb-1'>看到 {item.lastWatchedAt}</div>
-                  </div>
-
-                  <div className='flex gap-2 mt-1'>
-                    <Button
-                      size='large'
-                      styleType='primary'
-                      style={{
-                        width: 'fit-content',
-                        fontSize: '1rem',
-                      }}
-                    >
-                      立即观看
-                    </Button>
-                    <Button
-                      size='large'
-                      styleType='default'
-                      style={{
-                        fontSize: '1rem',
-                        width: 'fit-content',
-                      }}
-                    >
-                      取消追番
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {activeIndex === 1 && <BangumiList />}
 
         {/* 投稿列表 */}
-        {uploadList.length > 0 && (
+        {activeIndex === 2 && uploadList.length > 0 && (
           <div className='moe-video-space-page-upload-list gap-4'>
             {uploadList.map((item, index) => (
               <a href={item.url} className='moe-video-space-page-upload-list-item overflow-hidden' key={index}>
@@ -213,8 +86,6 @@ const Space = memo(() => {
 
         {/* 设置 */}
         {activeIndex === 4 && <Setting />}
-
-        {/* 分页 */}
       </div>
       <Footer />
     </div>
