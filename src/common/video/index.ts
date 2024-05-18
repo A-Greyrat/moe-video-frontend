@@ -165,6 +165,8 @@ export interface VideoInfo {
   pagination: VideoPaginationListItemProps[];
   recommendList: VideoRecommendListItemProps[];
   extra_id: string;
+  isUserLiked?: boolean;
+  idUserFavorite?: boolean;
 }
 
 export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> =>
@@ -194,6 +196,8 @@ export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> =>
           update: new Date(item.pubdate * 1000).toLocaleDateString(),
         })),
         extra_id: data.View.aid,
+        isUserLiked: false,
+        idUserFavorite: false,
       };
     });
 
