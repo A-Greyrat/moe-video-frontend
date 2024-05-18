@@ -6,6 +6,7 @@ import { RecommendListItemProps } from '../../page/Home/RecommendList.tsx';
 import { BangumiCarouselItemProps } from '../../page/Home/BangumiCarousel.tsx';
 import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.tsx';
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
+import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -155,56 +156,51 @@ export const addComment = async (videoId: string, toId: string, content: string)
 
 /* Video Info */
 export interface VideoInfo {
-    title: string;
-    tags: string[];
-    playCount: number;
-    likeCount: number;
-    danmakuCount: number;
-    favoriteCount: number;
-    description: string;
-    pagination: VideoPaginationListItemProps[];
-    recommendList: VideoRecommendListItemProps[];
-    isUserLiked: boolean;
-    isUserFavorite: boolean;
-    extra_id: string;
+  title: string;
+  tags: string[];
+  playCount: number;
+  likeCount: number;
+  danmakuCount: number;
+  favoriteCount: number;
+  description: string;
+  pagination: VideoPaginationListItemProps[];
+  recommendList: VideoRecommendListItemProps[];
+  isUserLiked: boolean;
+  isUserFavorite: boolean;
+  extra_id: string;
 }
 
-export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> => {
-    return fetch(proxyUrl('https://api.bilibili.com/x/web-interface/view/detail?bvid=' + videoId))
-        .then(res => res.json())
-        .then(res => {
-            const data = res.data;
-            return {
-                title: data.View.title,
-                tags: data.Tags.map((tag: any) => tag.tag_name),
-                playCount: data.View.stat.view,
-                likeCount: data.View.stat.like,
-                danmakuCount: data.View.stat.danmaku,
-                favoriteCount: data.View.stat.favorite,
-                description: data.View.desc,
-                pagination: data.View.pages.map((page: any) => {
-                    return {
-                        index: 'P' + page.page,
-                        title: page.part,
-                        url: '/video/' + videoId + '?p=' + page.page,
-                        duration: new Date(page.duration * 1000).toISOString().substr(11, 8),
-                    };
-                }),
-                recommendList: data.Related.map((item: any) => {
-                    return {
-                        title: item.title,
-                        url: '/video/' + item.bvid,
-                        cover: item.pic,
-                        playCount: item.stat.view > 10000 ? (item.stat.view / 10000).toFixed(1) + '万' : item.stat.view,
-                        update: new Date(item.pubdate * 1000).toLocaleDateString(),
-                    }
-                }),
-                extra_id: data.View.aid,
-                isUserFavorite: false,
-                isUserLiked: false,
-            };
-        });
-};
+export const getVideoInfo_v1 = async (videoId: string): Promise<VideoInfo> =>
+  fetch(proxyUrl(`https://api.bilibili.com/x/web-interface/view/detail?bvid=${videoId}`))
+    .then((res) => res.json())
+    .then((res) => {
+      const { data } = res;
+      return {
+        title: data.View.title,
+        tags: data.Tags.map((tag: any) => tag.tag_name),
+        playCount: data.View.stat.view,
+        likeCount: data.View.stat.like,
+        danmakuCount: data.View.stat.danmaku,
+        favoriteCount: data.View.stat.favorite,
+        description: data.View.desc,
+        pagination: data.View.pages.map((page: any) => ({
+          index: `P${page.page}`,
+          title: page.part,
+          url: `/video/${videoId}?p=${page.page}`,
+          duration: new Date(page.duration * 1000).toISOString().substr(11, 8),
+        })),
+        recommendList: data.Related.map((item: any) => ({
+          title: item.title,
+          url: `/video/${item.bvid}`,
+          cover: item.pic,
+          playCount: item.stat.view > 10000 ? `${(item.stat.view / 10000).toFixed(1)}万` : item.stat.view,
+          update: new Date(item.pubdate * 1000).toLocaleDateString(),
+        })),
+        extra_id: data.View.aid,
+        isUserFavorite: false,
+        isUserLiked: false,
+      };
+    });
 
 export const getRelatedVideos = async (videoId: string, nums = 10): Promise<VideoRecommendListItemProps[]> =>
   httpGet<any>('/video-group/related', {
@@ -483,3 +479,29 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
 
 export const getLastWatchedProgress = async (videoId: string) =>
   httpGet<any>('/plain-user/history/video-last-watch-time', { params: { videoId } }).then((res) => res.data);
+
+export interface videoFavoriteList {
+  total: number;
+  items: FavorListItemProps[];
+}
+
+export const getVideoFavoriteList = async (page: number, pageSize: number): Promise<videoFavoriteList> =>
+  httpGet<any>('/plain-user/favorites', {
+    params: {
+      type: 0,
+      page,
+      pageSize,
+    },
+  }).then((res) => {
+    const { data } = res;
+
+    return {
+      total: data.total,
+      items: data.records.map((item: any) => ({
+        title: item.title,
+        cover: item.cover,
+        favorTime: new Date(item.createTime).toLocaleString(),
+        url: `/video/${item.id}`,
+      })),
+    };
+  });
