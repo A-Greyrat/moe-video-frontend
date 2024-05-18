@@ -62,16 +62,16 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
 });
 
 const HistoryList = memo(() => {
-    const [historyList, setHistoryList] = useState<HistoryListItemProps[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = useRef(10);
-    const [total, setTotal] = useState(0);
-    useTitle('历史记录');
+  const [historyList, setHistoryList] = useState<HistoryListItemProps[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = useRef(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     getHistoryList(currentPage, pageSize.current).then((res) => {
       setHistoryList(res.items);
       setTotal(res.total);
+      setCurrentPage(currentPage + 1);
     });
   }, []);
 
