@@ -6,6 +6,7 @@ import { RecommendListItemProps } from '../../page/Home/RecommendList.tsx';
 import { BangumiCarouselItemProps } from '../../page/Home/BangumiCarousel.tsx';
 import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.tsx';
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
+import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -478,3 +479,29 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
 
 export const getLastWatchedProgress = async (videoId: string) =>
   httpGet<any>('/plain-user/history/video-last-watch-time', { params: { videoId } }).then((res) => res.data);
+
+export interface videoFavoriteList {
+  total: number;
+  items: FavorListItemProps[];
+}
+
+export const getVideoFavoriteList = async (page: number, pageSize: number): Promise<videoFavoriteList> =>
+  httpGet<any>('/plain-user/favorites', {
+    params: {
+      type: 0,
+      page,
+      pageSize,
+    },
+  }).then((res) => {
+    const { data } = res;
+
+    return {
+      total: data.total,
+      items: data.records.map((item: any) => ({
+        title: item.title,
+        cover: item.cover,
+        favorTime: new Date(item.createTime).toLocaleString(),
+        url: `/video/${item.id}`,
+      })),
+    };
+  });

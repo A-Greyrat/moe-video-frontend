@@ -1,7 +1,8 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import './HistoryList.less';
-import { Button, Image, InfinityList } from '@natsume_shiki/mika-ui';
-import { getHistoryList } from '../../common/video';
+import {Button, Image, InfinityList} from "@natsume_shiki/mika-ui";
+import {getHistoryList} from "../../common/video";
+import {useTitle} from "../../common/hooks";
 
 export interface HistoryListItemProps {
   type: 'video' | 'bangumi';

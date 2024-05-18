@@ -7,51 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import HistoryList from './HistoryList.tsx';
 import Setting from './Setting.tsx';
-
-const favorList1 = [
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-  {
-    title: '【名侦探柯南：百万美元的五棱星】超清未删减版观看（～已上传）中文字幕-',
-    cover: '/Suzumiya_Haruhi_no_Shoushitsu.png',
-    favorTime: '2024-5-16',
-    url: '#',
-  },
-];
+import FavorList from './FavorList.tsx';
 
 const bangumiList1 = [
   {
@@ -136,15 +92,11 @@ const Space = memo(() => {
   const { pathname } = useLocation();
   const nav = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [favorList, setFavorList] = useState([]);
   const [bangumiList, setBangumiList] = useState([]);
   const [uploadList, setUploadList] = useState([]);
 
   useEffect(() => {
     // get user favor list, history list, etc.
-    setFavorList([]);
-    setBangumiList([]);
-    setUploadList([]);
     setActiveIndex(
       pathname.split('/')[2] === 'favor'
         ? 0
@@ -158,9 +110,7 @@ const Space = memo(() => {
                 ? 4
                 : 0,
     );
-    if (activeIndex === 0) {
-      setFavorList(favorList1);
-    } else if (activeIndex === 1) {
+    if (activeIndex === 1) {
       setBangumiList(bangumiList1);
     } else if (activeIndex === 2) {
       setUploadList(uploadList1);
@@ -189,38 +139,7 @@ const Space = memo(() => {
         />
 
         {/* 收藏列表 */}
-        {favorList.length > 0 && (
-          <div className='moe-video-space-page-favor-list pt-2 pb-4 px-1 mb-12 gap-4'>
-            {favorList.map((item, index) => (
-              <div className='moe-video-space-page-favor-list-item overflow-hidden' key={index}>
-                <a href={item.url}>
-                  <div>
-                    <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={item.cover} />
-                  </div>
-                  <div className='flex flex-col justify-between'>
-                    <div className='moe-video-space-page-favor-list-item-title px-3 pt-1 mb-1 line-clamp-2'>
-                      {item.title}
-                    </div>
-                  </div>
-                </a>
-                <div className='flex justify-between px-3 pb-2 text-gray-400 items-center'>
-                  <span>收藏于: {item.favorTime}</span>
-                  <Button
-                    size='large'
-                    styleType='default'
-                    style={{
-                      width: 'fit-content',
-                      fontSize: '1rem',
-                    }}
-                    onClick={() => {}}
-                  >
-                    取消收藏
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {activeIndex === 0 && <FavorList />}
 
         {/* 追番列表 */}
         {bangumiList.length > 0 && (
