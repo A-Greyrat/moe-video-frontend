@@ -1,8 +1,8 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import './FavorList.less';
 import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
 import { useTitle } from '../../common/hooks';
-import { deleteVideoFavorite, getVideoFavoriteList } from '../../common/video';
+import { deleteVideoFavorite, getLastWatchedIndex, getVideoFavoriteList } from '../../common/video';
 import { useStore } from 'mika-store';
 
 export interface FavorListItemProps {
@@ -21,10 +21,17 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
   const [currentPage, setCurrentPage] = useStore('moe-video-space-page-favor-list-current-page', 1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_total, setTotal] = useStore('moe-video-space-page-favor-list-total', 0);
+  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+
+  useEffect(() => {
+    getLastWatchedIndex(id).then((index) => {
+      setLastWatchedIndex(index);
+    });
+  }, []);
 
   return (
     <div className='moe-video-space-page-favor-list-item overflow-hidden'>
-      <a href={url}>
+      <a href={`${url}?p=${lastWatchedIndex}`}>
         <div>
           <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
         </div>
@@ -32,7 +39,7 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
       <div className='flex flex-col justify-between h-full'>
         <div className='moe-video-space-page-favor-list-item-title px-3 pt-2 mb-1 line-clamp-2'>{title}</div>
         <div className='flex justify-between px-3 pb-2 text-gray-400 items-center'>
-          <span>收藏于: {favorTime}</span>
+          <span className='line-clamp-1'>收藏于: {favorTime}</span>
           <Button
             size='large'
             styleType='default'
@@ -43,7 +50,7 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
             onClick={() => {
               deleteVideoFavorite([id]).then((r) => {
                 if (r.code === 200) {
-                  showMessage({ children: '取消收藏' });
+                  showMessage({ children: '取消收藏成功' });
                   if (favorList.length === 1 && currentPage > 1) {
                     setCurrentPage(currentPage - 1);
                     getVideoFavoriteList(currentPage - 1, pageSize).then((res) => {

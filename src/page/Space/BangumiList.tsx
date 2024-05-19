@@ -1,9 +1,10 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import './BangumiList.less';
-import { Button, Image, Pagination } from '@natsume_shiki/mika-ui';
+import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
 import { useTitle } from '../../common/hooks';
-import { getBangumiFavoriteList } from '../../common/video';
-import {useNavigate} from "react-router-dom";
+import { deleteBangumiFavorite, getBangumiFavoriteList } from '../../common/video';
+import { useNavigate } from 'react-router-dom';
+import { useStore } from 'mika-store';
 
 export interface BangumiListItemProps {
   id: string;
@@ -13,11 +14,17 @@ export interface BangumiListItemProps {
   url: string;
   lastWatchedIndex: number;
   lastWatchedTitle: string;
+
+  pageSize: number;
 }
 
 export const BangumiListItem = memo((props: BangumiListItemProps) => {
-  const { title, cover, desc, url, lastWatchedTitle, lastWatchedIndex } = props;
+  const { id, title, cover, desc, url, lastWatchedTitle, lastWatchedIndex, pageSize } = props;
   const navigate = useNavigate();
+  const [bangumiList, setBangumiList] = useStore('moe-video-space-page-bangumi-list', []);
+  const [currentPage, setCurrentPage] = useStore('moe-video-space-page-bangumi-list-current-page', 1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', 0);
 
   return (
     <div className='moe-video-space-page-bangumi-list-item flex py-4 px-2'>
@@ -42,7 +49,7 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
               fontSize: '1rem',
             }}
             onClick={() => {
-              navigate(`${url}`);
+              navigate(`${url}?p=${lastWatchedIndex}`);
             }}
           >
             立即观看
@@ -53,6 +60,25 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
             style={{
               fontSize: '1rem',
               width: 'fit-content',
+            }}
+            onClick={() => {
+              deleteBangumiFavorite([id]).then((r) => {
+                if (r.code === 200) {
+                  showMessage({ children: '取消追番成功' });
+                  if (bangumiList.length === 1 && currentPage > 1) {
+                    setCurrentPage(currentPage - 1);
+                    getBangumiFavoriteList(currentPage - 1, pageSize).then((res) => {
+                      setBangumiList(res.items);
+                      setTotal(res.total);
+                    });
+                  } else {
+                    getBangumiFavoriteList(currentPage, pageSize).then((res) => {
+                      setBangumiList(res.items);
+                      setTotal(res.total);
+                    });
+                  }
+                }
+              });
             }}
           >
             取消追番
@@ -65,19 +91,25 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
 
 const BangumiList = memo(() => {
   useTitle('追番');
-  const [bangumiList, setBangumiList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [bangumiList, setBangumiList] = useStore('moe-video-space-page-bangumi-list', []);
+  const [currentPage, setCurrentPage] = useStore('moe-video-space-page-bangumi-list-current-page', 1);
   const pageSize = useRef(10);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', 0);
 
-  useEffect(() => {
-    getBangumiFavoriteList(currentPage, pageSize.current).then((res) => {
+  const handlePageChange = useCallback((index: number) => {
+    setCurrentPage(index);
+
+    getBangumiFavoriteList(index, pageSize.current).then((res) => {
       setBangumiList(res.items);
       setTotal(res.total);
     });
-  }, [currentPage]);
+  }, []);
 
-  if (total === 0) {
+  useEffect(() => {
+    handlePageChange(currentPage);
+  }, []);
+
+  if (total === 0 || !bangumiList || bangumiList.length === 0) {
     return (
       <div className='moe-video-space-page-history-list flex flex-col gap-4'>
         <div className='text-center text-gray-400'>暂无追番</div>
@@ -90,11 +122,12 @@ const BangumiList = memo(() => {
       {bangumiList.length > 0 && (
         <div className='moe-video-space-page-bangumi-list gap-4'>
           {bangumiList.map((item, index) => (
-            <BangumiListItem key={index} {...item} />
+            <BangumiListItem key={index} {...item} pageSize={pageSize.current} />
           ))}
         </div>
       )}
       <Pagination
+        key={total}
         pageNum={Math.ceil(total / pageSize.current)}
         onChange={(index) => {
           setCurrentPage(index);

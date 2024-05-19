@@ -7,17 +7,18 @@ import { useStore } from 'mika-store';
 
 export interface HistoryListItemProps {
   type: 'video' | 'bangumi';
-  videoGroupId: number;
+  videoGroupId: string;
   title: string;
   cover: string;
   videoTitle: string;
   lastWatchedTime: string;
   index: number;
+  author: string;
   url: string;
 }
 
 export const HistoryListItem = memo((props: HistoryListItemProps) => {
-  const { type, videoGroupId, title, cover, lastWatchedTime, index, videoTitle, url } = props;
+  const { type, videoGroupId, title, cover, lastWatchedTime, index, author, videoTitle, url } = props;
   const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
   const [total, setTotal] = useStore('moe-video-history-list-total', 0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,22 +27,23 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
   return (
     <>
       <div className='moe-video-space-page-history-list-item flex w-full'>
-        <a href={url} className='moe-video-space-page-history-list-item-cover mr-5 overflow-hidden'>
+        <a href={`${url}?p=${index}`} className='moe-video-space-page-history-list-item-cover mr-5 overflow-hidden'>
           <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
         </a>
         <div className='flex justify-between flex-auto'>
           <div className='flex flex-col justify-between mr-4'>
             <div className={'flex flex-col gap-1'}>
-              <a href={url} className='moe-video-space-page-history-list-item-title line-clamp-1'>
+              <a href={`${url}?p=${index}`} className='moe-video-space-page-history-list-item-title line-clamp-1'>
                 {title}
               </a>
-              <div className='text-gray-400'>{lastWatchedTime}</div>
+              <div className='text-gray-400 line-clamp-1'>{lastWatchedTime}</div>
             </div>
             {type === 'bangumi' && (
               <div className='text-base text-gray-400 line-clamp-1'>
                 看到第{index}集 {videoTitle}
               </div>
             )}
+            {type === 'video' && <div className='text-gray-400 line-clamp-1'>{author}</div>}
           </div>
           <div className='flex self-center'>
             <Button
@@ -53,7 +55,7 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
                 fontSize: '1rem',
               }}
               onClick={() => {
-                deleteHistory([videoGroupId.toString()]).then((r) => {
+                deleteHistory([videoGroupId]).then((r) => {
                   if (r.code === 200) {
                     showMessage({ children: '删除成功' });
                     setHistoryList(historyList.filter((item) => item.videoGroupId !== videoGroupId));

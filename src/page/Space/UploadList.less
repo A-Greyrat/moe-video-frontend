@@ -1,0 +1,26 @@
+@import '../../common/theme/theme.less';
+
+.moe-video-space-page-upload-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+
+  > div {
+    box-shadow:
+            3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+              -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
+    border-radius: 0.5rem;
+  }
+}
+
+.moe-video-space-page-upload-list-item {
+  box-shadow:
+          3px 3px 3px 0 mix(@primary-color, transparent, 15%),
+            -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
+  border-radius: 0.5rem;
+}
+
+.moe-video-space-page-upload-list-item-title {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 500;
+}
