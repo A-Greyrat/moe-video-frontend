@@ -351,8 +351,8 @@ export const getRecommendList = async (num: number = 10): Promise<RecommendListI
             playCount: item.watchCnt,
             likeCount: item.likeCnt,
             lastUpdate: {
-              updateTo: Math.floor(Math.random() * 12),
-              updateAt: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toLocaleDateString(),
+              updateTo: item.updateAtAnnouncement,
+              updateAt: new Date(item.releaseTime).toLocaleDateString(),
             },
           },
         };
