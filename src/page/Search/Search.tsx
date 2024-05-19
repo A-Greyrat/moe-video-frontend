@@ -17,7 +17,7 @@ const Search = memo(() => {
   const [pageInfo, setPageInfo] = useState({
     total: 0,
     currentPage: parseInt(page, 10),
-    pageSize: 16,
+    pageSize: 15,
   });
   const navigate = useNavigate();
 
@@ -31,39 +31,14 @@ const Search = memo(() => {
   );
 
   useEffect(() => {
-    if (activeIndex === 0) {
-      setBangumiList([]);
-      setVideoList([]);
-      if (pageInfo.currentPage === 1) {
-        searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-          console.log(res);
-          setBangumiList(res.items);
-        });
-        searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-          handlePageInfo('total', res.total);
-          setVideoList(res.items);
-        });
-      } else {
-        searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-          handlePageInfo('total', res.total);
-          setVideoList(res.items);
-        });
-      }
-    } else if (activeIndex === 1) {
-      setBangumiList([]);
-      setVideoList([]);
-      searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-        handlePageInfo('total', res.total);
-        setVideoList(res.items);
-      });
-    } else if (activeIndex === 2) {
-      setBangumiList([]);
-      setVideoList([]);
-      searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-        setBangumiList(res.items);
-      });
-    }
-  }, [pageInfo.currentPage, activeIndex, id]);
+    searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+      setBangumiList(res.items);
+    });
+    searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+      handlePageInfo('total', res.total);
+      setVideoList(res.items);
+    });
+  }, [pageInfo.currentPage, id]);
 
   return (
     <div>
@@ -88,7 +63,15 @@ const Search = memo(() => {
         />
 
         {/* 搜索列表 */}
-        <SearchList bangumiList={bangumiList} videoList={videoList} />
+        {activeIndex === 0 && pageInfo.currentPage === 1 && (
+          <SearchList bangumiList={bangumiList} videoList={videoList} />
+        )}
+
+        {activeIndex === 0 && pageInfo.currentPage !== 1 && <SearchList videoList={videoList} />}
+
+        {activeIndex === 1 && <SearchList videoList={videoList} />}
+
+        {activeIndex === 2 && <SearchList bangumiList={bangumiList} />}
 
         {activeIndex !== 2 && (
           <Pagination

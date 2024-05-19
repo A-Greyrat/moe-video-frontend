@@ -1,9 +1,45 @@
 import { memo, useEffect, useState } from 'react';
 import { Image, Pagination } from '@natsume_shiki/mika-ui';
 import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
-import { getUserUploadList } from '../../common/video';
+import { getLastWatchedIndex, getUserUploadList } from '../../common/video';
+import { useTitle } from '../../common/hooks';
+
+export interface UploadListItemProps {
+  id: string;
+  title: string;
+  cover: string;
+  playCount: number;
+  uploadTime: string;
+  url: string;
+}
+
+export const UploadListItem = memo((props: UploadListItemProps) => {
+  const { id, title, cover, playCount, uploadTime, url } = props;
+  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+
+  useEffect(() => {
+    getLastWatchedIndex(id).then((index) => {
+      setLastWatchedIndex(index);
+    });
+  }, []);
+
+  return (
+    <a href={`${url}?p=${lastWatchedIndex}`} className='moe-video-space-page-upload-list-item overflow-hidden'>
+      <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
+      <div className='moe-video-space-page-upload-list-item-title px-3 pt-2 mb-2 line-clamp-2'>{title}</div>
+      <div className='flex justify-between px-3 pb-2'>
+        <div className='flex items-center gap-1 text-gray-400'>
+          <PlaybackVolumeIcon fill={'currentColor'} />
+          <span className='text-sm'>{playCount}</span>
+        </div>
+        <div className='text-gray-400 text-sm'>{uploadTime}</div>
+      </div>
+    </a>
+  );
+});
 
 const UploadList = memo(() => {
+  useTitle('投稿');
   const [uploadList, setUploadList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -25,17 +61,7 @@ const UploadList = memo(() => {
     <>
       <div className='moe-video-space-page-upload-list gap-4'>
         {uploadList.map((item, index) => (
-          <a href={item.url} className='moe-video-space-page-upload-list-item overflow-hidden' key={index}>
-            <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={item.cover} />
-            <div className='moe-video-space-page-upload-list-item-title px-3 pt-2 mb-2 line-clamp-2'>{item.title}</div>
-            <div className='flex justify-between px-3 pb-2'>
-              <div className='flex items-center gap-1 text-gray-400'>
-                <PlaybackVolumeIcon fill={'currentColor'} />
-                <span className='text-sm'>{item.playCount}</span>
-              </div>
-              <div className='text-gray-400 text-sm'>{item.uploadTime}</div>
-            </div>
-          </a>
+          <UploadListItem key={index} {...item} />
         ))}
       </div>
       <Pagination

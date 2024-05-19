@@ -396,6 +396,7 @@ export const searchVideo = async (
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
+        id: item.id,
         title: item.title,
         cover: item.cover,
         playCount: item.watchCnt,
@@ -424,11 +425,13 @@ export const searchBangumi = async (
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
+        id: item.id,
         title: item.title,
         cover: item.cover,
         desc: item.description,
         score: item.score,
         tags: item?.tags?.length > 0 && item.tags.split(';'),
+        userFavorite: item.userFavorite,
         url: `/video/${item.id}`,
       })),
     };
@@ -468,6 +471,7 @@ export const getHistoryList = async (index: number, pageSize: number): Promise<H
         videoTitle: item.videoTitle,
         lastWatchedTime: new Date(item.timestamp).toLocaleString(),
         index: item.videoIndex,
+        author: item.uploader?.nickname || '未知用户',
         url: `/video/${item.videoGroupId}`,
       })),
     };
@@ -480,6 +484,9 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
     videoId,
     watchProgress: Math.floor(progress),
   });
+
+export const getLastWatchedIndex = async (id: string) =>
+  httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) => res.data.videoIndex);
 
 export const getLastWatchedProgress = async (videoId: string) =>
   httpGet<any>('/plain-user/history/video-last-watch-time', { params: { videoId } }).then((res) => res.data);
@@ -502,7 +509,7 @@ export const getVideoFavoriteList = async (page: number, pageSize: number): Prom
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
-        id: item.id.toString(),
+        id: item.id,
         title: item.title,
         cover: item.cover,
         favorTime: new Date(item.createTime).toLocaleString(),
@@ -532,7 +539,7 @@ export const getBangumiFavoriteList = async (page: number, pageSize: number): Pr
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
-        id: item.id.toString(),
+        id: item.id,
         title: item.title,
         cover: item.cover,
         desc: item.description,
@@ -542,6 +549,9 @@ export const getBangumiFavoriteList = async (page: number, pageSize: number): Pr
       })),
     };
   });
+
+export const deleteBangumiFavorite = async (ids: string[]) =>
+  httpPost('/plain-user/favorites/delete', { videoGroupIds: ids });
 
 export const getUserUploadList = async (page: number, pageSize: number) =>
   httpGet<VideoGroupInfoList>('/video-group/my-upload-list', {
@@ -554,6 +564,7 @@ export const getUserUploadList = async (page: number, pageSize: number) =>
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
+        id: item.id,
         title: item.title,
         cover: item.cover,
         playCount: item.watchCnt,

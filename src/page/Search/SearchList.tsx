@@ -1,19 +1,24 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import './SearchList.less';
-import { Button, Image } from '@natsume_shiki/mika-ui';
+import { Button, Image, showMessage } from '@natsume_shiki/mika-ui';
 import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import LoveIcon from '../Icon/LoveIcon.tsx';
+import { useNavigate } from 'react-router-dom';
+import { deleteBangumiFavorite, favoriteVideoGroup, getLastWatchedIndex } from '../../common/video';
 
 export interface BangumiItemProps {
+  id: string;
   title: string;
   cover: string;
   score: string;
   desc: string;
   tags: string[];
+  userFavorite: boolean;
   url: string;
 }
 
 export interface VideoItemProps {
+  id: string;
   title: string;
   cover: string;
   playCount: string;
@@ -24,16 +29,28 @@ export interface VideoItemProps {
 }
 
 interface SearchListProps {
-  bangumiList: BangumiItemProps[];
-  videoList: VideoItemProps[];
+  bangumiList?: BangumiItemProps[];
+  videoList?: VideoItemProps[];
 }
 
 export const BangumiItem = memo((props: BangumiItemProps) => {
-  const { title, cover, score, desc, tags, url } = props;
+  const { id, title, cover, score, desc, tags, url, userFavorite } = props;
+  const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(userFavorite ? 'Favorite' : 'NotFavorite');
+  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+
+  useEffect(() => {
+    getLastWatchedIndex(id).then((index) => {
+      setLastWatchedIndex(index);
+    });
+  }, []);
 
   return (
     <div className='moe-video-search-page-bangumi-list-item flex py-2 px-2'>
-      <a href={url} className='moe-video-search-page-bangumi-list-item-cover overflow-hidden mr-4'>
+      <a
+        href={`${url}?p=${lastWatchedIndex}`}
+        className='moe-video-search-page-bangumi-list-item-cover overflow-hidden mr-4'
+      >
         <div className='relative w-full h-full'>
           <Image
             lazy
@@ -69,18 +86,39 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
               width: 'fit-content',
               fontSize: '1rem',
             }}
+            onClick={() => {
+              navigate(`${url}?p=${lastWatchedIndex}`);
+            }}
           >
             立即观看
           </Button>
           <Button
+            key={isFavorite}
             size='large'
             styleType='default'
             style={{
               fontSize: '1rem',
               width: 'fit-content',
             }}
+            onClick={() => {
+              if (userFavorite) {
+                deleteBangumiFavorite([id]).then((r) => {
+                  if (r.code === 200) {
+                    showMessage({ children: '取消追番成功' });
+                    setIsFavorite('NotFavorite');
+                  }
+                });
+              } else {
+                favoriteVideoGroup(id).then((r) => {
+                  if (r.code === 200) {
+                    showMessage({ children: '追番成功' });
+                    setIsFavorite('Favorite');
+                  }
+                });
+              }
+            }}
           >
-            加入追番
+            {isFavorite === 'Favorite' ? '取消追番' : '加入追番'}
           </Button>
         </div>
       </div>
@@ -89,10 +127,17 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
 });
 
 export const VideoItem = memo((props: VideoItemProps) => {
-  const { title, cover, playCount, likeCount, author, uploadTime, url } = props;
+  const { id, title, cover, playCount, likeCount, author, uploadTime, url } = props;
+  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+
+  useEffect(() => {
+    getLastWatchedIndex(id).then((index) => {
+      setLastWatchedIndex(index);
+    });
+  }, []);
 
   return (
-    <a href={url} className='moe-video-search-page-video-list-item overflow-hidden'>
+    <a href={`${url}?p=${lastWatchedIndex}`} className='moe-video-search-page-video-list-item overflow-hidden'>
       <div className='relative'>
         <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
         <div className='moe-video-search-page-video-list-item-cover-background'></div>
@@ -123,7 +168,7 @@ const SearchList = memo((props: SearchListProps) => {
 
   return (
     <div>
-      {bangumiList.length > 0 && (
+      {bangumiList?.length > 0 && (
         <div className='moe-video-search-page-bangumi-list mb-12 gap-4 w-full'>
           {bangumiList.map((item, index) => (
             <BangumiItem key={index} {...item} />
@@ -131,7 +176,7 @@ const SearchList = memo((props: SearchListProps) => {
         </div>
       )}
 
-      {videoList.length > 0 && (
+      {videoList?.length > 0 && (
         <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4'>
           {videoList.map((item, index) => (
             <VideoItem key={index} {...item} />
