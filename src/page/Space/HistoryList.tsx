@@ -38,7 +38,7 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
               <div className='text-gray-400'>{lastWatchedTime}</div>
             </div>
             {type === 'bangumi' && (
-              <div className='text-gray-400 line-clamp-1'>
+              <div className='text-base text-gray-400 line-clamp-1'>
                 看到第{index}集 {videoTitle}
               </div>
             )}
@@ -68,7 +68,7 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
           </div>
         </div>
       </div>
-      <hr className='mt-2 border-gray-200 ' />
+      <hr className='mt-2 border-gray-200' />
     </>
   );
 });

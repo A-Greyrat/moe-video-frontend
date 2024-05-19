@@ -30,7 +30,7 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
         </div>
       </a>
       <div className='flex flex-col justify-between h-full'>
-        <div className='moe-video-space-page-favor-list-item-title px-3 pt-1 mb-1 line-clamp-2'>{title}</div>
+        <div className='moe-video-space-page-favor-list-item-title px-3 pt-2 mb-1 line-clamp-2'>{title}</div>
         <div className='flex justify-between px-3 pb-2 text-gray-400 items-center'>
           <span>收藏于: {favorTime}</span>
           <Button

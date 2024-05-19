@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useTitle } from '../../common/hooks';
 import ReportIcon from '../Icon/ReportIcon.tsx';
 import { favoriteVideoGroup, likeVideoGroup, removeFavoriteVideoGroup } from '../../common/video';
-import { showMessage, showModal } from '@natsume_shiki/mika-ui';
+import { Image, showMessage, showModal } from '@natsume_shiki/mika-ui';
 import './VideoPageInfo.less';
 
 export interface VideoPageInfoProps {
@@ -20,6 +20,10 @@ export interface VideoPageInfoProps {
   description: string;
   isUserLiked: boolean;
   isUserFavorite: boolean;
+  uploader: {
+    nickname: string;
+    avatar: string;
+  };
 }
 
 const isTextOverflow = (element: HTMLElement | null, line: number) => {
@@ -29,8 +33,18 @@ const isTextOverflow = (element: HTMLElement | null, line: number) => {
 };
 
 const VideoPageInfo = memo((props: VideoPageInfoProps) => {
-  const { tags, playCount, likeCount, danmakuCount, favoriteCount, title, description, isUserLiked, isUserFavorite } =
-    props;
+  const {
+    tags,
+    playCount,
+    likeCount,
+    danmakuCount,
+    favoriteCount,
+    title,
+    description,
+    isUserLiked,
+    isUserFavorite,
+    uploader,
+  } = props;
   const param = useParams();
 
   useTitle(props.title);
@@ -92,6 +106,24 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
       <h1 className='moe-video-video-page-title'>{title}</h1>
 
       <div className='moe-video-video-page-count'>
+        <span
+          className='select-none'
+          style={{
+            padding: '0.2rem 0.5rem',
+          }}
+        >
+          <Image
+            src={uploader.avatar || '/defaultAvatar.webp'}
+            lazy
+            style={{
+              aspectRatio: '1 / 1',
+              height: '1.8rem',
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
+          />
+          <p>{uploader.nickname}</p>
+        </span>
         <span className='select-none'>
           <PlaybackVolumeIcon />
           {playCount}
