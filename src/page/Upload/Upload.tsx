@@ -28,13 +28,6 @@ const Upload = memo(() => {
         const tags = formRef.current.querySelector('input[name="tags"]') as HTMLInputElement;
         const description = formRef.current.querySelector('textarea[name="description"]') as HTMLInputElement;
 
-        const formData = new FormData();
-        formData.append('video', uploadVideoUrl);
-        formData.append('title', title.value);
-        formData.append('tags', tags.value);
-        formData.append('description', description.value);
-        formData.append('cover', uploadCoverUrl);
-
         if (!uploadVideoUrl || !uploadCoverUrl) {
           showMessage({ children: '请上传视频和封面' });
           return;
@@ -54,8 +47,10 @@ const Upload = memo(() => {
           showMessage({ children: '请填写简介' });
           return;
         }
+
         uploadVideo({
           title: title.value,
+          tags: tags.value,
           description: description.value,
           cover: uploadCoverUrl,
           link: uploadVideoUrl,

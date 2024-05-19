@@ -57,8 +57,15 @@ const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => 
         </div>
       </div>
       <div className='moe-video-home-page-recommend-list-item-title px-3 pt-2 pb-1'>{title}</div>
-      <div className='px-3 pb-3 text-gray-400'>
-        <span className='mr-2'>{lastUpdate?.updateTo}</span>
+      <div className='px-3 pb-3 text-gray-400 flex justify-between'>
+        <span
+          className='line-clamp-1'
+          style={{
+            maxWidth: 'calc(100% - 100px)',
+          }}
+        >
+          {lastUpdate?.updateTo}
+        </span>
         <span>{lastUpdate?.updateAt}</span>
       </div>
     </a>
