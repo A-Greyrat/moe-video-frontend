@@ -248,6 +248,7 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     extra_id: res.data.bvid,
     isUserLiked: res.data.userLike,
     isUserFavorite: res.data.userFavorite,
+    uploader: res.data.uploader,
   }));
 };
 
