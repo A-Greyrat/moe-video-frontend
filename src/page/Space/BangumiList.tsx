@@ -5,6 +5,7 @@ import { useTitle } from '../../common/hooks';
 import { deleteBangumiFavorite, getBangumiFavoriteList } from '../../common/video';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'mika-store';
+import SkeletonCard from '../../component/SkeletonCard';
 
 export interface BangumiListItemProps {
   id: string;
@@ -24,7 +25,7 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
   const [bangumiList, setBangumiList] = useStore('moe-video-space-page-bangumi-list', []);
   const [currentPage, setCurrentPage] = useStore('moe-video-space-page-bangumi-list-current-page', 1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', 0);
+  const [_total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', -1);
 
   return (
     <div className='moe-video-space-page-bangumi-list-item flex py-4 px-2'>
@@ -94,7 +95,7 @@ const BangumiList = memo(() => {
   const [bangumiList, setBangumiList] = useStore('moe-video-space-page-bangumi-list', []);
   const [currentPage, setCurrentPage] = useStore('moe-video-space-page-bangumi-list-current-page', 1);
   const pageSize = useRef(10);
-  const [total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', 0);
+  const [total, setTotal] = useStore('moe-video-space-page-bangumi-list-total', -1);
 
   const handlePageChange = useCallback((index: number) => {
     setCurrentPage(index);
@@ -106,8 +107,24 @@ const BangumiList = memo(() => {
   }, []);
 
   useEffect(() => {
+    setTotal(-1);
+
     handlePageChange(currentPage);
   }, []);
+
+  if (total === -1 && bangumiList.length === 0) {
+    return (
+      <SkeletonCard
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
+          gap: '1rem',
+          width: '100%',
+        }}
+        num={12}
+      />
+    );
+  }
 
   if (total === 0 || !bangumiList || bangumiList.length === 0) {
     return (
@@ -121,8 +138,8 @@ const BangumiList = memo(() => {
     <div>
       {bangumiList.length > 0 && (
         <div className='moe-video-space-page-bangumi-list gap-4'>
-          {bangumiList.map((item, index) => (
-            <BangumiListItem key={index} {...item} pageSize={pageSize.current} />
+          {bangumiList.map((item) => (
+            <BangumiListItem key={item.id} {...item} pageSize={pageSize.current} />
           ))}
         </div>
       )}
