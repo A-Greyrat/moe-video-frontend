@@ -3,6 +3,7 @@ import './RecommendList.less';
 import { Image } from '@natsume_shiki/mika-ui';
 import PlayCountIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import LoveIcon from '../Icon/LoveIcon.tsx';
+import SkeletonCard from '../../component/SkeletonCard';
 
 export interface RecommendVideoListItemProps {
   title: string;
@@ -123,7 +124,17 @@ const RecommendList = memo((props: RecommendListProps) => {
       <div className='flex items-center pb-2'>
         <span className='text-3xl font-medium text-gray-800'>猜你喜欢</span>
       </div>
-
+      {items?.length == 0 && (
+        <SkeletonCard
+          num={12}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
+            gap: '1rem',
+            width: '100%',
+          }}
+        />
+      )}
       <div className='moe-video-home-page-recommend-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
         {items?.length > 0 && items.map((item) => <RecommendListItem key={item.data.url} {...item} />)}
       </div>
