@@ -8,6 +8,7 @@ import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.t
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
 import { BangumiListItemProps } from '../../page/Space/BangumiList.tsx';
+import { VideoGroupInfoList } from './type.ts';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -316,13 +317,11 @@ export interface VideoUploadInfo {
   description: string;
   cover: string;
   link: string;
+  tags: string;
 }
 
 export const uploadVideo = async (info: VideoUploadInfo) => {
   const url = '/plain-video-group/add';
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  info.tagIds = [1];
   return httpPost(url, info);
 };
 
@@ -539,6 +538,26 @@ export const getBangumiFavoriteList = async (page: number, pageSize: number): Pr
         url: `/video/${item.id}`,
         lastWatchedIndex: item.lastWatchVideoIndex,
         lastWatchedTitle: item.lastWatchVideoTitle,
+      })),
+    };
+  });
+
+export const getUserUploadList = async (page: number, pageSize: number) =>
+  httpGet<VideoGroupInfoList>('/video-group/my-upload-list', {
+    params: {
+      page,
+      pageSize,
+    },
+  }).then((res) => {
+    const { data } = res;
+    return {
+      total: data.total,
+      items: data.records.map((item: any) => ({
+        title: item.title,
+        cover: item.cover,
+        playCount: item.watchCnt,
+        uploadTime: new Date(item.createTime).toLocaleDateString(),
+        url: `/video/${item.id}`,
       })),
     };
   });
