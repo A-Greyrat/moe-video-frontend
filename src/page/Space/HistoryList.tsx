@@ -4,6 +4,7 @@ import { Button, Image, InfinityList, showMessage } from '@natsume_shiki/mika-ui
 import { deleteHistory, getHistoryList } from '../../common/video';
 import { useTitle } from '../../common/hooks';
 import { useStore } from 'mika-store';
+import SkeletonCard from '../../component/SkeletonCard';
 
 export interface HistoryListItemProps {
   type: 'video' | 'bangumi';
@@ -78,19 +79,33 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
 const HistoryList = memo(() => {
   const [historyList, setHistoryList] = useStore<HistoryListItemProps[]>('moe-video-history-list', []);
   const pageSize = useRef(5);
-  const [total, setTotal] = useStore('moe-video-history-list-total', 0);
+  const [total, setTotal] = useStore('moe-video-history-list-total', -1);
   useTitle('历史记录');
 
   useEffect(() => {
-    if (historyList.length > 0) {
-      return;
-    }
+    setTotal(-1);
 
     getHistoryList(historyList.length, pageSize.current).then((res) => {
       setHistoryList(res.items);
       setTotal(res.total);
     });
   }, []);
+
+  if (total === -1 && (!historyList || historyList.length === 0)) {
+    return (
+      <SkeletonCard
+        type='strip'
+        num={12}
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+        }}
+      />
+    );
+  }
 
   if (total === 0 || !historyList || historyList.length === 0) {
     return (
@@ -113,8 +128,8 @@ const HistoryList = memo(() => {
     >
       {historyList.length > 0 && (
         <div className='moe-video-space-page-history-list flex flex-col gap-4'>
-          {historyList.map((item, index) => (
-            <HistoryListItem key={index} {...item} />
+          {historyList.map((item) => (
+            <HistoryListItem key={item.videoGroupId} {...item} />
           ))}
         </div>
       )}

@@ -52,8 +52,8 @@ const VideoRecommendList = memo((props: VideoRecommendListProps) => {
     <div className='moe-video-video-page-recommend-wrapper'>
       <p className='moe-video-video-page-recommend-title'>推荐视频</p>
       <div className='moe-video-video-page-recommend-list'>
-        {items.map((item, index) => (
-          <VideoRecommendListItem key={index} {...item} />
+        {items.map((item) => (
+          <VideoRecommendListItem key={item.url} {...item} />
         ))}
       </div>
     </div>

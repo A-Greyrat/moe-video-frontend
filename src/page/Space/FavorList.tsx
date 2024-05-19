@@ -4,6 +4,7 @@ import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
 import { useTitle } from '../../common/hooks';
 import { deleteVideoFavorite, getLastWatchedIndex, getVideoFavoriteList } from '../../common/video';
 import { useStore } from 'mika-store';
+import SkeletonCard from '../../component/SkeletonCard';
 
 export interface FavorListItemProps {
   id: string;
@@ -80,10 +81,11 @@ const FavorList = memo(() => {
   const [favorList, setFavorList] = useStore('moe-video-space-page-favor-list', []);
   const [currentPage, setCurrentPage] = useStore('moe-video-space-page-favor-list-current-page', 1);
   const pageSize = useRef(10);
-  const [total, setTotal] = useStore('moe-video-space-page-favor-list-total', 0);
+  const [total, setTotal] = useStore('moe-video-space-page-favor-list-total', -1);
 
   const handlePageChange = useCallback((index: number) => {
     setCurrentPage(index);
+    setTotal(-1);
 
     getVideoFavoriteList(index, pageSize.current).then((res) => {
       setFavorList(res.items);
@@ -92,12 +94,22 @@ const FavorList = memo(() => {
   }, []);
 
   useEffect(() => {
-    if (favorList.length > 0) {
-      return;
-    }
-
     handlePageChange(currentPage);
   }, []);
+
+  if (total === -1 && favorList.length === 0) {
+    return (
+      <SkeletonCard
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
+          gap: '1rem',
+          width: '100%',
+        }}
+        num={12}
+      />
+    );
+  }
 
   if (total === 0 || !favorList || favorList.length === 0) {
     return (
@@ -111,13 +123,13 @@ const FavorList = memo(() => {
     <div>
       {favorList.length > 0 && (
         <div className='moe-video-space-page-favor-list pt-2 pb-4 px-1 mb-12 gap-4'>
-          {favorList.map((item, index) => (
-            <FavorListItem key={index} {...item} pageSize={pageSize.current} />
+          {favorList.map((item) => (
+            <FavorListItem key={item.id} {...item} pageSize={pageSize.current} />
           ))}
         </div>
       )}
       <Pagination
-        key={total}
+        initIndex={currentPage}
         pageNum={Math.ceil(total / pageSize.current)}
         onChange={(index) => {
           handlePageChange(index);

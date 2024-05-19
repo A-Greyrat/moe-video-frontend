@@ -125,7 +125,7 @@ const RecommendList = memo((props: RecommendListProps) => {
       </div>
 
       <div className='moe-video-home-page-recommend-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
-        {items?.length > 0 && items.map((item, index) => <RecommendListItem key={index} {...item} />)}
+        {items?.length > 0 && items.map((item) => <RecommendListItem key={item.data.url} {...item} />)}
       </div>
     </>
   );

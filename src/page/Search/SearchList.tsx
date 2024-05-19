@@ -56,7 +56,7 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
             lazy
             width='100%'
             className='moe-video-search-page-bangumi-list-item-cover-img'
-            style={{ aspectRatio: '3 / 4' }}
+            style={{ aspectRatio: '3 / 4', objectFit: 'cover' }}
             src={cover}
           />
           <div className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic'>
@@ -170,16 +170,16 @@ const SearchList = memo((props: SearchListProps) => {
     <div>
       {bangumiList?.length > 0 && (
         <div className='moe-video-search-page-bangumi-list mb-12 gap-4 w-full'>
-          {bangumiList.map((item, index) => (
-            <BangumiItem key={index} {...item} />
+          {bangumiList.map((item) => (
+            <BangumiItem key={item.id} {...item} />
           ))}
         </div>
       )}
 
       {videoList?.length > 0 && (
         <div className='moe-video-search-page-video-list pt-2 pb-4 px-1 mb-12 gap-4'>
-          {videoList.map((item, index) => (
-            <VideoItem key={index} {...item} />
+          {videoList.map((item) => (
+            <VideoItem key={item.id} {...item} />
           ))}
         </div>
       )}

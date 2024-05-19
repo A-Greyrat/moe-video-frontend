@@ -7,6 +7,7 @@ import Footer from '../../component/footer/Footer.tsx';
 import SearchList, { BangumiItemProps, VideoItemProps } from './SearchList.tsx';
 import { searchBangumi, searchVideo } from '../../common/video';
 import { useTitle } from '../../common/hooks';
+import SkeletonCard from '../../component/SkeletonCard';
 
 const Search = memo(() => {
   const { id, page = '1', type = '' } = useParams();
@@ -15,7 +16,7 @@ const Search = memo(() => {
   const [bangumiList, setBangumiList] = useState<BangumiItemProps[]>([]);
   const [videoList, setVideoList] = useState<VideoItemProps[]>([]);
   const [pageInfo, setPageInfo] = useState({
-    total: 0,
+    total: -1,
     currentPage: parseInt(page, 10),
     pageSize: 15,
   });
@@ -31,6 +32,8 @@ const Search = memo(() => {
   );
 
   useEffect(() => {
+    handlePageInfo('total', -1);
+
     searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
       setBangumiList(res.items);
     });
@@ -44,7 +47,6 @@ const Search = memo(() => {
     <div>
       <Header />
       <div className='moe-video-search-page-wrapper'>
-        {/* <SearchTypeTabList searchType={[ '综合', '视频', '番剧']} activeIndex={activeIndex} /> */}
         <TabList
           items={['综合', '视频', '番剧']}
           activeIndex={activeIndex}
@@ -61,6 +63,18 @@ const Search = memo(() => {
             justifyContent: 'space-between',
           }}
         />
+
+        {pageInfo.total === -1 && (
+          <SkeletonCard
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
+              gap: '1rem',
+              width: '100%',
+            }}
+            num={15}
+          />
+        )}
 
         {/* 搜索列表 */}
         {activeIndex === 0 && pageInfo.currentPage === 1 && (

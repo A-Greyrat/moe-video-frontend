@@ -1,0 +1,65 @@
+@import '../../common/theme/theme.less';
+
+@keyframes loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.moe-video-skeleton-card {
+  width: auto;
+  box-shadow:
+    3px 3px 3px 0 mix(@primary-color, transparent, 2%),
+    -3px -3px 15px 0 mix(@primary-color, transparent, 2%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.moe-video-skeleton-card-cover {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  border-radius: 0.5rem;
+  aspect-ratio: 16 / 9;
+  margin-top: 0.5rem;
+  width: 100%;
+  animation: loading 1.5s infinite linear;
+}
+
+.moe-video-skeleton-card-title {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  border-radius: 0.5rem;
+  height: 2rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  animation: loading 1.5s infinite linear;
+}
+
+.moe-video-skeleton-card-info {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  border-radius: 0.5rem;
+  height: 1.4rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  animation: loading 1.5s infinite linear;
+}
+
+.moe-video-skeleton-strip-card {
+  width: auto;
+  box-shadow:
+    3px 3px 3px 0 mix(@primary-color, transparent, 2%),
+    -3px -3px 15px 0 mix(@primary-color, transparent, 2%);
+  border-radius: 0.5rem;
+}
+
+.moe-video-skeleton-strip-card-content {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  border-radius: 0.5rem;
+  height: 8rem;
+  animation: loading 1.5s infinite linear;
+}
