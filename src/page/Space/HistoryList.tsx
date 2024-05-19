@@ -85,7 +85,7 @@ const HistoryList = memo(() => {
   useEffect(() => {
     setTotal(-1);
 
-    getHistoryList(historyList.length, pageSize.current).then((res) => {
+    getHistoryList(0, pageSize.current).then((res) => {
       setHistoryList(res.items);
       setTotal(res.total);
     });
