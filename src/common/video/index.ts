@@ -1,6 +1,3 @@
-// @ts-ignore
-// @ts-ignore
-
 import { DanmakuAttr } from 'mika-video-player';
 import { VideoPaginationListItemProps } from '../../page/Video/VideoPaginationList.tsx';
 import { VideoRecommendListItemProps } from '../../page/Video/VideoRecommendList.tsx';
@@ -571,6 +568,8 @@ export const getUserUploadList = async (page: number, pageSize: number) =>
       })),
     };
   });
+
+export const addFeedback = async (content: string, email: string) => httpPost('/feedback/add', { content, email });
 
 export const addReport = (type: number, targetId: string, reason: string) =>
   httpPost('/report/add', {

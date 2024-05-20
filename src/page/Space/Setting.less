@@ -8,6 +8,8 @@
   border-radius: 0.5rem;
   resize: none;
 
+  font-size: 0.9rem;
+
   transition: box-shadow 0.3s;
 
   &:focus,
@@ -15,4 +17,29 @@
     outline: none;
     box-shadow: 0 0 0 2px mix(@primary-color, transparent, 15%);
   }
+
+}
+
+.moe-video-space-page-feedback-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid @primary-color;
+  border-radius: 0.5rem;
+  resize: none;
+
+  font-size: 0.9rem;
+
+  transition: box-shadow 0.3s;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px mix(@primary-color, transparent, 15%);
+  }
+}
+
+.moe-video-space-page-feedback-label {
+  color: @primary-color;
+  font-size: 1.1rem;
+  font-weight: 600;
 }

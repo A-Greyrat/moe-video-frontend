@@ -1,10 +1,11 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { getUserInfo, modifyUserInfo } from '../../common/user';
 import LoadingPage from '../Loading/LoadingPage.tsx';
 import { Button, Input, showMessage, showModal } from '@natsume_shiki/mika-ui';
 import './Setting.less';
 import { useTitle } from '../../common/hooks';
 import AvatarUpload from './AvatarUpload.tsx';
+import { addFeedback } from '../../common/video';
 
 const ValueField = memo(
   (props: {
@@ -50,6 +51,7 @@ const ValueField = memo(
 const Setting = memo(() => {
   const [userInfo, setUserInfo] = useState(null);
   const [_, forceUpdate] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useTitle('设置');
 
@@ -145,8 +147,19 @@ const Setting = memo(() => {
             showModal({
               title: '反馈',
               content: (
-                <div>
+                <form ref={formRef}>
+                  <div className='py-2'>
+                    <label className='moe-video-space-page-feedback-label mb-1 block'>邮箱</label>
+                    <input
+                      placeholder='请输入您的邮箱'
+                      name='email'
+                      type='email'
+                      className='moe-video-space-page-feedback-input'
+                    />
+                  </div>
+                  <label className='moe-video-space-page-feedback-label block mb-1'>反馈</label>
                   <textarea
+                    name='content'
                     className='moe-video-space-page-feedback-textarea'
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
@@ -155,10 +168,29 @@ const Setting = memo(() => {
                     }}
                     placeholder='请输入您的反馈'
                   />
-                </div>
+                </form>
               ),
-              onOk: () => {
-                showMessage({ children: '感谢您的反馈！' });
+              onOk: async () => {
+                const formData = new FormData(formRef.current);
+
+                if (formData.get('email') === '' || formData.get('content') === '') {
+                  showMessage({ children: '请填写完整' });
+                  return false;
+                }
+                // 校验邮箱
+                if (!formRef?.current?.email.checkValidity()) {
+                  showMessage({ children: '请输入正确的邮箱' });
+                  return false;
+                }
+
+                return addFeedback(formData.get('content') as string, formData.get('email') as string).then((r) => {
+                  if (r.code === 200) {
+                    showMessage({ children: '感谢您的反馈！' });
+                    return true;
+                  }
+                  showMessage({ children: '提交失败' });
+                  return false;
+                });
               },
               footer: 'ok close',
             });
