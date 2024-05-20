@@ -569,6 +569,8 @@ export const getUserUploadList = async (page: number, pageSize: number) =>
     };
   });
 
+export const addFeedback = async (content: string, email: string) => httpPost('/feedback/add', { content, email });
+
 export const addReport = (type: number, targetId: string, reason: string) =>
   httpPost('/report/add', {
     type,
