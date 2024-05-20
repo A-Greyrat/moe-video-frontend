@@ -6,7 +6,7 @@ import FavoriteIcon from '../Icon/FavoriteIcon.tsx';
 import { useParams } from 'react-router-dom';
 import { useTitle } from '../../common/hooks';
 import ReportIcon from '../Icon/ReportIcon.tsx';
-import { favoriteVideoGroup, likeVideoGroup, removeFavoriteVideoGroup } from '../../common/video';
+import { addReport, favoriteVideoGroup, likeVideoGroup, removeFavoriteVideoGroup } from '../../common/video';
 import { Image, showMessage, showModal } from '@natsume_shiki/mika-ui';
 import './VideoPageInfo.less';
 
@@ -169,7 +169,15 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
 
               onOk: () => {
                 const form = new FormData(formRef.current!);
-                showMessage({ children: <pre>{JSON.stringify(Object.fromEntries(form))}</pre> });
+
+                addReport(0, param.id, JSON.stringify(Object.fromEntries(form))).then(
+                  () => {
+                    showMessage({ children: '举报成功' });
+                  },
+                  () => {
+                    showMessage({ children: '举报失败' });
+                  },
+                );
               },
               onCancel: () => {},
               footer: 'ok cancel',

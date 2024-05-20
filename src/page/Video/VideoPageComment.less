@@ -202,3 +202,28 @@
 .moe-video-page-comment-box-container > img {
   height: fit-content;
 }
+
+.moe-video-page-comment-report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 12rem;
+
+  > p {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  > select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid mix(@primary-color, transparent, 40%);
+    font-size: 1rem;
+    color: #555;
+
+    &:focus, &:focus-visible {
+      outline: none;
+      border-color: mix(@primary-color, transparent, 60%);
+    }
+  }
+}

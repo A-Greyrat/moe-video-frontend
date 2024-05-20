@@ -485,9 +485,9 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
   });
 
 export const getLastWatchedIndex = async (id: string) =>
-  httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } })
-    .then((res) => res.data.videoIndex)
-    .catch(() => '1');
+  httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) =>
+    res.code !== 200 ? '1' : res.data.lastWatchVideoIndex || '1',
+  );
 
 export const getLastWatchedProgress = async (videoId: string) =>
   httpGet<any>('/plain-user/history/video-last-watch-time', { params: { videoId } }).then((res) => res.data);
@@ -567,4 +567,11 @@ export const getUserUploadList = async (page: number, pageSize: number) =>
         url: `/video/${item.id}`,
       })),
     };
+  });
+
+export const addReport = (type: number, targetId: string, reason: string) =>
+  httpPost('/report/add', {
+    type,
+    targetId,
+    reason,
   });

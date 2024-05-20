@@ -19,9 +19,7 @@ export const UploadListItem = memo((props: UploadListItemProps) => {
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    getLastWatchedIndex(id).then((index) => {
-      setLastWatchedIndex(index);
-    });
+    getLastWatchedIndex(id).then(setLastWatchedIndex);
   }, []);
 
   return (
