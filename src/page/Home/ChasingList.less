@@ -12,6 +12,16 @@
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   border-radius: 0.5rem;
   flex: 0 0 18rem;
+
+  transition: 0.3s;
+
+  &:hover {
+    box-shadow:
+            3px 3px 3px 0 mix(@primary-color, transparent, 45%),
+              -3px -3px 15px 0 mix(@primary-color, transparent, 45%);
+
+    scale: 1.02;
+  }
 }
 
 .moe-video-home-page-chasing-list-item-cover-background {
@@ -46,7 +56,7 @@
 }
 
 .moe-video-home-page-chasing-list-item-title {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #333;
   font-weight: 500;
 }

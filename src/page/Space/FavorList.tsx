@@ -10,19 +10,18 @@ export interface FavorListItemProps {
   id: string;
   title: string;
   cover: string;
-  favorTime: string;
   url: string;
 
   pageSize: number;
 }
 
 export const FavorListItem = memo((props: FavorListItemProps) => {
-  const { id, title, cover, favorTime, url, pageSize } = props;
+  const { id, title, cover, url, pageSize } = props;
   const [favorList, setFavorList] = useStore('moe-video-space-page-favor-list', []);
   const [currentPage, setCurrentPage] = useStore('moe-video-space-page-favor-list-current-page', 1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_total, setTotal] = useStore('moe-video-space-page-favor-list-total', 0);
-  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+  const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
     getLastWatchedIndex(id).then((index) => {
@@ -39,8 +38,7 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
       </a>
       <div className='flex flex-col justify-between h-full'>
         <div className='moe-video-space-page-favor-list-item-title px-3 pt-2 mb-1 line-clamp-2'>{title}</div>
-        <div className='flex justify-between px-3 pb-2 text-gray-400 items-center'>
-          <span className='line-clamp-1'>收藏于: {favorTime}</span>
+        <div className='flex justify-end px-3 pb-2 text-gray-400 items-center'>
           <Button
             size='large'
             styleType='default'

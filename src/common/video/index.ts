@@ -7,7 +7,6 @@ import { BangumiCarouselItemProps } from '../../page/Home/BangumiCarousel.tsx';
 import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.tsx';
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
-import { BangumiListItemProps } from '../../page/Space/BangumiList.tsx';
 import { VideoGroupInfoList } from './type.ts';
 
 const proxyImg = (url: string) =>
@@ -486,7 +485,9 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
   });
 
 export const getLastWatchedIndex = async (id: string) =>
-  httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) => res.data.videoIndex);
+  httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } })
+    .then((res) => res.data.videoIndex)
+    .catch(() => '1');
 
 export const getLastWatchedProgress = async (videoId: string) =>
   httpGet<any>('/plain-user/history/video-last-watch-time', { params: { videoId } }).then((res) => res.data);
@@ -512,7 +513,6 @@ export const getVideoFavoriteList = async (page: number, pageSize: number): Prom
         id: item.id,
         title: item.title,
         cover: item.cover,
-        favorTime: new Date(item.createTime).toLocaleString(),
         url: `/video/${item.id}`,
       })),
     };
@@ -521,12 +521,7 @@ export const getVideoFavoriteList = async (page: number, pageSize: number): Prom
 export const deleteVideoFavorite = async (ids: string[]) =>
   httpPost('/plain-user/favorites/delete', { videoGroupIds: ids });
 
-export interface bangumiFavoriteList {
-  total: number;
-  items: BangumiListItemProps[];
-}
-
-export const getBangumiFavoriteList = async (page: number, pageSize: number): Promise<bangumiFavoriteList> =>
+export const getBangumiFavoriteList = async (page: number, pageSize: number) =>
   httpGet<any>('/plain-user/favorites', {
     params: {
       type: 1,

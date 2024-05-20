@@ -37,7 +37,7 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
   const { id, title, cover, score, desc, tags, url, userFavorite } = props;
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(userFavorite ? 'Favorite' : 'NotFavorite');
-  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+  const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
     getLastWatchedIndex(id).then((index) => {
@@ -128,7 +128,7 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
 
 export const VideoItem = memo((props: VideoItemProps) => {
   const { id, title, cover, playCount, likeCount, author, uploadTime, url } = props;
-  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+  const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
     getLastWatchedIndex(id).then((index) => {
