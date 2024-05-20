@@ -118,7 +118,6 @@ const Video = memo(() => {
             }}
             ref={videoRef}
           />
-
           {item && <VideoPageInfo {...(item as unknown as VideoPageInfoProps)} />}
         </div>
         {item && <VideoPageComment videoId={param.id} />}

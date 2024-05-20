@@ -1,8 +1,9 @@
-import { Button, Image, InfinityList, Pagination, showMessage, withLockTime } from '@natsume_shiki/mika-ui';
+import { Button, Image, InfinityList, Pagination, showMessage, showModal, withLockTime } from '@natsume_shiki/mika-ui';
 import { useStore } from 'mika-store';
 import { memo, useCallback, useRef, useState } from 'react';
 import {
   addComment,
+  addReport,
   deleteComment,
   getComments,
   VideoPageCommentProps,
@@ -17,7 +18,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
   const [replyTo, setReplyTo] = useStore('video-page-reply-to', '-1');
   const [comment, setComment] = useStore<VideoPageCommentProps[]>(`video-page-comment`);
   const [total, setTotal] = useStore<number>(`video-page-comment-total`, 0);
-
+  const formRef = useRef<HTMLFormElement>(null);
   const userInfo = useUser();
 
   // eslint-disable-next-line no-underscore-dangle
@@ -34,6 +35,20 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
         },
       ),
     [comment, props.id, setComment, setTotal, total],
+  );
+
+  const report = useCallback(
+    (reason: string) => {
+      addReport(1, props.id, reason).then(
+        () => {
+          showMessage({ children: '举报成功' });
+        },
+        () => {
+          showMessage({ children: '举报失败' });
+        },
+      );
+    },
+    [props.id],
   );
 
   return (
@@ -57,7 +72,7 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
                   setReplyTo(props.id);
                 }
               }}
-              style={{ paddingLeft: 0, fontSize: '1rem' }}
+              style={{ paddingLeft: 0 }}
               styleType='link'
             >
               回复
@@ -65,6 +80,36 @@ const VideoPageCommentBox = memo((props: VideoPageCommentProps & { videoId: stri
             {userInfo?.userId.toString() === props.user.id && (
               <Button styleType='link' onClick={_deleteComment}>
                 删除
+              </Button>
+            )}
+            {userInfo?.userId.toString() !== props.user.id && (
+              <Button
+                styleType='link'
+                onClick={() => {
+                  showModal({
+                    title: '举报',
+                    content: (
+                      <form ref={formRef} className='moe-video-page-comment-report-form'>
+                        <p>请选择举报原因</p>
+                        <select>
+                          <option value='色情低俗'>色情低俗</option>
+                          <option value='政治敏感'>政治敏感</option>
+                          <option value='违法犯罪'>违法犯罪</option>
+                          <option value='侵犯隐私'>侵犯隐私</option>
+                          <option value='人身攻击'>人身攻击</option>
+                          <option value='其他'>其他</option>
+                        </select>
+                      </form>
+                    ),
+                    onOk: () => {
+                      report((formRef.current?.querySelector('select') as HTMLSelectElement).value);
+                    },
+
+                    footer: 'ok close',
+                  });
+                }}
+              >
+                举报
               </Button>
             )}
           </div>
@@ -84,6 +129,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReplyItem) => {
   const [_replyTo, setReplyTo] = useStore('video-page-reply-to', '-1');
   const [comment, setComment] = useStore<VideoPageCommentProps[]>(`video-page-comment`);
   const [total, setTotal] = useStore<number>(`video-page-comment-total`, 0);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const userInfo = useUser();
   // eslint-disable-next-line no-underscore-dangle
@@ -109,6 +155,20 @@ const VideoPageCommentReply = (props: VideoPageCommentReplyItem) => {
     [comment, props.id, props.parent, setComment, setTotal, total],
   );
 
+  const report = useCallback(
+    (reason: string) => {
+      addReport(1, props.id, reason).then(
+        () => {
+          showMessage({ children: '举报成功' });
+        },
+        () => {
+          showMessage({ children: '举报失败' });
+        },
+      );
+    },
+    [props.id],
+  );
+
   return (
     <div className='moe-video-page-comment-box reply'>
       <div className='moe-video-page-comment-box-container'>
@@ -132,7 +192,7 @@ const VideoPageCommentReply = (props: VideoPageCommentReplyItem) => {
                   setReplyTo(props.id);
                 }
               }}
-              style={{ paddingLeft: 0, fontSize: '1rem' }}
+              style={{ paddingLeft: 0 }}
               styleType='link'
             >
               回复
@@ -140,6 +200,37 @@ const VideoPageCommentReply = (props: VideoPageCommentReplyItem) => {
             {userInfo?.userId.toString() === props.user.id && (
               <Button styleType='link' onClick={_deleteComment}>
                 删除
+              </Button>
+            )}
+
+            {userInfo?.userId.toString() !== props.user.id && (
+              <Button
+                styleType='link'
+                onClick={() => {
+                  showModal({
+                    title: '举报',
+                    content: (
+                      <form ref={formRef} className='moe-video-page-comment-report-form'>
+                        <p>请选择举报原因</p>
+                        <select>
+                          <option value='色情低俗'>色情低俗</option>
+                          <option value='政治敏感'>政治敏感</option>
+                          <option value='违法犯罪'>违法犯罪</option>
+                          <option value='侵犯隐私'>侵犯隐私</option>
+                          <option value='人身攻击'>人身攻击</option>
+                          <option value='其他'>其他</option>
+                        </select>
+                      </form>
+                    ),
+                    onOk: () => {
+                      report((formRef.current?.querySelector('select') as HTMLSelectElement).value);
+                    },
+
+                    footer: 'ok close',
+                  });
+                }}
+              >
+                举报
               </Button>
             )}
           </div>
