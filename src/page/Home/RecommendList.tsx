@@ -124,7 +124,7 @@ const RecommendList = memo((props: RecommendListProps) => {
       <div className='flex items-center pb-2'>
         <span className='text-3xl font-medium text-gray-800'>猜你喜欢</span>
       </div>
-      {items?.length == 0 && (
+      {items?.length === 0 && (
         <SkeletonCard
           num={12}
           style={{

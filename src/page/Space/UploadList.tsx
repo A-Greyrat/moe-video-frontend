@@ -16,7 +16,7 @@ export interface UploadListItemProps {
 
 export const UploadListItem = memo((props: UploadListItemProps) => {
   const { id, title, cover, playCount, uploadTime, url } = props;
-  const [lastWatchedIndex, setLastWatchedIndex] = useState(1);
+  const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
     getLastWatchedIndex(id).then((index) => {

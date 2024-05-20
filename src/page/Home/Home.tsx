@@ -35,8 +35,6 @@ const Home = () => {
   useTitle('首页');
   const [carouselItems, setCarouselItems] = useState([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chasingList, _setChasingList] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [timeLineList, _setTimeLineList] = useState([]);
   const [recommendList, setRecommendList] = useState([]);
 
@@ -63,7 +61,7 @@ const Home = () => {
         <IndexList indexList={indexList} />
 
         {/* 追番列表 */}
-        <ChasingList items={chasingList} />
+        <ChasingList />
 
         {/* 时间表 */}
         <TimelineList items={timeLineList} />
