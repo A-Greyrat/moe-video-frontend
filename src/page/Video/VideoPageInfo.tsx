@@ -20,6 +20,7 @@ export interface VideoPageInfoProps {
   description: string;
   isUserLiked: boolean;
   isUserFavorite: boolean;
+  type: number;
   uploader: {
     nickname: string;
     avatar: string;
@@ -40,6 +41,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
     danmakuCount,
     favoriteCount,
     title,
+    type,
     description,
     isUserLiked,
     isUserFavorite,
@@ -47,7 +49,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
   } = props;
   const param = useParams();
 
-  useTitle(props.title);
+  useTitle(title);
   const [showMore, setShowMore] = useState(false);
   const [displayMoreButton, setDisplayMoreButton] = useState(false);
 
@@ -71,11 +73,11 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
     if (!userFavorite) {
       favoriteVideoGroup(param.id).then((res) => {
         if (res.code !== 200) {
-          showMessage({ children: '收藏失败' });
+          showMessage({ children: type === 0 ? '收藏失败' : '追番失败' });
           return;
         }
         setUserFavorite(!userFavorite);
-        showMessage({ children: '收藏成功' });
+        showMessage({ children: type === 0 ? '收藏成功' : '追番成功' });
       });
     } else {
       removeFavoriteVideoGroup([param.id]).then((res) => {
@@ -85,7 +87,7 @@ const VideoPageInfo = memo((props: VideoPageInfoProps) => {
         }
 
         setUserFavorite(!userFavorite);
-        showMessage({ children: '取消收藏成功' });
+        showMessage({ children: type === 0 ? '取消收藏成功' : '取消追番成功' });
       });
     }
   }, [param.id, userFavorite]);
