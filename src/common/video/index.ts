@@ -487,7 +487,7 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
 
 export const getLastWatchedIndex = async (id: string) =>
   httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) =>
-    res.code !== 200 ? '1' : res.data.lastWatchVideoIndex || '1',
+    res.code !== 200 ? '1' : res.data.videoIndex || '1',
   );
 
 export const getLastWatchedProgress = async (videoId: string) =>

@@ -16,7 +16,7 @@ export const ChasingListItem = memo((props: ChasingListItem) => {
   const { title, cover, lastWatchedTitle, lastWatchedIndex, url } = props;
 
   return (
-    <a href={`${url}?p=${lastWatchedIndex}`} className='moe-video-home-page-chasing-list-item overflow-hidden'>
+    <a href={lastWatchedIndex ? `${url}?p=${lastWatchedIndex}` : url} className='moe-video-home-page-chasing-list-item overflow-hidden'>
       <div className='relative'>
         <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
         <div className='moe-video-home-page-chasing-list-item-cover-background'></div>
