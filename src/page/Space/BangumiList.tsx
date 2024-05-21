@@ -33,7 +33,7 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
         href={lastWatchedIndex ? `${url}?p=${lastWatchedIndex}` : url}
         className='moe-video-space-page-bangumi-list-item-cover mr-4 overflow-hidden'
       >
-        <Image lazy width='9rem' height='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={cover} />
+        <Image lazy style={{ aspectRatio: '3 / 4', objectFit: 'cover', width: '9rem', height: '100%' }} src={cover} />
       </a>
       <div className='flex flex-col justify-between overflow-hidden'>
         <div>
