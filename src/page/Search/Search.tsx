@@ -13,8 +13,8 @@ const Search = memo(() => {
   const { id, page = '1', type = '' } = useParams();
   useTitle(`搜索 - ${id}`);
   const [activeIndex, setActiveIndex] = useState(type === 'video' ? 1 : type === 'bangumi' ? 2 : 0);
-  const [bangumiList, setBangumiList] = useState<BangumiItemProps[]>([]);
-  const [videoList, setVideoList] = useState<VideoItemProps[]>([]);
+  const [bangumiList, setBangumiList] = useState<BangumiItemProps[]>(null);
+  const [videoList, setVideoList] = useState<VideoItemProps[]>(null);
   const [pageInfo, setPageInfo] = useState({
     total: -1,
     currentPage: parseInt(page, 10),
@@ -35,6 +35,7 @@ const Search = memo(() => {
     handlePageInfo('total', -1);
 
     searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
+      console.log(res);
       setBangumiList(res.items);
     });
     searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
@@ -77,15 +78,17 @@ const Search = memo(() => {
         )}
 
         {/* 搜索列表 */}
-        {activeIndex === 0 && pageInfo.currentPage === 1 && (
+        {activeIndex === 0 && pageInfo.currentPage === 1 && bangumiList && videoList && (
           <SearchList bangumiList={bangumiList} videoList={videoList} />
         )}
 
-        {activeIndex === 0 && pageInfo.currentPage !== 1 && <SearchList videoList={videoList} />}
+        {activeIndex === 0 && bangumiList && videoList && pageInfo.currentPage !== 1 && (
+          <SearchList videoList={videoList} />
+        )}
 
-        {activeIndex === 1 && <SearchList videoList={videoList} />}
+        {activeIndex === 1 && bangumiList && videoList && <SearchList videoList={videoList} />}
 
-        {activeIndex === 2 && <SearchList bangumiList={bangumiList} />}
+        {activeIndex === 2 && bangumiList && videoList && <SearchList bangumiList={bangumiList} />}
 
         {activeIndex !== 2 && (
           <Pagination
