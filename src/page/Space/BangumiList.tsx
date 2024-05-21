@@ -29,7 +29,10 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
 
   return (
     <div className='moe-video-space-page-bangumi-list-item flex py-4 px-2'>
-      <a href={url} className='moe-video-space-page-bangumi-list-item-cover mr-4 overflow-hidden'>
+      <a
+        href={lastWatchedIndex ? `${url}?p=${lastWatchedIndex}` : url}
+        className='moe-video-space-page-bangumi-list-item-cover mr-4 overflow-hidden'
+      >
         <Image lazy width='9rem' height='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={cover} />
       </a>
       <div className='flex flex-col justify-between overflow-hidden'>
@@ -54,7 +57,8 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
               fontSize: '1rem',
             }}
             onClick={() => {
-              navigate(`${url}?p=${lastWatchedIndex}`);
+              if (lastWatchedIndex) navigate(`${url}?p=${lastWatchedIndex}`);
+              else navigate(url);
             }}
           >
             立即观看

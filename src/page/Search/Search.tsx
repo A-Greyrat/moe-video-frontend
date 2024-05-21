@@ -35,7 +35,6 @@ const Search = memo(() => {
     handlePageInfo('total', -1);
 
     searchBangumi(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
-      console.log(res);
       setBangumiList(res.items);
     });
     searchVideo(id, pageInfo.currentPage, pageInfo.pageSize).then((res) => {
