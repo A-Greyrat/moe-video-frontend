@@ -236,6 +236,7 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     danmakuCount: res.data.danmakuCnt,
     favoriteCount: (res.data.userFavorite ? -1 : 0) + parseInt(res.data.favoriteCnt, 10),
     description: res.data.description,
+    type: res.data.type,
     pagination: res.data.contents.map((page: any) => ({
       index: `P${page.index}`,
       title: page.title,

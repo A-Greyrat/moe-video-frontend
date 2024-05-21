@@ -35,6 +35,12 @@ const expireModal = withLock((_lock: boolean) => {
       localStorage.removeItem('token');
       window.location.reload();
     },
+    onClose: () => {
+      // eslint-disable-next-line no-param-reassign
+      _lock = false;
+      localStorage.removeItem('token');
+      window.location.reload();
+    },
     closeIcon: false,
     closeOnClickMask: false,
     footer: 'ok',
