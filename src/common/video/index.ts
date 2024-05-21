@@ -279,13 +279,18 @@ export const getDanmaku_v1 = async (videoId: string, p?: string, SESSDATA?: stri
       return newDanmakus;
     });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getDanmaku_v2 = async (videoId: string, p?: string, SESSDATA?: string): Promise<DanmakuAttr> =>
-  httpGet<DanmakuAttr>('/video/danmaku', {
-    params: { id: videoId },
-  }).then((res) => res.data);
+export const getDanmaku_v2 = async (videoId: string, segmentIndex?: number): Promise<DanmakuAttr[]> =>
+  httpGet<DanmakuAttr[]>('/video/danmaku', {
+    params: { videoId, segmentIndex },
+  }).then((res) =>
+    res.data.map((item) => {
+      item.color = `#${parseInt(item.color, 10).toString(16).padStart(6, '0')}`;
+      item.begin /= 1000;
+      return item;
+    }),
+  );
 
-export const getDanmaku = async (videoId: string, p?: string, SESSDATA?: string) => getDanmaku_v1(videoId, p, SESSDATA);
+export const getDanmaku = async (videoId: string, segmentIndex?: number) => getDanmaku_v2(videoId, segmentIndex);
 // return getDanmaku_v2(videoId, p, SESSDATA);
 
 export const getVideoUrl_v1 = async (videoId: string, p?: string, extra?: string) => {
@@ -578,3 +583,30 @@ export const addReport = (type: number, targetId: string, reason: string) =>
     targetId,
     reason,
   });
+
+export const addDanmaku = async (
+  videoId: string,
+  begin: number,
+  mode: number,
+  size: number,
+  color: string,
+  pool: number,
+  text: string,
+) =>
+  httpPost('/video/danmaku/add', {
+    videoId,
+    begin,
+    mode,
+    size,
+    color,
+    pool,
+    text,
+  });
+
+export const searchSuggest = async (keyword: string, num: number = 10) =>
+  httpGet<any>('/search/suggestion', {
+    params: {
+      q: keyword,
+      num,
+    },
+  }).then((res) => res.data);

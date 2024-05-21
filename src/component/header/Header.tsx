@@ -3,6 +3,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { isUserLoggedIn, logout, useUser } from '../../common/user';
 import { AutoComplete, Button, debounceAsync, Dropdown, Image } from '@natsume_shiki/mika-ui';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { searchSuggest } from '../../common/video';
 
 const UserSection = () => {
   const [avatar, setAvatar] = useState('/defaultAvatar.webp');
@@ -91,8 +92,8 @@ const SearchSection = () => {
         setDataSrc([]);
         return Promise.resolve();
       }
-      // const res = await getSearchAutoComplete(keyword);
-      // setDataSrc(res);
+      const res = await searchSuggest(keyword);
+      setDataSrc(res);
     }, 200),
     [],
   );
@@ -117,16 +118,14 @@ const SearchSection = () => {
         dataSrc={dataSrc}
         onValueChange={(key) => _getSearchAutoComplete(key)}
         onOptionClick={(item) => {
-          nav(`/search/${item}/1`);
+          nav(`/search/${encodeURIComponent(item.trim())}/1`);
         }}
         onOptionKeyDown={(item) => {
-          nav(`/search/${item}/1`);
+          nav(`/search/${encodeURIComponent(item.trim())}/1`);
         }}
         onSubmit={(item) => {
-          if (!item) return;
-          // eslint-disable-next-line no-param-reassign
-          item = encodeURIComponent(item);
-          nav(`/search/${item}/1`);
+          if (!item || item.trim() === '') return;
+          nav(`/search/${encodeURIComponent(item.trim())}/1`);
         }}
         ref={inputRef}
       />

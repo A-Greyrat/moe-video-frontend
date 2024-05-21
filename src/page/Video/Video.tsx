@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useRef } from 'react';
-import VideoPlayer, { DanmakuAttr, VideoSrc } from 'mika-video-player';
+import VideoPlayer, { DanmakuAttr, VideoSrc, TripleSpeedForward } from 'mika-video-player';
 import Header from '../../component/header/Header';
 import Footer from '../../component/footer/Footer';
 import VideoPageComment from './VideoPageComment.tsx';
@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import VideoPageInfo, { VideoPageInfoProps } from './VideoPageInfo.tsx';
 import VideoPaginationList from './VideoPaginationList.tsx';
 import {
+  addDanmaku,
   getDanmaku,
   getLastWatchedProgress,
   getVideoInfo,
@@ -35,6 +36,7 @@ const Video = memo(() => {
     const heartbeatSendTime = 7000;
     let fn: () => void;
     let postProgress: () => void;
+    let getAllDanmaku: () => void;
 
     getVideoInfo(vid).then((res) => {
       setItem(res);
@@ -58,22 +60,31 @@ const Video = memo(() => {
         }, heartbeatSendTime);
       };
 
+      getAllDanmaku = () => {
+        const i = Math.floor(videoRef.current.duration / 60 / 6);
+        const promises: Promise<DanmakuAttr[]>[] = [];
+        for (let j = 1; j <= i; j++) {
+          promises.push(getDanmaku(res.pagination[index].videoId, j));
+        }
+
+        Promise.all(promises).then((res) => {
+          setDanmakus(res.flat());
+        });
+      };
+
       videoRef.current?.addEventListener('play', fn, { once: true });
       videoRef.current?.addEventListener('play', postProgress);
+      videoRef.current?.addEventListener('loadedmetadata', getAllDanmaku);
 
       getVideoUrl(res.pagination[index].videoId).then((res) => {
         setUrl(res);
       });
-
-      res.extra_id &&
-        getDanmaku(res.extra_id, p).then((res) => {
-          setDanmakus(res);
-        });
     });
 
     return () => {
       videoRef.current?.removeEventListener('play', fn);
       videoRef.current?.removeEventListener('play', postProgress);
+      videoRef.current?.removeEventListener('loadedmetadata', getAllDanmaku);
       clearInterval(timer.current);
     };
   }, [p, param.SESSDATA, param.id, query]);
@@ -116,7 +127,31 @@ const Video = memo(() => {
               overflow: 'hidden',
               width: '100%',
             }}
+            plugins={[TripleSpeedForward]}
             ref={videoRef}
+            onSendDanmaku={(danmaku) => {
+              if (danmaku.text.trim() === '') {
+                showMessage({ children: '弹幕内容不能为空' });
+                return false;
+              }
+              addDanmaku(
+                item?.pagination[parseInt(p || '1', 10) - 1].videoId,
+                danmaku.begin * 1000,
+                danmaku.mode,
+                danmaku.size,
+                danmaku.color,
+                0,
+                danmaku.text,
+              ).then((res) => {
+                if (res.code === 200) {
+                  showMessage({ children: '发送成功' });
+                } else {
+                  showMessage({ children: '发送失败' });
+                }
+              });
+
+              return true;
+            }}
           />
           {item && <VideoPageInfo {...(item as unknown as VideoPageInfoProps)} />}
         </div>
