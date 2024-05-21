@@ -30,7 +30,7 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
   return (
     <div className='moe-video-space-page-bangumi-list-item flex py-4 px-2'>
       <a href={url} className='moe-video-space-page-bangumi-list-item-cover mr-4 overflow-hidden'>
-        <Image lazy width='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={cover} />
+        <Image lazy width='9rem' height='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={cover} />
       </a>
       <div className='flex flex-col justify-between overflow-hidden'>
         <div>
