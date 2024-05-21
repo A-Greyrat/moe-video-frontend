@@ -1,10 +1,19 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import './SearchList.less';
-import { Button, Image, showMessage } from '@natsume_shiki/mika-ui';
+import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
 import PlaybackVolumeIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import LoveIcon from '../Icon/LoveIcon.tsx';
-import { useNavigate } from 'react-router-dom';
-import { deleteBangumiFavorite, favoriteVideoGroup, getLastWatchedIndex } from '../../common/video';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  deleteBangumiFavorite,
+  favoriteVideoGroup,
+  getLastWatchedIndex,
+  isFavoriteBangumi,
+  searchBangumi,
+  searchVideo,
+} from '../../common/video';
+import SkeletonCard from '../../component/SkeletonCard';
+import { isUserLoggedIn } from '../../common/user';
 
 export interface BangumiItemProps {
   id: string;
@@ -13,7 +22,6 @@ export interface BangumiItemProps {
   score: string;
   desc: string;
   tags: string[];
-  userFavorite: boolean;
   url: string;
 }
 
@@ -28,16 +36,17 @@ export interface VideoItemProps {
   url: string;
 }
 
-interface SearchListProps {
-  bangumiList?: BangumiItemProps[] | null;
-  videoList?: VideoItemProps[] | null;
-}
-
 export const BangumiItem = memo((props: BangumiItemProps) => {
-  const { id, title, cover, score, desc, tags, url, userFavorite } = props;
+  const { id, title, cover, score, desc, tags, url } = props;
   const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useState(userFavorite ? 'Favorite' : 'NotFavorite');
+  const [isFavorite, setIsFavorite] = useState('NotFavorite');
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
+
+  useEffect(() => {
+    isFavoriteBangumi(Number(id)).then((res) => {
+      setIsFavorite(res ? 'Favorite' : 'NotFavorite');
+    });
+  }, []);
 
   useEffect(() => {
     getLastWatchedIndex(id).then((index) => {
@@ -101,7 +110,8 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
               width: 'fit-content',
             }}
             onClick={() => {
-              if (userFavorite) {
+              if (!isUserLoggedIn) showMessage({ children: '追番失败,请先登录' });
+              if (isFavorite === 'Favorite') {
                 deleteBangumiFavorite([id]).then((r) => {
                   if (r.code === 200) {
                     showMessage({ children: '取消追番成功' });
@@ -163,12 +173,62 @@ export const VideoItem = memo((props: VideoItemProps) => {
   );
 });
 
-const SearchList = memo((props: SearchListProps) => {
-  const { bangumiList, videoList } = props;
+const SearchList = memo(() => {
+  const { id, page = '1' } = useParams();
+  const [bangumiList, setBangumiList] = useState<BangumiItemProps[]>([]);
+  const [videoList, setVideoList] = useState<VideoItemProps[]>([]);
+  const [total, setTotal] = useState(-1);
+  const pageSize = useRef(15);
+  const navigate = useNavigate();
+
+  const handlePageChange = useCallback(
+    (index: number) => {
+      setTotal(-1);
+
+      searchVideo(id, index, pageSize.current).then((res) => {
+        setVideoList(res.items);
+        setTotal(res.total);
+      });
+    },
+    [id, page],
+  );
+
+  useEffect(() => {
+    const newPage = parseInt(page, 10);
+    if (newPage >= 100 || newPage < 1) {
+      navigate(`/search/${id}/1`);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    searchBangumi(id, 1, pageSize.current).then((res) => {
+      setBangumiList(res.items);
+    });
+
+    handlePageChange(parseInt(page, 10));
+  }, [id, page]);
+
+  if (total === -1 && (!bangumiList || bangumiList?.length === 0) && (!videoList || videoList?.length === 0)) {
+    return (
+      <SkeletonCard
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
+          gap: '1rem',
+          width: '100%',
+        }}
+        num={15}
+      />
+    );
+  }
+
+  if (total === 0 && (!bangumiList || bangumiList?.length === 0) && (!videoList || videoList?.length === 0)) {
+    return <div className='text-gray-400 text-center'>暂无搜索结果</div>;
+  }
 
   return (
-    <div>
-      {bangumiList?.length > 0 && (
+    <>
+      {bangumiList?.length > 0 && parseInt(page, 10) === 1 && (
         <div className='moe-video-search-page-bangumi-list mb-12 gap-4 w-full'>
           {bangumiList.map((item) => (
             <BangumiItem key={item.id} {...item} />
@@ -183,7 +243,27 @@ const SearchList = memo((props: SearchListProps) => {
           ))}
         </div>
       )}
-    </div>
+
+      <Pagination
+        key={parseInt(page, 10)}
+        initIndex={parseInt(page, 10)}
+        pageNum={Math.ceil(total / pageSize.current)}
+        onChange={(index) => {
+          handlePageChange(index);
+          setTotal(-1);
+          setBangumiList(null);
+          setVideoList(null);
+          navigate(`/search/${id}/${index}`);
+          window.scrollTo({
+            top: 0,
+          });
+        }}
+        style={{
+          width: 'fit-content',
+          margin: '1rem auto',
+        }}
+      />
+    </>
   );
 });
 

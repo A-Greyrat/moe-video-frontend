@@ -29,7 +29,7 @@ const Space = memo(() => {
 
   useEffect(() => {
     if (!isUserLoggedIn) {
-      nav('/login');
+      nav('/login', { replace: true });
     }
   }, []);
 

@@ -492,7 +492,7 @@ export const postWatchProgress = async (videoId: string, progress: number) =>
 
 export const getLastWatchedIndex = async (id: string) =>
   httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) =>
-    res.code !== 200 ? '1' : res.data.videoIndex || '1',
+    res.code !== 200 ? '1' : res.data?.videoIndex || '1',
   );
 
 export const getLastWatchedProgress = async (videoId: string) =>
@@ -583,6 +583,11 @@ export const addReport = (type: number, targetId: string, reason: string) =>
     targetId,
     reason,
   });
+
+export const isFavoriteBangumi = async (id: number) =>
+  httpGet('/plain-user/favorites/contains', {
+    params: { videoGroupId: id },
+  }).then((res) => res.data);
 
 export const addDanmaku = async (
   videoId: string,

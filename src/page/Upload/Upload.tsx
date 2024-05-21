@@ -20,7 +20,7 @@ const Upload = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isUserLoggedIn) navigate('/login');
+    if (!isUserLoggedIn) navigate('/login', { replace: true });
   }, []);
 
   const handleSubmit = React.useCallback(
