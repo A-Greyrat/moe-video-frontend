@@ -29,8 +29,8 @@ export interface VideoItemProps {
 }
 
 interface SearchListProps {
-  bangumiList?: BangumiItemProps[];
-  videoList?: VideoItemProps[];
+  bangumiList?: BangumiItemProps[] | null;
+  videoList?: VideoItemProps[] | null;
 }
 
 export const BangumiItem = memo((props: BangumiItemProps) => {

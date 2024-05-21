@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, {memo, useEffect} from 'react';
 import Header from '../../component/header/Header.tsx';
 import Footer from '../../component/footer/Footer.tsx';
 import VideoUpload from './VideoUpload.tsx';
@@ -9,6 +9,7 @@ import './Upload.less';
 import { useStore } from 'mika-store';
 import { uploadVideo } from '../../common/video';
 import { useNavigate } from 'react-router-dom';
+import { isUserLoggedIn } from '../../common/user';
 
 const Upload = memo(() => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -17,6 +18,10 @@ const Upload = memo(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [uploadVideoUrl, _setUploadVideoUrl] = useStore<string>('uploadVideoUrl', '');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isUserLoggedIn) navigate('/login');
+  }, []);
 
   const handleSubmit = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {

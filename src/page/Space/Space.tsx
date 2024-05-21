@@ -9,6 +9,7 @@ import Setting from './Setting.tsx';
 import FavorList from './FavorList.tsx';
 import BangumiList from './BangumiList.tsx';
 import UploadList from './UploadList.tsx';
+import { isUserLoggedIn } from '../../common/user';
 
 const TypeIndexMapping: {
   [key: string]: number;
@@ -25,6 +26,12 @@ const Space = memo(() => {
   const { pathname } = useLocation();
   const nav = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isUserLoggedIn) {
+      nav('/login');
+    }
+  }, []);
 
   useEffect(() => {
     setActiveIndex(TypeIndexMapping[pathname.split('/').pop() || 'favor']);
