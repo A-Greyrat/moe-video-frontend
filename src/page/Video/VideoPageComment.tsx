@@ -1,6 +1,6 @@
 import { Button, Image, InfinityList, Pagination, showMessage, showModal, withLockTime } from '@natsume_shiki/mika-ui';
 import { useStore } from 'mika-store';
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   addComment,
   addReport,
@@ -421,6 +421,10 @@ const VideoPageComment = memo(({ videoId }: { videoId: string }) => {
     }, 500),
     [comment, videoId, total],
   );
+
+  useEffect(() => {
+    setComment([]);
+  }, []);
 
   return (
     <div className='moe-video-page-video-comment'>
