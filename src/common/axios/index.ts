@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { showModal, withLock } from '@natsume_shiki/mika-ui';
-import { isUserLoggedIn } from '../user';
+import { isUserLoggedInSync } from '../user';
 
 export interface ResponseData<T> {
   code: number;
@@ -56,7 +56,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      if (isUserLoggedIn) {
+      if (isUserLoggedInSync()) {
         expireModal();
       }
     }

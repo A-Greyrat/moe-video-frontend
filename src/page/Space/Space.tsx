@@ -9,7 +9,7 @@ import Setting from './Setting.tsx';
 import FavorList from './FavorList.tsx';
 import BangumiList from './BangumiList.tsx';
 import UploadList from './UploadList.tsx';
-import { isUserLoggedIn } from '../../common/user';
+import { isUserLoggedInSync } from '../../common/user';
 
 const TypeIndexMapping: {
   [key: string]: number;
@@ -28,7 +28,7 @@ const Space = memo(() => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!isUserLoggedIn) {
+    if (!isUserLoggedInSync()) {
       nav('/login', { replace: true });
     }
   }, []);
