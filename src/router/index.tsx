@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 
+const BangumiIndex = React.lazy(() => import('../page/Index/BangumiIndex'));
 const Home = React.lazy(() => import('../page/Home/Home'));
 const Login = React.lazy(() => import('../page/Login/Login'));
 const Register = React.lazy(() => import('../page/Login/Register'));
@@ -66,6 +67,14 @@ export default createBrowserRouter([
   {
     path: '/space/setting',
     element: <Space />,
+  },
+  {
+    path: '/bangumi/index/:id',
+    element: <BangumiIndex />,
+  },
+  {
+    path: '/bangumi/index',
+    element: <BangumiIndex />,
   },
   {
     path: '*',

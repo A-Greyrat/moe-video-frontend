@@ -68,8 +68,11 @@ const UserSection = () => {
         <Image
           src={avatar}
           lazy
-          width={42}
-          height={42}
+          style={{
+            width: '42px',
+            height: '42px',
+            objectFit: 'cover',
+          }}
           alt=''
           onClick={() => {
             nav(isUserLoggedInSync() ? '/space' : '/login');

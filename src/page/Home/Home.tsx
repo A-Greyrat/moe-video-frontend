@@ -8,28 +8,8 @@ import TimelineList from './TimelineList.tsx';
 import RecommendList from './RecommendList.tsx';
 import { useEffect, useState } from 'react';
 import LoadingPage from '../Loading/LoadingPage.tsx';
-import { getCarouselList, getRecommendList } from '../../common/video';
-
+import { getCarouselList, getHomeIndexList, getRecommendList } from '../../common/video';
 import './Home.less';
-
-const indexList = [
-  {
-    title: '番剧索引',
-    items: ['追番人数', '最高评分', '更新时间', '播放数量'],
-  },
-  {
-    title: '类型风格',
-    items: ['原创', '小说改', '特摄', '漫画改', '游戏改', '布袋戏'],
-  },
-  {
-    title: '首播时间',
-    items: ['2024', '2023', '2022', '2021', '2020', '2019'],
-  },
-  {
-    title: '热搜',
-    items: ['迷宫饭', '我独自升级'],
-  },
-];
 
 const Home = () => {
   useTitle('首页');
@@ -37,10 +17,15 @@ const Home = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [timeLineList, _setTimeLineList] = useState([]);
   const [recommendList, setRecommendList] = useState([]);
+  const [indexList, setIndexList] = useState([]);
 
   useEffect(() => {
     getCarouselList().then((res) => {
       setCarouselItems(res);
+    });
+
+    getHomeIndexList().then((res) => {
+      setIndexList(res);
     });
 
     getRecommendList().then((res) => {
