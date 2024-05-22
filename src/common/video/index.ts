@@ -8,6 +8,7 @@ import { BangumiItemProps, VideoItemProps } from '../../page/Search/SearchList.t
 import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
 import { VideoGroupInfoList } from './type.ts';
+import { IndexListItemProps } from '../../page/Home/IndexList.tsx';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -615,3 +616,11 @@ export const searchSuggest = async (keyword: string, num: number = 10) =>
       num,
     },
   }).then((res) => res.data);
+
+export const getHomeIndexList = async (): Promise<IndexListItemProps[]> =>
+  httpGet<any>('/video-group/hot-tags').then((res) =>
+    res.data.map((item: any) => ({
+      title: item.title,
+      items: item.tags.map((tag: any) => [tag?.name ? tag.name : tag]),
+    })),
+  );
