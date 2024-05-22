@@ -19,6 +19,7 @@ import VideoRecommendList from './VideoRecommendList.tsx';
 import { showMessage } from '@natsume_shiki/mika-ui';
 
 import './Video.less';
+import { isUserLoggedIn } from '../../common/user';
 
 const Video = memo(() => {
   const param = useParams();
@@ -134,6 +135,10 @@ const Video = memo(() => {
                 showMessage({ children: '弹幕内容不能为空' });
                 return false;
               }
+              if (!isUserLoggedIn) {
+                showMessage({ children: '请先登录' });
+                return false;
+              }
               addDanmaku(
                 item?.pagination[parseInt(p || '1', 10) - 1].videoId,
                 danmaku.begin * 1000,
@@ -166,7 +171,10 @@ const Video = memo(() => {
           />
         )}
         {item && (
-          <VideoRecommendList key={30000 + item.pagination[p ? parseInt(p, 10) - 1 : 0].videoId} items={item.recommendList} />
+          <VideoRecommendList
+            key={30000 + item.pagination[p ? parseInt(p, 10) - 1 : 0].videoId}
+            items={item.recommendList}
+          />
         )}
       </div>
       <Footer />
