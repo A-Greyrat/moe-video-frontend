@@ -9,7 +9,7 @@ import './Upload.less';
 import { useStore } from 'mika-store';
 import { uploadVideo } from '../../common/video';
 import { useNavigate } from 'react-router-dom';
-import { isUserLoggedIn } from '../../common/user';
+import { isUserLoggedInSync } from '../../common/user';
 
 const Upload = memo(() => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -20,7 +20,7 @@ const Upload = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isUserLoggedIn) navigate('/login', { replace: true });
+    if (!isUserLoggedInSync()) navigate('/login', { replace: true });
   }, []);
 
   const handleSubmit = React.useCallback(

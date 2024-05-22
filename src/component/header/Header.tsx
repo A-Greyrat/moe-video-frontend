@@ -1,6 +1,6 @@
 import './Header.less';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { isUserLoggedIn, logout, useUser } from '../../common/user';
+import { isUserLoggedInSync, logout, useUser } from '../../common/user';
 import { AutoComplete, Button, debounceAsync, Dropdown, Image } from '@natsume_shiki/mika-ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { searchSuggest } from '../../common/video';
@@ -72,7 +72,7 @@ const UserSection = () => {
           height={42}
           alt=''
           onClick={() => {
-            nav(isUserLoggedIn ? '/space' : '/login');
+            nav(isUserLoggedInSync() ? '/space' : '/login');
           }}
         />
       </div>

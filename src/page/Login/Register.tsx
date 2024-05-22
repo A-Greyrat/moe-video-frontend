@@ -2,7 +2,7 @@ import './Register.less';
 import { useTitle, useTypePrint } from '../../common/hooks';
 import { Button } from '@natsume_shiki/mika-ui';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { emailTimeLimit, getEmailCaptcha, isUserLoggedIn, register } from '../../common/user';
+import { emailTimeLimit, getEmailCaptcha, isUserLoggedInSync, register } from '../../common/user';
 import { useNavigate } from 'react-router-dom';
 
 const text =
@@ -261,7 +261,7 @@ const Register = () => {
   useTitle('注册');
 
   useEffect(() => {
-    if (isUserLoggedIn) {
+    if (isUserLoggedInSync()) {
       nav('/');
     }
   }, [nav]);

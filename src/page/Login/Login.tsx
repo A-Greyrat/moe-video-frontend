@@ -2,7 +2,7 @@ import { Button, Image, showModal } from '@natsume_shiki/mika-ui';
 import './Login.less';
 import { useTypePrint } from '../../common/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { getCaptcha, isUserLoggedIn, login } from '../../common/user';
+import { getCaptcha, isUserLoggedInSync, login } from '../../common/user';
 import { throttle } from '../../common/utils';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'mika-store';
@@ -257,7 +257,7 @@ const Login = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    if (isUserLoggedIn) {
+    if (isUserLoggedInSync()) {
       nav('/');
     }
   }, [nav]);

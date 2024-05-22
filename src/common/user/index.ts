@@ -1,14 +1,32 @@
 import { baseURL, httpGet, httpPost } from '../axios';
 import { rsaEncrypt } from './encrypt';
 import { useEffect, useState } from 'react';
+import { showModal } from '@natsume_shiki/mika-ui';
 
-// eslint-disable-next-line import/no-mutable-exports
-export let isUserLoggedIn = false;
+let isUserLoggedIn = false;
 
 const token = localStorage.getItem('token');
 if (token) {
   isUserLoggedIn = true;
 }
+
+window.addEventListener('storage', () => {
+  const newToken = localStorage.getItem('token');
+  isUserLoggedIn = !!newToken;
+
+  showModal({
+    title: '登录状态改变',
+    content: '登录状态已改变，请刷新页面',
+    closeOnClickMask: false,
+    closeIcon: false,
+    footer: 'ok',
+    onOk: () => {
+      window.location.reload();
+    },
+  });
+});
+
+export const isUserLoggedInSync = () => isUserLoggedIn;
 
 interface LoginRequest {
   user: string;
@@ -93,7 +111,7 @@ let userInfo: {
 } | null = null;
 
 export const getUserInfo = async () => {
-  if (!isUserLoggedIn) {
+  if (!isUserLoggedInSync()) {
     return null;
   }
 

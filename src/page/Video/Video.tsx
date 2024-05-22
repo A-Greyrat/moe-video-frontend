@@ -19,7 +19,7 @@ import VideoRecommendList from './VideoRecommendList.tsx';
 import { showMessage } from '@natsume_shiki/mika-ui';
 
 import './Video.less';
-import { isUserLoggedIn } from '../../common/user';
+import { isUserLoggedInSync } from '../../common/user';
 
 const Video = memo(() => {
   const param = useParams();
@@ -135,7 +135,7 @@ const Video = memo(() => {
                 showMessage({ children: '弹幕内容不能为空' });
                 return false;
               }
-              if (!isUserLoggedIn) {
+              if (!isUserLoggedInSync()) {
                 showMessage({ children: '请先登录' });
                 return false;
               }

@@ -13,7 +13,7 @@ import {
   searchVideo,
 } from '../../common/video';
 import SkeletonCard from '../../component/SkeletonCard';
-import { isUserLoggedIn } from '../../common/user';
+import { isUserLoggedInSync } from '../../common/user';
 
 export interface BangumiItemProps {
   id: string;
@@ -110,7 +110,7 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
               width: 'fit-content',
             }}
             onClick={() => {
-              if (!isUserLoggedIn) showMessage({ children: '追番失败,请先登录' });
+              if (!isUserLoggedInSync()) showMessage({ children: '追番失败,请先登录' });
               if (isFavorite === 'Favorite') {
                 deleteBangumiFavorite([id]).then((r) => {
                   if (r.code === 200) {
