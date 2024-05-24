@@ -621,6 +621,26 @@ export const getHomeIndexList = async (): Promise<IndexListItemProps[]> =>
   httpGet<any>('/video-group/hot-tags').then((res) =>
     res.data.map((item: any) => ({
       title: item.title,
-      items: item.tags.map((tag: any) => [tag?.name ? tag.name : tag]),
+      items: item.tags.map((tag: any) => ({
+        tag: tag.name ? tag.name : tag,
+        url: tag.type ? `/bangumi/index/${tag.type}` : `/bangumi/index`,
+      })),
+    })),
+  );
+
+export const getBangumiIndexList = async (type: number) =>
+  httpGet<any>('/video-group/bangumi-index', {
+    params: {
+      type,
+    },
+  }).then((res) =>
+    res.data.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      cover: item.cover,
+      status: item.status,
+      watchCnt: item.watchCnt,
+      favoriteCnt: item.favoriteCnt,
+      url: `/video/${item.id}`,
     })),
   );

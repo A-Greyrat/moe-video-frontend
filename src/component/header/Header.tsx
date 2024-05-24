@@ -66,6 +66,7 @@ const UserSection = () => {
     >
       <div className='moe-video-header-user'>
         <Image
+          key={avatar}
           src={avatar}
           lazy
           style={{

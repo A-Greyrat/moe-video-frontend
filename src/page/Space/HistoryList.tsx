@@ -35,7 +35,7 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
           <div className='flex flex-col justify-between mr-4'>
             <div className={'flex flex-col gap-1'}>
               <a href={`${url}?p=${index}`} className='moe-video-space-page-history-list-item-title line-clamp-1'>
-                {title}
+                {videoGroupId ? title : '视频不存在'}
               </a>
               <div className='text-gray-400 line-clamp-1'>{lastWatchedTime}</div>
             </div>
