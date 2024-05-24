@@ -13,10 +13,13 @@ interface ChasingListItem {
 }
 
 export const ChasingListItem = memo((props: ChasingListItem) => {
-  const { title, cover, lastWatchedTitle, lastWatchedIndex, url } = props;
+  const { id, title, cover, lastWatchedTitle, lastWatchedIndex, url } = props;
 
   return (
-    <a href={lastWatchedIndex ? `${url}?p=${lastWatchedIndex}` : url} className='moe-video-home-page-chasing-list-item overflow-hidden'>
+    <a
+      href={lastWatchedIndex ? `${url}?p=${lastWatchedIndex}` : url}
+      className='moe-video-home-page-chasing-list-item overflow-hidden'
+    >
       <div className='relative'>
         <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
         <div className='moe-video-home-page-chasing-list-item-cover-background'></div>
@@ -30,7 +33,9 @@ export const ChasingListItem = memo((props: ChasingListItem) => {
           </div>
         )}
       </div>
-      <div className='moe-video-home-page-chasing-list-item-title px-3 pt-2 pb-1 line-clamp-2'>{title}</div>
+      <div className='moe-video-home-page-chasing-list-item-title px-3 pt-2 pb-1 line-clamp-2'>
+        {id ? title : '番剧已被删除'}
+      </div>
     </a>
   );
 });

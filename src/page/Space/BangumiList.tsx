@@ -37,7 +37,9 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
       </a>
       <div className='flex flex-col justify-between overflow-hidden'>
         <div>
-          <div className='moe-video-space-page-bangumi-list-item-title pb-1 line-clamp-1'>{title}</div>
+          <div className='moe-video-space-page-bangumi-list-item-title pb-1 line-clamp-1'>
+            {id ? title : '番剧被删除'}
+          </div>
           {lastWatchedIndex && lastWatchedTitle ? (
             <div className='text-gray-400 text-xs line-clamp-1 mb-1'>
               看到第{lastWatchedIndex}集 {lastWatchedTitle}
@@ -45,7 +47,7 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
           ) : (
             <div className='text-gray-400 text-xs line-clamp-1 mb-1'>尚未观看</div>
           )}
-          <div className='text-sm text-gray-550 line-clamp-5 whitespace-break-spaces pt-1 mb-2'>{desc}</div>
+          <div className='text-sm text-gray-550 line-clamp-5 whitespace-break-spaces pt-1 mb-2'>{id ? desc : ''}</div>
         </div>
 
         <div className='flex gap-2 mt-1'>

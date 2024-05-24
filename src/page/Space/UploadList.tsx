@@ -25,13 +25,15 @@ export const UploadListItem = memo((props: UploadListItemProps) => {
   return (
     <a href={`${url}?p=${lastWatchedIndex}`} className='moe-video-space-page-upload-list-item overflow-hidden'>
       <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
-      <div className='moe-video-space-page-upload-list-item-title px-3 pt-2 mb-2 line-clamp-2'>{title}</div>
+      <div className='moe-video-space-page-upload-list-item-title px-3 pt-2 mb-2 line-clamp-2'>
+        {id ? title : '视频被删除'}
+      </div>
       <div className='flex justify-between px-3 pb-2'>
         <div className='flex items-center gap-1 text-gray-400'>
           <PlaybackVolumeIcon fill={'currentColor'} />
           <span className='text-sm'>{playCount}</span>
         </div>
-        <div className='text-gray-400 text-sm'>{uploadTime}</div>
+        <div className='text-gray-400 text-sm'>{id ? uploadTime : ''}</div>
       </div>
     </a>
   );
