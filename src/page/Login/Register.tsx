@@ -231,7 +231,13 @@ const RegisterForm = () => {
   );
 
   return (
-    <form className='moe-video-register-form' method='post'>
+    <form
+      className='moe-video-register-form'
+      method='post'
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <input type='email' placeholder='邮箱' name='email' ref={emailRef} required />
       <input type='text' placeholder='昵称' name='nickname' required pattern={'^[\u4e00-\u9fa5_a-zA-Z0-9]+$'} />
       <input

@@ -268,7 +268,12 @@ const Login = () => {
       <div className='moe-video-login-container'>
         <div className='moe-video-login-form-container'>
           <h1>登 录</h1>
-          <form className='moe-video-login-form'>
+          <form
+            className='moe-video-login-form'
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <input type='email' placeholder='邮箱' name='username' required />
             <input type='password' placeholder='密码' name='password' required />
             <div className='moe-video-login-form-captcha'>
