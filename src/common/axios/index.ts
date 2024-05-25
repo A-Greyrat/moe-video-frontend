@@ -17,8 +17,10 @@ const RETRY_COUNT = 5;
 
 const retry = async (fn: () => Promise<any>, count: number) => {
   const res = await fn();
+  console.log(res);
+
   if (res.code !== 200 && res.code !== 401) {
-    if (count <= 0) return Promise.reject(res);
+    if (count <= 0) return Promise.resolve(res);
     return retry(fn, count - 1);
   }
   return res;
@@ -76,7 +78,11 @@ instance.interceptors.response.use(
 );
 
 // eslint-disable-next-line no-use-before-define
-export const httpGet = async <T>(url: string, config?: AxiosRequestConfig): Promise<ResponseData<T | null>> =>
+export const httpGet = async <T>(
+  url: string,
+  config?: AxiosRequestConfig,
+  autoRetry: boolean = true,
+): Promise<ResponseData<T | null>> =>
   retry(
     () =>
       instance
@@ -87,13 +93,14 @@ export const httpGet = async <T>(url: string, config?: AxiosRequestConfig): Prom
           data: null,
           msg: res.response?.data?.msg || '',
         })),
-    RETRY_COUNT,
+    autoRetry ? RETRY_COUNT : 0,
   );
 
 export const httpPost = async <T>(
   url: string,
   data?: unknown,
   config?: AxiosRequestConfig,
+  autoRetry: boolean = true,
 ): Promise<ResponseData<T | null>> => {
   // eslint-disable-next-line no-param-reassign
   config = config || {};
@@ -111,7 +118,7 @@ export const httpPost = async <T>(
           data: null,
           msg: res.response?.data.msg,
         })),
-    RETRY_COUNT,
+    autoRetry ? RETRY_COUNT : 0,
   );
 };
 
@@ -119,6 +126,7 @@ export const httpPostForm = async <T>(
   url: string,
   data?: unknown,
   config?: AxiosRequestConfig,
+  autoRetry: boolean = true,
 ): Promise<ResponseData<T | null>> => {
   // eslint-disable-next-line no-param-reassign
   config = config || {};
@@ -126,14 +134,27 @@ export const httpPostForm = async <T>(
     'Content-Type': 'multipart/form-data',
   };
 
-  return instance
-    .post(url, data, config)
-    .then((res) => res.data as ResponseData<T>)
-    .catch((res) => ({
-      code: res.response?.status,
-      data: null,
-      msg: res.response?.data.msg,
-    }));
+  // return instance
+  //   .post(url, data, config)
+  //   .then((res) => res.data as ResponseData<T>)
+  //   .catch((res) => ({
+  //     code: res.response?.status,
+  //     data: null,
+  //     msg: res.response?.data.msg,
+  //   }));
+
+  return retry(
+    () =>
+      instance
+        .post(url, data, config)
+        .then((res) => res.data as ResponseData<T>)
+        .catch((res) => ({
+          code: res.response?.status,
+          data: null,
+          msg: res.response?.data.msg,
+        })),
+    autoRetry ? RETRY_COUNT : 0,
+  );
 };
 
 export const errorResponse: ResponseData<null> = {

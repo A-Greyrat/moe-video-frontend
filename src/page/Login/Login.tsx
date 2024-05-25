@@ -86,7 +86,6 @@ export const Captcha = () => {
     getCaptcha()
       .then((res) => {
         if (res.code === 200) {
-          console.log(res.data);
           setCaptcha(res.data);
         } else {
           setCaptcha({
@@ -145,7 +144,6 @@ export const SubmitButton = () => {
     getCaptcha()
       .then((res) => {
         if (res.code === 200) {
-          console.log(res.data);
           setCaptcha(res.data);
         } else {
           setCaptcha({

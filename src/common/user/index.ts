@@ -41,12 +41,17 @@ export const login = async ({ user, password, verifyCodeId, captcha }: LoginRequ
   // eslint-disable-next-line no-param-reassign
   captcha = captcha.toLowerCase();
 
-  return httpPost<string>('/user/login', {
-    username: user,
-    password,
-    verifyCodeId,
-    captcha,
-  }).then((res) => {
+  return httpPost<string>(
+    '/user/login',
+    {
+      username: user,
+      password,
+      verifyCodeId,
+      captcha,
+    },
+    undefined,
+    false,
+  ).then((res) => {
     if (res.code === 200) {
       localStorage.setItem('token', res.data!);
       isUserLoggedIn = true;
@@ -69,12 +74,17 @@ export const register = async ({ nickname, password, email, verifyCode }: Regist
   // eslint-disable-next-line no-param-reassign
   password = (await rsaEncrypt(password)) as string;
 
-  return httpPost<string>('/user/signup', {
-    nickname,
-    password,
-    email,
-    verifyCode,
-  }).then((res) => {
+  return httpPost<string>(
+    '/user/signup',
+    {
+      nickname,
+      password,
+      email,
+      verifyCode,
+    },
+    undefined,
+    false,
+  ).then((res) => {
     if (res.code === 200) {
       localStorage.setItem('token', res.data!);
       isUserLoggedIn = true;

@@ -352,7 +352,6 @@ const ImageUpload = memo(() => {
   const handleFileChange = useCallback(
     (e) => {
       const file = e.target.files[0];
-      console.log(file);
       showModal({
         title: '图片裁剪',
         content: (
