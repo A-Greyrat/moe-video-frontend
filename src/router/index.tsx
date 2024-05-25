@@ -21,6 +21,7 @@ export default createBrowserRouter([
         <Home />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/login',
@@ -29,6 +30,7 @@ export default createBrowserRouter([
         <Login />{' '}
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/register',
@@ -37,6 +39,7 @@ export default createBrowserRouter([
         <Register />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/video/:id',
@@ -45,6 +48,7 @@ export default createBrowserRouter([
         <Video />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/search/:type/:id/:page',
@@ -53,6 +57,7 @@ export default createBrowserRouter([
         <Search />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/search/:id/:page',
@@ -61,6 +66,7 @@ export default createBrowserRouter([
         <Search />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/search/:id',
@@ -70,6 +76,7 @@ export default createBrowserRouter([
         <Search />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/upload',
@@ -78,6 +85,7 @@ export default createBrowserRouter([
         <Upload />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space',
@@ -86,6 +94,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space/favor',
@@ -94,6 +103,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space/bangumi',
@@ -102,6 +112,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space/upload',
@@ -110,6 +121,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space/history',
@@ -118,6 +130,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/space/setting',
@@ -126,6 +139,7 @@ export default createBrowserRouter([
         <Space />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/bangumi/index/:id',
@@ -134,6 +148,7 @@ export default createBrowserRouter([
         <BangumiIndex />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/bangumi/index',
@@ -142,13 +157,15 @@ export default createBrowserRouter([
         <BangumiIndex />
       </ErrorBoundary>
     ),
+    hasErrorBoundary: true,
   },
   {
     path: '/error',
-    element: (<Error />),
+    element: <Error />,
   },
   {
     path: '*',
     element: <$404 />,
+    errorElement: <Error />,
   },
 ]);
