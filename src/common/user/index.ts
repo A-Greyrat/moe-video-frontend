@@ -60,7 +60,7 @@ export const login = async ({ user, password, verifyCodeId, captcha }: LoginRequ
   });
 };
 
-export const getEmailCaptcha = (email: string) => httpPost(`/common/verify-email`, { email });
+export const getEmailCaptcha = (email: string) => httpPost(`/common/verify-email`, { email }, undefined, false);
 export const emailTimeLimit = 60 * 1000;
 
 interface RegisterRequest {
@@ -180,4 +180,10 @@ export const useUser = () => {
     });
   }, []);
   return user;
+};
+
+export const forgetPassword = async (email: string, verifyCode: string, newPassword: string) => {
+  // eslint-disable-next-line no-param-reassign
+  newPassword = (await rsaEncrypt(newPassword)) as string;
+  return httpPost(`/user/forget-password`, { email, verifyCode, newPassword }, undefined, false);
 };

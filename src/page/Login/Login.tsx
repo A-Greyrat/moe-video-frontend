@@ -1,8 +1,8 @@
-import { Button, Image, showModal } from '@natsume_shiki/mika-ui';
+import { Button, Image, Input, showModal } from '@natsume_shiki/mika-ui';
 import './Login.less';
 import { useTypePrint } from '../../common/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { getCaptcha, isUserLoggedInSync, login } from '../../common/user';
+import { forgetPassword, getCaptcha, getEmailCaptcha, isUserLoggedInSync, login } from '../../common/user';
 import { throttle } from '../../common/utils';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'mika-store';
@@ -209,7 +209,137 @@ export const SubmitButton = () => {
               e.preventDefault();
               showModal({
                 title: '忘记密码',
-                content: '请联系管理员重置密码',
+                content: (
+                  <form className='moe-video-login-form-forget-password' onSubmit={(e) => e.preventDefault()}>
+                    <div>
+                      <p className='text-gray-500'>邮箱</p>
+                      <div className='flex justify-between gap-4'>
+                        <div className='flex-auto'>
+                          <Input size='small' name='email' />
+                        </div>
+                        <Button
+                          className='w-20'
+                          styleType='primary'
+                          size='small'
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            const form = document.querySelector(
+                              '.moe-video-login-form-forget-password',
+                            ) as HTMLFormElement;
+                            const email = form.querySelector('input[name="email"]') as HTMLInputElement;
+                            if (
+                              !email?.value ||
+                              !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)
+                            ) {
+                              showModal({
+                                title: '发送失败',
+                                content: '邮箱格式错误',
+                                closeIcon: false,
+                                closeOnClickMask: true,
+                              });
+                              return;
+                            }
+
+                            // eslint-disable-next-line consistent-return
+                            return getEmailCaptcha(email.value).then((res) => {
+                              if (res.code === 200) {
+                                showModal({
+                                  title: '发送成功',
+                                  content: '请查看邮箱',
+                                  closeIcon: false,
+                                  closeOnClickMask: true,
+                                });
+                              } else {
+                                showModal({
+                                  title: '发送失败',
+                                  content: res.msg,
+                                  closeIcon: false,
+                                  closeOnClickMask: true,
+                                });
+                              }
+                            });
+                          }}
+                        >
+                          发送
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className='text-gray-500'>验证码</p>
+                      <Input size='small' name='code' />
+                    </div>
+                    <div>
+                      <p className='text-gray-500'>新密码</p>
+                      <Input size='small' name='pwd' />
+                    </div>
+                    <Button
+                      styleType='primary'
+                      size='large'
+                      className='mt-2'
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        const form = document.querySelector('.moe-video-login-form-forget-password') as HTMLFormElement;
+                        const email = form.querySelector('input[name="email"]') as HTMLInputElement;
+                        const code = form.querySelector('input[name="code"]') as HTMLInputElement;
+                        const pwd = form.querySelector('input[name="pwd"]') as HTMLInputElement;
+
+                        if (!email?.value || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
+                          showModal({
+                            title: '修改失败',
+                            content: '邮箱格式错误',
+                            closeIcon: false,
+                            closeOnClickMask: true,
+                          });
+                          return;
+                        }
+                        if (!code?.value || !/^[0-9]{6}$/.test(code.value)) {
+                          showModal({
+                            title: '修改失败',
+                            content: '验证码格式错误',
+                            closeIcon: false,
+                            closeOnClickMask: true,
+                          });
+                          return;
+                        }
+
+                        if (!pwd?.value || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(pwd.value)) {
+                          showModal({
+                            title: '修改失败',
+                            content: '密码格式错误',
+                            closeIcon: false,
+                            closeOnClickMask: true,
+                          });
+                          return;
+                        }
+
+                        // eslint-disable-next-line consistent-return
+                        return forgetPassword(email.value, code.value, pwd.value).then((res) => {
+                          if (res.code === 200) {
+                            showModal({
+                              title: '修改成功',
+                              content: '请重新登录',
+                              closeIcon: false,
+                              closeOnClickMask: true,
+                              onClose: () => {
+                                window.location.reload();
+                              },
+                            });
+                          } else {
+                            showModal({
+                              title: '修改失败',
+                              content: res.msg,
+                              closeIcon: false,
+                              closeOnClickMask: true,
+                            });
+                          }
+                        });
+                      }}
+                    >
+                      修改
+                    </Button>
+                  </form>
+                ),
                 closeOnClickMask: true,
                 closeIcon: false,
               });
