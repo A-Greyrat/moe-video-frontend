@@ -17,7 +17,6 @@ const RETRY_COUNT = 5;
 
 const retry = async (fn: () => Promise<any>, count: number) => {
   const res = await fn();
-  console.log(res);
 
   if (res.code !== 200 && res.code !== 401) {
     if (count <= 0) return Promise.resolve(res);
