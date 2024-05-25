@@ -84,6 +84,10 @@ const Video = memo(() => {
       getVideoUrl(res.pagination[index].videoId).then((res) => {
         setUrl(res);
       });
+
+      getDanmaku(res.pagination[index].videoId, 1).then((res) => {
+        setDanmakus(res);
+      });
     });
 
     return () => {
@@ -92,7 +96,7 @@ const Video = memo(() => {
       videoRef.current?.removeEventListener('loadedmetadata', getAllDanmaku);
       clearInterval(timer.current);
     };
-  }, [p, param.SESSDATA, param.id, query]);
+  }, [p, param.id]);
 
   useEffect(() => {
     const gotoNext = () => {
@@ -143,9 +147,10 @@ const Video = memo(() => {
                 showMessage({ children: '请先登录' });
                 return false;
               }
+
               addDanmaku(
                 item?.pagination[parseInt(p || '1', 10) - 1].videoId,
-                danmaku.begin * 1000,
+                danmaku.begin,
                 danmaku.mode,
                 danmaku.size,
                 danmaku.color,

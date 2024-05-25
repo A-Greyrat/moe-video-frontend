@@ -9,6 +9,7 @@ import { HistoryListItemProps } from '../../page/Space/HistoryList.tsx';
 import { FavorListItemProps } from '../../page/Space/FavorList.tsx';
 import { VideoGroupInfoList } from './type.ts';
 import { IndexListItemProps } from '../../page/Home/IndexList.tsx';
+import { isUserLoggedInSync } from '../user';
 
 const proxyImg = (url: string) =>
   `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
@@ -286,13 +287,14 @@ export const getDanmaku_v1 = async (videoId: string, p?: string, SESSDATA?: stri
 export const getDanmaku_v2 = async (videoId: string, segmentIndex?: number): Promise<DanmakuAttr[]> =>
   httpGet<DanmakuAttr[]>('/video/danmaku', {
     params: { videoId, segmentIndex },
-  }).then((res) =>
-    res.data.map((item) => {
-      item.color = `#${parseInt(item.color, 10).toString(16).padStart(6, '0')}`;
-      item.begin /= 1000;
-      return item;
-    }),
-  );
+  }).then((res) => {
+    if (res.code !== 200) {
+      console.warn(res.msg);
+      return [];
+    }
+
+    return res.data;
+  });
 
 export const getDanmaku = async (videoId: string, segmentIndex?: number) => getDanmaku_v2(videoId, segmentIndex);
 // return getDanmaku_v2(videoId, p, SESSDATA);
@@ -488,11 +490,14 @@ export const getHistoryList = async (index: number, pageSize: number): Promise<H
 
 export const deleteHistory = async (ids: string[]) => httpPost('/plain-user/history/delete', { videoGroupIds: ids });
 
-export const postWatchProgress = async (videoId: string, progress: number) =>
-  httpPost('/statistic/video-play', {
+export const postWatchProgress = async (videoId: string, progress: number) => {
+  if (!isUserLoggedInSync()) return Promise.resolve();
+
+  return httpPost('/statistic/video-play', {
     videoId,
     watchProgress: Math.floor(progress),
   });
+};
 
 export const getLastWatchedIndex = async (id: string) =>
   httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) =>
@@ -541,9 +546,16 @@ export const getBangumiFavoriteList = async (page: number, pageSize: number) =>
   }).then((res) => {
     const { data } = res;
 
+    if (!data || !data.records) {
+      return {
+        total: 0,
+        items: [],
+      };
+    }
+
     return {
-      total: data.total,
-      items: data.records.map((item: any) => ({
+      total: data?.total || 0,
+      items: data?.records.map((item: any) => ({
         id: item.id,
         title: item.title,
         cover: item.cover,

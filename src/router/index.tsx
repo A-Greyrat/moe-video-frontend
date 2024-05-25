@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
+import ErrorBoundary from '../page/ErrorBoundary';
+import Error from '../page/Error';
 
 const BangumiIndex = React.lazy(() => import('../page/Index/BangumiIndex'));
 const Home = React.lazy(() => import('../page/Home/Home'));
@@ -14,67 +16,136 @@ const Space = React.lazy(() => import('../page/Space/Space'));
 export default createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: (
+      <ErrorBoundary>
+        <Home />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <ErrorBoundary>
+        <Login />{' '}
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/register',
-    element: <Register />,
+    element: (
+      <ErrorBoundary>
+        <Register />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/video/:id',
-    element: <Video />,
+    element: (
+      <ErrorBoundary>
+        <Video />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/search/:type/:id/:page',
-    element: <Search />,
+    element: (
+      <ErrorBoundary>
+        <Search />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/search/:id/:page',
-    element: <Search />,
+    element: (
+      <ErrorBoundary>
+        <Search />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/search/:id',
-    element: <Search />,
+    element: (
+      <ErrorBoundary>
+        {' '}
+        <Search />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/upload',
-    element: <Upload />,
+    element: (
+      <ErrorBoundary>
+        <Upload />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space/favor',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space/bangumi',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space/upload',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space/history',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/space/setting',
-    element: <Space />,
+    element: (
+      <ErrorBoundary>
+        <Space />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/bangumi/index/:id',
-    element: <BangumiIndex />,
+    element: (
+      <ErrorBoundary>
+        <BangumiIndex />
+      </ErrorBoundary>
+    ),
   },
   {
     path: '/bangumi/index',
-    element: <BangumiIndex />,
+    element: (
+      <ErrorBoundary>
+        <BangumiIndex />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: '/error',
+    element: (<Error />),
   },
   {
     path: '*',
