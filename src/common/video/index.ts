@@ -229,28 +229,31 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     params: {
       id: videoId,
     },
-  }).then((res) => ({
-    title: res.data.title,
-    tags: res.data?.tags.length > 0 && res.data.tags.split(';'),
-    playCount: res.data.watchCnt,
-    likeCount: (res.data.userLike ? -1 : 0) + parseInt(res.data.likeCnt, 10),
-    danmakuCount: res.data.danmakuCnt,
-    favoriteCount: (res.data.userFavorite ? -1 : 0) + parseInt(res.data.favoriteCnt, 10),
-    description: res.data.description,
-    type: res.data.type,
-    pagination: res.data.contents.map((page: any) => ({
-      index: `P${page.index}`,
-      title: page.title,
-      url: `/video/${videoId}?p=${page.index}`,
-      videoId: page.videoId,
-      duration: '',
-    })),
-    recommendList,
-    extra_id: res.data.bvid,
-    isUserLiked: res.data.userLike,
-    isUserFavorite: res.data.userFavorite,
-    uploader: res.data.uploader,
-  }));
+  }).then((res) => {
+    if (res.code !== 200 || !res.data) return null;
+    return {
+      title: res.data.title,
+      tags: res.data?.tags.length > 0 && res.data.tags.split(';'),
+      playCount: res.data.watchCnt,
+      likeCount: (res.data.userLike ? -1 : 0) + parseInt(res.data.likeCnt, 10),
+      danmakuCount: res.data.danmakuCnt,
+      favoriteCount: (res.data.userFavorite ? -1 : 0) + parseInt(res.data.favoriteCnt, 10),
+      description: res.data.description,
+      type: res.data.type,
+      pagination: res.data.contents.map((page: any) => ({
+        index: `P${page.index}`,
+        title: page.title,
+        url: `/video/${videoId}?p=${page.index}`,
+        videoId: page.videoId,
+        duration: '',
+      })),
+      recommendList,
+      extra_id: res.data.bvid,
+      isUserLiked: res.data.userLike,
+      isUserFavorite: res.data.userFavorite,
+      uploader: res.data.uploader,
+    };
+  });
 };
 
 export const getVideoInfo = async (videoId: string): Promise<VideoInfo> => getVideoInfo_v2(videoId);
@@ -641,6 +644,22 @@ export const getBangumiIndexList = async (type: number) =>
       status: item.status,
       watchCnt: item.watchCnt,
       favoriteCnt: item.favoriteCnt,
+      url: `/video/${item.id}`,
+    })),
+  );
+
+export const getNewBangumiTimeList = async (date: string) =>
+  httpGet<any>('/bangumi-video-group/time-schedule', {
+    params: {
+      date,
+    },
+  }).then((res) =>
+    res.data.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      cover: item.cover,
+      updateTime: item.willUpdateTime,
+      updateTo: item.willUpdateIndex,
       url: `/video/${item.id}`,
     })),
   );

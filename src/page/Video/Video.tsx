@@ -3,7 +3,7 @@ import VideoPlayer, { DanmakuAttr, VideoSrc, TripleSpeedForward } from 'mika-vid
 import Header from '../../component/header/Header';
 import Footer from '../../component/footer/Footer';
 import VideoPageComment from './VideoPageComment.tsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import VideoPageInfo, { VideoPageInfoProps } from './VideoPageInfo.tsx';
 import VideoPaginationList from './VideoPaginationList.tsx';
 import {
@@ -29,7 +29,7 @@ const Video = memo(() => {
   const [url, setUrl] = React.useState<string | VideoSrc | undefined>(undefined);
   const [danmakus, setDanmakus] = React.useState<DanmakuAttr[]>([]);
   const [item, setItem] = React.useState<VideoInfo>();
-
+  const nav = useNavigate();
   const timer = useRef<number | null>(null);
 
   useEffect(() => {
@@ -40,6 +40,10 @@ const Video = memo(() => {
     let getAllDanmaku: () => void;
 
     getVideoInfo(vid).then((res) => {
+      if (res === null) {
+        nav('/404');
+      }
+
       setItem(res);
       const index = p ? parseInt(p, 10) - 1 : 0;
       fn = () => {
