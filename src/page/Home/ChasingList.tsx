@@ -2,6 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import './ChasingList.less';
 import { Image } from '@natsume_shiki/mika-ui';
 import { getBangumiFavoriteList } from '../../common/video';
+import {isUserLoggedInSync} from "../../common/user";
 
 interface ChasingListItem {
   id: string;
@@ -49,6 +50,7 @@ const ChasingList = memo(() => {
   const pageSize = useRef(20);
 
   useEffect(() => {
+    if (isUserLoggedInSync())
     getBangumiFavoriteList(currentPage, pageSize.current).then((res) => {
       setChasingList(res.items);
       setTotal(res.total);

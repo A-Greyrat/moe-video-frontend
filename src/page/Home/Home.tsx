@@ -8,14 +8,12 @@ import TimelineList from './TimelineList.tsx';
 import RecommendList from './RecommendList.tsx';
 import { useEffect, useState } from 'react';
 import LoadingPage from '../Loading/LoadingPage.tsx';
-import { getCarouselList, getHomeIndexList, getRecommendList } from '../../common/video';
+import {getCarouselList, getHomeIndexList, getRecommendList} from '../../common/video';
 import './Home.less';
 
 const Home = () => {
   useTitle('首页');
   const [carouselItems, setCarouselItems] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [timeLineList, _setTimeLineList] = useState([]);
   const [recommendList, setRecommendList] = useState([]);
   const [indexList, setIndexList] = useState([]);
 
@@ -49,7 +47,7 @@ const Home = () => {
         <ChasingList />
 
         {/* 时间表 */}
-        <TimelineList items={timeLineList} />
+        <TimelineList />
 
         {/* 推荐列表 */}
         <RecommendList items={recommendList} />

@@ -49,9 +49,10 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
   }, []);
 
   useEffect(() => {
-    getLastWatchedIndex(id).then((index) => {
-      setLastWatchedIndex(index);
-    });
+    if (isUserLoggedInSync())
+      getLastWatchedIndex(id).then((index) => {
+        setLastWatchedIndex(index);
+      });
   }, []);
 
   return (
@@ -141,9 +142,10 @@ export const VideoItem = memo((props: VideoItemProps) => {
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    getLastWatchedIndex(id).then((index) => {
-      setLastWatchedIndex(index);
-    });
+    if (isUserLoggedInSync())
+      getLastWatchedIndex(id).then((index) => {
+        setLastWatchedIndex(index);
+      });
   }, []);
 
   return (

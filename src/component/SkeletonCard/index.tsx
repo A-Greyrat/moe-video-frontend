@@ -6,14 +6,15 @@ export interface SkeletonCardProps {
   num?: number;
   style?: React.CSSProperties;
   type?: 'box' | 'strip';
+  className?: string;
 }
 
 const SkeletonCard = memo((props: SkeletonCardProps) => {
-  const { num = 1, style, type = 'box' } = props;
+  const { num = 1, style, type = 'box', className } = props;
 
   if (type === 'box') {
     return (
-      <div style={{ ...style }}>
+      <div style={{ ...style }} className={className}>
         {Array.from({ length: num }).map((_, index) => (
           <div className='moe-video-skeleton-card' key={index}>
             <div className='moe-video-skeleton-card-cover'></div>

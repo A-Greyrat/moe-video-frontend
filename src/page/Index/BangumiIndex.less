@@ -9,10 +9,11 @@
 
 .moe-video-bangumi-index-page-index-list {
   grid-template-columns: 3fr 1fr;
-}
 
-.active {
-  color: @primary-color;
+  .moe-video-skeleton-card-cover {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+  }
 }
 
 .moe-video-bangumi-index-page-index-list-item {
@@ -77,34 +78,26 @@
   );
 }
 
-.moe-video-bangumi-index-page-index-list-search-year {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+.moe-video-bangumi-index-page-index-list-search {
+  display: flex;
+  flex-wrap: wrap;
 
-  @media (max-width: 920px) {
-    grid-template-columns: 1fr 1fr 1fr;
+  align-content: start;
+
+  > div {
+    cursor: pointer;
+    margin-right: 1rem;
+    margin-bottom: 0.2rem;
+    transition: 0.3s;
+    font-weight: 300;
+
+    &:hover {
+      color: darken(@primary-color, 10%);
+    }
   }
 
-  @media (max-width: 760px) {
-    grid-template-columns: 1fr 1fr;
-  }
 
-  @media (max-width: 540px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.moe-video-bangumi-index-page-index-list-search-type {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  @media (max-width: 920px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: 670px) {
-    grid-template-columns: 1fr;
+  > .active {
+    color: @primary-color;
   }
 }
