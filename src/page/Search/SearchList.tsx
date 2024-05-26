@@ -43,15 +43,17 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    isFavoriteBangumi(Number(id)).then((res) => {
-      setIsFavorite(res ? 'Favorite' : 'NotFavorite');
-    });
+    if (isUserLoggedInSync())
+      isFavoriteBangumi(Number(id)).then((res) => {
+        setIsFavorite(res ? 'Favorite' : 'NotFavorite');
+      });
   }, []);
 
   useEffect(() => {
-    getLastWatchedIndex(id).then((index) => {
-      setLastWatchedIndex(index);
-    });
+    if (isUserLoggedInSync())
+      getLastWatchedIndex(id).then((index) => {
+        setLastWatchedIndex(index);
+      });
   }, []);
 
   return (
@@ -141,9 +143,10 @@ export const VideoItem = memo((props: VideoItemProps) => {
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    getLastWatchedIndex(id).then((index) => {
-      setLastWatchedIndex(index);
-    });
+    if (isUserLoggedInSync())
+      getLastWatchedIndex(id).then((index) => {
+        setLastWatchedIndex(index);
+      });
   }, []);
 
   return (

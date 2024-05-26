@@ -1,0 +1,25 @@
+@import "../../common/theme/theme.less";
+
+.moe-video-bangumi-index-page-index-list-search {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-content: start;
+
+  > div {
+    cursor: pointer;
+    margin-right: 1rem;
+    margin-bottom: 0.2rem;
+    transition: 0.3s;
+    font-weight: 300;
+
+    &:hover {
+      color: darken(@primary-color, 10%);
+    }
+  }
+
+
+  > .active {
+    color: @primary-color;
+  }
+}
