@@ -11,7 +11,7 @@ import {
   getDanmaku,
   getLastWatchedProgress,
   getVideoInfo,
-  getVideoUrl,
+  getVideoUrl, postWatchCount,
   postWatchProgress,
   VideoInfo,
 } from '../../common/video';
@@ -37,6 +37,7 @@ const Video = memo(() => {
     const heartbeatSendTime = 7000;
     let fn: () => void;
     let postProgress: () => void;
+    let postFirstHeartbeat: () => void;
     let getAllDanmaku: () => void;
 
     getVideoInfo(vid).then((res) => {
@@ -51,7 +52,7 @@ const Video = memo(() => {
           if (res > 0 && videoRef.current) {
             videoRef.current.currentTime = res;
             showMessage({
-              children: `上次观看到${new Date(res * 1000).toISOString().substr(11, 8)}，已为您自动跳转`,
+              children: `上次观看到${new Date(res * 1000).toISOString().slice(11, 8)}，已为您自动跳转`,
             });
           }
         });
@@ -63,6 +64,12 @@ const Video = memo(() => {
           const currentTime = videoRef.current?.currentTime;
           postWatchProgress(res.pagination[index].videoId, currentTime).then(undefined);
         }, heartbeatSendTime);
+      };
+
+      postFirstHeartbeat = () => {
+        setTimeout(() => {
+          postWatchCount(res.pagination[index].videoId).then(undefined);
+        }, 1000);
       };
 
       getAllDanmaku = () => {
@@ -79,6 +86,7 @@ const Video = memo(() => {
 
       videoRef.current?.addEventListener('play', fn, { once: true });
       videoRef.current?.addEventListener('play', postProgress);
+      videoRef.current?.addEventListener('play', postFirstHeartbeat, { once: true });
       videoRef.current?.addEventListener('loadedmetadata', getAllDanmaku, { once: true });
 
       getVideoUrl(res.pagination[index].videoId).then((res) => {
@@ -93,6 +101,7 @@ const Video = memo(() => {
     return () => {
       videoRef.current?.removeEventListener('play', fn);
       videoRef.current?.removeEventListener('play', postProgress);
+      videoRef.current?.removeEventListener('play', postFirstHeartbeat);
       videoRef.current?.removeEventListener('loadedmetadata', getAllDanmaku);
       clearInterval(timer.current);
     };
