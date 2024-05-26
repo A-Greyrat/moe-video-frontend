@@ -212,14 +212,14 @@ export const getRelatedVideos = async (videoId: string, nums = 10): Promise<Vide
       num: nums,
     },
   }).then((res) =>
-    res.data.map((item: any) => ({
-      title: item.title,
-      cover: item.cover,
-      playCount: item.watchCnt,
-      likeCount: item.likeCnt,
-      url: `/video/${item.id}`,
-      update: new Date(item.createTime).toLocaleDateString(),
-      author: item.uploader?.nickname || '未知用户',
+    res?.data.map((item: any) => ({
+      title: item?.title,
+      cover: item?.cover,
+      playCount: item?.watchCnt,
+      likeCount: item?.likeCnt,
+      url: `/video/${item?.id}`,
+      update: new Date(item?.createTime).toLocaleDateString(),
+      author: item?.uploader?.nickname || '未知用户',
     })),
   );
 
@@ -233,26 +233,26 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
   }).then((res) => {
     if (res.code !== 200 || !res.data) return null;
     return {
-      title: res.data.title,
-      tags: res.data?.tags.length > 0 && res.data.tags.split(';'),
-      playCount: res.data.watchCnt,
-      likeCount: (res.data.userLike ? -1 : 0) + parseInt(res.data.likeCnt, 10),
-      danmakuCount: res.data.danmakuCnt,
-      favoriteCount: (res.data.userFavorite ? -1 : 0) + parseInt(res.data.favoriteCnt, 10),
-      description: res.data.description,
-      type: res.data.type,
-      pagination: res.data.contents.map((page: any) => ({
-        index: `P${page.index}`,
-        title: page.title,
-        url: `/video/${videoId}?p=${page.index}`,
-        videoId: page.videoId,
+      title: res?.data?.title,
+      tags: res?.data?.tags.length > 0 && res?.data?.tags.split(';'),
+      playCount: res?.data?.watchCnt,
+      likeCount: (res?.data?.userLike ? -1 : 0) + parseInt(res?.data?.likeCnt, 10),
+      danmakuCount: res?.data?.danmakuCnt,
+      favoriteCount: (res?.data.userFavorite ? -1 : 0) + parseInt(res?.data?.favoriteCnt, 10),
+      description: res?.data.description,
+      type: res?.data?.type,
+      pagination: res?.data?.contents.map((page: any) => ({
+        index: `P${page?.index}`,
+        title: page?.title,
+        url: `/video/${videoId}?p=${page?.index}`,
+        videoId: page?.videoId,
         duration: '',
       })),
       recommendList,
-      extra_id: res.data.bvid,
-      isUserLiked: res.data.userLike,
-      isUserFavorite: res.data.userFavorite,
-      uploader: res.data.uploader,
+      extra_id: res?.data?.bvid,
+      isUserLiked: res?.data?.userLike,
+      isUserFavorite: res?.data?.userFavorite,
+      uploader: res?.data?.uploader,
     };
   });
 };

@@ -20,7 +20,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   // eslint-disable-next-line class-methods-use-this
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    localStorage.setItem('error', JSON.stringify({ error, errorInfo }));
+    localStorage.setItem('error', JSON.stringify({ error: error.toString(), errorInfo }));
     // send error to server
   }
 

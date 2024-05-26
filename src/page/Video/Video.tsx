@@ -42,12 +42,12 @@ const Video = memo(() => {
     let getAllDanmaku: () => void;
 
     getVideoInfo(vid).then((res) => {
-      if (res === null) {
-        nav('/404');
+      const index = p ? parseInt(p, 10) - 1 : 0;
+      if (res === null || res.pagination.length === 0 || !res.pagination[index]?.videoId) {
+        nav('/404', { replace: true });
       }
 
       setItem(res);
-      const index = p ? parseInt(p, 10) - 1 : 0;
       fn = () => {
         getLastWatchedProgress(res.pagination[index].videoId).then((res) => {
           if (res > 0 && videoRef.current) {
