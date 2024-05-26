@@ -11,7 +11,8 @@ import {
   getDanmaku,
   getLastWatchedProgress,
   getVideoInfo,
-  getVideoUrl, postWatchCount,
+  getVideoUrl,
+  postWatchCount,
   postWatchProgress,
   VideoInfo,
 } from '../../common/video';
