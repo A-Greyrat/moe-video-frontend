@@ -638,7 +638,7 @@ export const getHomeIndexList = async (): Promise<IndexListItemProps[]> =>
       title: item.title,
       items: item.tags.map((tag: any) => ({
         tag: tag.name ? tag.name : tag,
-        url: tag.type ? `/bangumi/index/${tag.type}` : `/bangumi/index`,
+        url: tag.type !== null && tag.type !== undefined ? `/bangumi/index/${tag.type}` : `/search/${tag}/1`,
       })),
     })),
   );

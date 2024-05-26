@@ -43,9 +43,10 @@ export const BangumiItem = memo((props: BangumiItemProps) => {
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    isFavoriteBangumi(Number(id)).then((res) => {
-      setIsFavorite(res ? 'Favorite' : 'NotFavorite');
-    });
+    if (isUserLoggedInSync())
+      isFavoriteBangumi(Number(id)).then((res) => {
+        setIsFavorite(res ? 'Favorite' : 'NotFavorite');
+      });
   }, []);
 
   useEffect(() => {
