@@ -8,10 +8,11 @@ import TimelineList from './TimelineList.tsx';
 import RecommendList from './RecommendList.tsx';
 import { useEffect, useState } from 'react';
 import LoadingPage from '../Loading/LoadingPage.tsx';
-import {getCarouselList, getHomeIndexList, getRecommendList} from '../../common/video';
+import { getCarouselList, getHomeIndexList, getRecommendList } from '../../common/video';
 import './Home.less';
 
 const Home = () => {
+  window.scroll({ top: 0 });
   useTitle('首页');
   const [carouselItems, setCarouselItems] = useState([]);
   const [recommendList, setRecommendList] = useState([]);

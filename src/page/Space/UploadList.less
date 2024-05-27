@@ -17,6 +17,22 @@
     3px 3px 3px 0 mix(@primary-color, transparent, 15%),
     -3px -3px 15px 0 mix(@primary-color, transparent, 15%);
   border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 18rem;
+
+  height: 100%;
+
+  transition: 0.3s;
+
+  &:hover {
+    box-shadow:
+      3px 3px 3px 0 mix(@primary-color, transparent, 45%),
+      -3px -3px 15px 0 mix(@primary-color, transparent, 45%);
+
+    scale: 1.02;
+  }
 }
 
 .moe-video-space-page-upload-list-item-title {
