@@ -19,7 +19,7 @@ export const VideoPaginationListItem = memo((props: VideoPaginationListItemProps
   <div className={`moe-video-video-page-pagination-item${props.active ? ' active' : ''}`}>
     <a href={props.url}>
       <span className='mr-1.5 font-bold'>{props.index}</span>
-      <span className='line-clamp-1'>{props.title}</span>
+      <span className='line-clamp-1 break-all'>{props.title}</span>
       <span className='ml-1.5 text-gray-400'>{props.duration}</span>
     </a>
   </div>
