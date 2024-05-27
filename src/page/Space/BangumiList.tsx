@@ -155,9 +155,13 @@ const BangumiList = memo(() => {
       )}
       <Pagination
         key={total}
+        initIndex={currentPage}
         pageNum={Math.ceil(total / pageSize.current)}
         onChange={(index) => {
-          setCurrentPage(index);
+          handlePageChange(index);
+          window.scrollTo({
+            top: 0,
+          });
         }}
         style={{
           width: 'fit-content',
