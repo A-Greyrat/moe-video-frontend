@@ -130,13 +130,11 @@ const Video = memo(() => {
     };
   }, [item?.pagination.length, p, param.id]);
 
-  if (!item) {
-    return <LoadingPage />;
-  }
   const vid = parseInt(item?.pagination.find((item) => item.index === `P${p ?? 1}`)?.videoId, 10) || 0;
   return (
     <div className='moe-video-video-page-root'>
       <Header />
+      {!item && <LoadingPage />}
       <div className='moe-video-video-page-wrapper'>
         <div className='moe-video-page-video-container'>
           <VideoPlayer
