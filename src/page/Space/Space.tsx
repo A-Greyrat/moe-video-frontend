@@ -23,6 +23,7 @@ const TypeIndexMapping: {
 };
 
 const Space = memo(() => {
+  window.scroll({ top: 0 });
   const { pathname } = useLocation();
   const nav = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
