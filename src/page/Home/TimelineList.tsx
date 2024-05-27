@@ -1,9 +1,11 @@
 import { memo, useEffect, useState } from 'react';
 import './TimelineList.less';
 import { Image, TabList } from '@natsume_shiki/mika-ui';
-import { getNewBangumiTimeList } from '../../common/video';
+import { getLastWatchedIndex, getNewBangumiTimeList } from '../../common/video';
+import { isUserLoggedInSync } from '../../common/user';
 
 interface TimelineListItem {
+  id: string;
   title: string;
   cover: string;
   updateTime: string;
@@ -12,19 +14,46 @@ interface TimelineListItem {
   url: string;
 }
 
+const dayMap = {
+  0: '周日',
+  1: '周一',
+  2: '周二',
+  3: '周三',
+  4: '周四',
+  5: '周五',
+  6: '周六',
+};
+
 export const TimelineListItem = memo((props: TimelineListItem) => {
-  const { title, cover, updateTime, updateTo, score, url } = props;
+  const { title, cover, updateTime, updateTo, score, url, id } = props;
+  const [updateDay, setUpdateDay] = useState('');
+  const [updateLocalTime, setUpdateLocalTime] = useState('');
+  const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
+
+  useEffect(() => {
+    setUpdateDay(dayMap[new Date(updateTime).getDay()]);
+    setUpdateLocalTime(new Date(updateTime).toLocaleTimeString().slice(0, 5));
+    if (isUserLoggedInSync()) getLastWatchedIndex(id).then(setLastWatchedIndex);
+  }, []);
+
   return (
-    <a href={url} className='moe-video-home-page-timeline-list-item overflow-hidden max-w-52'>
+    <a
+      href={`${url}?p=${lastWatchedIndex}`}
+      className='moe-video-home-page-timeline-list-item overflow-hidden max-w-52'
+    >
       <div className='relative'>
-        <Image width='100%' style={{ aspectRatio: '3 / 4' }} src={cover} lazy />
+        <Image width='100%' style={{ aspectRatio: '3 / 4', objectFit: 'cover' }} src={cover} lazy />
         <div className='absolute left-0 bottom-2 pt-6 px-2 w-full text-right text-2xl font-medium italic cursor-pointer'>
           <span className='text-white'>{score}</span>
         </div>
       </div>
-      <div className='moe-video-home-page-timeline-list-item-title px-3 pt-2 pb-1'>{title}</div>
-      <div className='px-3 pb-3 text-gray-400'>
-        {updateTime} 更新至第{updateTo}集
+      <div className='flex flex-col justify-between flex-auto'>
+        <div className='moe-video-home-page-timeline-list-item-title px-3 pt-1 pb-1 line-clamp-2'>{title}</div>
+        <div className='px-3 pb-3 text-gray-400 text-sm gap-1 flex'>
+          <span>{updateDay}</span>
+          <span>{updateLocalTime}</span>
+          <span>更新至第{updateTo}集</span>
+        </div>
       </div>
     </a>
   );
@@ -76,7 +105,7 @@ const TimelineList = memo(() => {
 
       <div className='moe-video-home-page-timeline-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
         {timelineList?.length > 0 &&
-          timelineList[activeIndex].map((item, index) => <TimelineListItem key={index} {...item} />)}
+          timelineList[activeIndex].map((item) => <TimelineListItem key={item.id} {...item} />)}
       </div>
     </>
   );
