@@ -146,6 +146,7 @@ const Video = memo(() => {
               height: 'fit-content',
               overflow: 'hidden',
               width: '100%',
+              display: item ? 'block' : 'none',
             }}
             plugins={[TripleSpeedForward]}
             ref={videoRef}
