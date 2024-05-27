@@ -39,6 +39,11 @@ export const UploadListItem = memo((props: UploadListItemProps) => {
               转码中
             </div>
           )}
+          {status === 0 && (
+            <div className='moe-video-space-page-upload-list-item-status absolute left-2 top-2 bg-red-400 text-white'>
+              已锁定
+            </div>
+          )}
         </div>
         <div className='flex flex-col justify-between flex-auto'>
           <div className='moe-video-space-page-upload-list-item-title px-3 pt-2 mb-2 line-clamp-2'>
