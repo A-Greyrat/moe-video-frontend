@@ -55,15 +55,14 @@ export const HistoryListItem = memo((props: HistoryListItemProps) => {
                 height: 'fit-content',
                 fontSize: '1rem',
               }}
-              onClick={() => {
-                deleteHistory([videoGroupId]).then((r) => {
-                  if (r.code === 200) {
-                    showMessage({ children: '删除成功' });
-                    setHistoryList(historyList.filter((item) => item.videoGroupId !== videoGroupId));
-                    setTotal(total - 1);
-                    setCurrentPage((c) => c - 1);
-                  }
-                });
+              onClick={async () => {
+                const r = await deleteHistory([videoGroupId]);
+                if (r.code === 200) {
+                  showMessage({ children: '删除成功' });
+                  setHistoryList(historyList.filter((item) => item.videoGroupId !== videoGroupId));
+                  setTotal(total - 1);
+                  setCurrentPage((c) => c - 1);
+                }
               }}
             >
               删除

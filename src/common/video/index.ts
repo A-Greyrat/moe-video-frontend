@@ -582,12 +582,14 @@ export const getUserUploadList = async (page: number, pageSize: number) =>
     },
   }).then((res) => {
     const { data } = res;
+    console.log(data)
     return {
       total: data.total,
       items: data.records.map((item: any) => ({
         id: item.id,
         title: item.title,
         cover: item.cover,
+        status: item.videoGroupStatus,
         playCount: item.watchCnt,
         uploadTime: new Date(item.createTime).toLocaleDateString(),
         url: `/video/${item.id}`,
@@ -679,3 +681,5 @@ export const getNewBangumiTimeList = async (date: string) =>
       url: `/video/${item.id}`,
     })),
   );
+
+export const deleteUserUpload = async (id: string) => httpPost('/plain-video-group/delete', { id });

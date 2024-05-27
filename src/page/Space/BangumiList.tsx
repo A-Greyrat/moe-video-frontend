@@ -72,24 +72,23 @@ export const BangumiListItem = memo((props: BangumiListItemProps) => {
               fontSize: '1rem',
               width: 'fit-content',
             }}
-            onClick={() => {
-              deleteBangumiFavorite([id]).then((r) => {
-                if (r.code === 200) {
-                  showMessage({ children: '取消追番成功' });
-                  if (bangumiList.length === 1 && currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
-                    getBangumiFavoriteList(currentPage - 1, pageSize).then((res) => {
-                      setBangumiList(res.items);
-                      setTotal(res.total);
-                    });
-                  } else {
-                    getBangumiFavoriteList(currentPage, pageSize).then((res) => {
-                      setBangumiList(res.items);
-                      setTotal(res.total);
-                    });
-                  }
+            onClick={async () => {
+              const r = await deleteBangumiFavorite([id]);
+              if (r.code === 200) {
+                showMessage({ children: '取消追番成功' });
+                if (bangumiList.length === 1 && currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                  getBangumiFavoriteList(currentPage - 1, pageSize).then((res) => {
+                    setBangumiList(res.items);
+                    setTotal(res.total);
+                  });
+                } else {
+                  getBangumiFavoriteList(currentPage, pageSize).then((res_1) => {
+                    setBangumiList(res_1.items);
+                    setTotal(res_1.total);
+                  });
                 }
-              });
+              }
             }}
           >
             取消追番
