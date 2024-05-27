@@ -21,6 +21,7 @@ import { showMessage } from '@natsume_shiki/mika-ui';
 
 import './Video.less';
 import { isUserLoggedInSync } from '../../common/user';
+import LoadingPage from '../Loading/LoadingPage.tsx';
 
 const Video = memo(() => {
   const param = useParams();
@@ -130,6 +131,10 @@ const Video = memo(() => {
       clearInterval(timer.current);
     };
   }, [item?.pagination.length, p, param.id]);
+
+  if (!item) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className='moe-video-video-page-root'>

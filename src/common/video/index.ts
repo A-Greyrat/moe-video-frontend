@@ -234,7 +234,7 @@ export const getVideoInfo_v2 = async (videoId: string): Promise<VideoInfo> => {
     if (res.code !== 200 || !res.data) return null;
     return {
       title: res?.data?.title,
-      tags: res?.data?.tags.length > 0 && res?.data?.tags.split(';'),
+      tags: res?.data?.tags.length > 0 && res?.data?.tags?.split(';'),
       playCount: res?.data?.watchCnt,
       likeCount: (res?.data?.userLike ? -1 : 0) + parseInt(res?.data?.likeCnt, 10),
       danmakuCount: res?.data?.danmakuCnt,
@@ -441,7 +441,7 @@ export const searchBangumi = async (
         cover: item.cover,
         desc: item.description,
         score: item.score,
-        tags: item?.tags?.length > 0 && item.tags.split(';'),
+        tags: item?.tags?.length > 0 && item.tags?.split(';'),
         userFavorite: item.userFavorite,
         url: `/video/${item.id}`,
       })),
