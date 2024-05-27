@@ -45,6 +45,9 @@ const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => 
     <a href={url} className='moe-video-home-page-recommend-list-item overflow-hidden'>
       <div className='relative'>
         <Image lazy width='100%' style={{ aspectRatio: '5 / 3', objectFit: 'cover' }} src={cover} />
+        <div className='moe-video-home-page-recommend-list-item-bangumi-tag absolute left-2 top-2 bg-pink-400 text-white '>
+          番剧
+        </div>
         <div className='moe-video-home-page-recommend-list-item-cover-background'></div>
         <div className='absolute left-3 bottom-2 gap-2 cursor-pointer text-white text-base font-light flex'>
           <div className='flex items-center gap-1'>

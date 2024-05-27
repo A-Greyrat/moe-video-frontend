@@ -92,6 +92,7 @@ const UploadList = memo(() => {
           getUserUploadList(page, pageSize).then((res) => {
             setUploadList(res.items);
           });
+          window.scrollTo({ top: 0 });
         }}
       />
     </>

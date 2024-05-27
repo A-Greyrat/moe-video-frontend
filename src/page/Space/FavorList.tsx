@@ -129,10 +129,12 @@ const FavorList = memo(() => {
         </div>
       )}
       <Pagination
+        key={total}
         initIndex={currentPage}
         pageNum={Math.ceil(total / pageSize.current)}
         onChange={(index) => {
           handlePageChange(index);
+          window.scrollTo({ top: 0 });
         }}
         style={{
           width: 'fit-content',
