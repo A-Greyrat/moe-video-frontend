@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useRef } from 'react';
-import VideoPlayer, { DanmakuAttr, VideoSrc, TripleSpeedForward } from 'mika-video-player';
+import VideoPlayer, { DanmakuAttr, TripleSpeedForward, VideoSrc } from 'mika-video-player';
 import Header from '../../component/header/Header';
 import Footer from '../../component/footer/Footer';
 import VideoPageComment from './VideoPageComment.tsx';
@@ -77,14 +77,11 @@ const Video = memo(() => {
 
       getAllDanmaku = () => {
         const i = Math.ceil(videoRef.current.duration / 60 / 6);
-        const promises: Promise<DanmakuAttr[]>[] = [];
-        for (let j = 1; j <= i; j++) {
-          promises.push(getDanmaku(id, j));
+        for (let j = 2; j <= i; j++) {
+          getDanmaku(id, j).then((res) => {
+            setDanmakus((prev) => prev.concat(res));
+          });
         }
-
-        Promise.all(promises).then((res) => {
-          setDanmakus(res.flat());
-        });
       };
 
       videoRef.current?.addEventListener('play', fn, { once: true });
@@ -133,13 +130,11 @@ const Video = memo(() => {
     };
   }, [item?.pagination.length, p, param.id]);
 
-  if (!item) {
-    return <LoadingPage />;
-  }
   const vid = parseInt(item?.pagination.find((item) => item.index === `P${p ?? 1}`)?.videoId, 10) || 0;
   return (
     <div className='moe-video-video-page-root'>
       <Header />
+      {!item && <LoadingPage />}
       <div className='moe-video-video-page-wrapper'>
         <div className='moe-video-page-video-container'>
           <VideoPlayer
