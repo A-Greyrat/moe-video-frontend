@@ -43,14 +43,15 @@ const Video = memo(() => {
     let getAllDanmaku: () => void;
 
     getVideoInfo(vid).then((res) => {
-      const index = p ? parseInt(p, 10) - 1 : 0;
-      if (res === null || res.pagination.length === 0 || !res.pagination[index]?.videoId) {
+      const index = `P${p ?? 1}`;
+      const id = res.pagination.find((item) => item.index === index)?.videoId;
+      if (res === null || res.pagination.length === 0 || !id) {
         nav('/404', { replace: true });
       }
 
       setItem(res);
       fn = () => {
-        getLastWatchedProgress(res.pagination[index].videoId).then((res) => {
+        getLastWatchedProgress(id).then((res) => {
           if (res > 0 && videoRef.current) {
             videoRef.current.currentTime = res;
             showMessage({
@@ -64,13 +65,13 @@ const Video = memo(() => {
         clearInterval(timer.current);
         timer.current = setInterval(() => {
           const currentTime = videoRef.current?.currentTime;
-          postWatchProgress(res.pagination[index].videoId, currentTime).then(undefined);
+          postWatchProgress(id, currentTime).then(undefined);
         }, heartbeatSendTime);
       };
 
       postFirstHeartbeat = () => {
         setTimeout(() => {
-          postWatchCount(res.pagination[index].videoId).then(undefined);
+          postWatchCount(id).then(undefined);
         }, 1000);
       };
 
@@ -78,7 +79,7 @@ const Video = memo(() => {
         const i = Math.ceil(videoRef.current.duration / 60 / 6);
         const promises: Promise<DanmakuAttr[]>[] = [];
         for (let j = 1; j <= i; j++) {
-          promises.push(getDanmaku(res.pagination[index].videoId, j));
+          promises.push(getDanmaku(id, j));
         }
 
         Promise.all(promises).then((res) => {
@@ -91,11 +92,11 @@ const Video = memo(() => {
       videoRef.current?.addEventListener('play', postFirstHeartbeat, { once: true });
       videoRef.current?.addEventListener('loadedmetadata', getAllDanmaku, { once: true });
 
-      getVideoUrl(res.pagination[index].videoId).then((res) => {
+      getVideoUrl(id).then((res) => {
         setUrl(res);
       });
 
-      getDanmaku(res.pagination[index].videoId, 1).then((res) => {
+      getDanmaku(id, 1).then((res) => {
         setDanmakus(res);
       });
     });
@@ -135,7 +136,7 @@ const Video = memo(() => {
   if (!item) {
     return <LoadingPage />;
   }
-
+  const vid = parseInt(item?.pagination.find((item) => item.index === `P${p ?? 1}`)?.videoId, 10) || 0;
   return (
     <div className='moe-video-video-page-root'>
       <Header />
@@ -184,22 +185,9 @@ const Video = memo(() => {
           />
           {item && <VideoPageInfo {...(item as unknown as VideoPageInfoProps)} />}
         </div>
-        {item && (
-          <VideoPageComment key={10000 + item.pagination[p ? parseInt(p, 10) - 1 : 0].videoId} videoId={param.id} />
-        )}
-        {item && (
-          <VideoPaginationList
-            key={20000 + item.pagination[p ? parseInt(p, 10) - 1 : 0].videoId}
-            items={item.pagination}
-            activeIndex={parseInt(p || '1', 10) - 1}
-          />
-        )}
-        {item && (
-          <VideoRecommendList
-            key={30000 + item.pagination[p ? parseInt(p, 10) - 1 : 0].videoId}
-            items={item.recommendList}
-          />
-        )}
+        {item && <VideoPageComment key={10000 + vid} videoId={param.id} />}
+        {item && <VideoPaginationList key={20000 + vid} items={item.pagination} activeIndex={parseInt(p || '1', 10)} />}
+        {item && <VideoRecommendList key={30000 + vid} items={item.recommendList} />}
       </div>
       <Footer />
     </div>
