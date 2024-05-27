@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react';
+import React, { memo, useEffect } from 'react';
 import Header from '../../component/header/Header.tsx';
 import Footer from '../../component/footer/Footer.tsx';
 import VideoUpload from './VideoUpload.tsx';
