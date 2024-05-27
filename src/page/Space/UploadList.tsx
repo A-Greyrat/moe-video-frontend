@@ -1,10 +1,10 @@
-import {memo, useCallback, useEffect, useState} from 'react';
-import {Button, Image, Pagination, showMessage} from '@natsume_shiki/mika-ui';
-import {deleteUserUpload, getLastWatchedIndex, getUserUploadList} from '../../common/video';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { Button, Image, Pagination, showMessage } from '@natsume_shiki/mika-ui';
+import { deleteUserUpload, getLastWatchedIndex, getUserUploadList } from '../../common/video';
 import { useTitle } from '../../common/hooks';
 import SkeletonCard from '../../component/SkeletonCard';
 import './UploadList.less';
-import {useStore} from "mika-store";
+import { useStore } from 'mika-store';
 
 export interface UploadListItemProps {
   id: string;
@@ -20,9 +20,10 @@ export interface UploadListItemProps {
 export const UploadListItem = memo((props: UploadListItemProps) => {
   const { id, title, cover, status, uploadTime, url, pageSize } = props;
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
-  const [uploadList, setUploadList] = useStore('moe-video-space-page-upload-list',[]);
-  const [currentPage, setCurrentPage] = useStore('moe-video-space-page-upload-list-current-page',1);
-  const [_total, setTotal] = useStore('moe-video-space-page-upload-list-total',-1);
+  const [uploadList, setUploadList] = useStore('moe-video-space-page-upload-list', []);
+  const [currentPage, setCurrentPage] = useStore('moe-video-space-page-upload-list-current-page', 1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_total, setTotal] = useStore('moe-video-space-page-upload-list-total', -1);
 
   useEffect(() => {
     getLastWatchedIndex(id).then(setLastWatchedIndex);
@@ -128,17 +129,17 @@ const UploadList = memo(() => {
     <>
       <div className='moe-video-space-page-upload-list gap-4'>
         {uploadList.map((item) => (
-          <UploadListItem key={item.id} {...item} pageSize={pageSize}/>
+          <UploadListItem key={item.id} {...item} pageSize={pageSize} />
         ))}
       </div>
       <Pagination
         key={total}
         initIndex={currentPage}
-        style={{width: 'fit-content', margin: '1rem auto'}}
+        style={{ width: 'fit-content', margin: '1rem auto' }}
         pageNum={Math.ceil(total / pageSize)}
         onChange={(page) => {
           handlePageChange(page);
-          window.scrollTo({top: 0});
+          window.scrollTo({ top: 0 });
         }}
       />
     </>
