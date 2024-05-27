@@ -362,7 +362,7 @@ export const getRecommendList = async (num: number = 10): Promise<RecommendListI
             playCount: item.watchCnt,
             likeCount: item.likeCnt,
             lastUpdate: {
-              updateTo: item.updateAtAnnouncement,
+              updateTo: item.status ? item.updateAtAnnouncement : '已完结',
               updateAt: new Date(item.releaseTime).toLocaleDateString(),
             },
           },
