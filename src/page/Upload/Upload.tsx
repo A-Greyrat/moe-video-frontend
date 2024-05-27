@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { isUserLoggedInSync } from '../../common/user';
 
 const Upload = memo(() => {
+  window.scroll({ top: 0 });
   const formRef = React.useRef<HTMLFormElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [uploadCoverUrl, _setUploadCoverUrl] = useStore<string>('uploadCoverUrl', '');

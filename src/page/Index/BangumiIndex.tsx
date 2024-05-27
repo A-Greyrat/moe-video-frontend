@@ -10,6 +10,7 @@ import BangumiIndexList from './BangumiIndexList.tsx';
 import FilterList from './FilterList.tsx';
 
 const BangumiIndex = () => {
+  window.scroll({ top: 0 });
   useTitle('索引');
   const { id } = useParams();
   const [tabList, setTabList] = useState([]);
