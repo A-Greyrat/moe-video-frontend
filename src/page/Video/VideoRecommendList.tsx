@@ -16,18 +16,13 @@ export interface VideoRecommendListProps {
   items: VideoRecommendListItemProps[];
 }
 
-const getCover = (url: string) => {
-  const host = url.split('/')[2];
-  return `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pHost=${host}&pUrl=${encodeURIComponent(url)}`;
-};
-
 export const VideoRecommendListItem = memo((props: VideoRecommendListItemProps) => {
   const { url, cover, title, playCount, update, author } = props;
 
   return (
     <a href={url} className='moe-video-video-page-recommend-item'>
       <div className='moe-video-video-page-recommend-list-item-cover-background'></div>
-      <Image lazy src={getCover(cover)} alt={title} key={url} />
+      <Image lazy src={cover} alt={title} key={url} />
       <div className='moe-video-video-page-recommend-item-info w-full justify-between'>
         <span className='line-clamp-2 text-base'>{title}</span>
         <div>
