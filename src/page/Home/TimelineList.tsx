@@ -36,7 +36,7 @@ export const TimelineListItem = memo((props: TimelineListItem) => {
       <div className='flex flex-col justify-between flex-auto'>
         <div className='moe-video-home-page-timeline-list-item-title px-3 pt-1 pb-1 line-clamp-2'>{title}</div>
         <div className='px-3 pb-3 text-gray-400 text-sm gap-1 flex'>
-          <span>更新至第{updateTo}集</span>
+          <span>即将更新至第{updateTo}集</span>
         </div>
       </div>
     </a>
