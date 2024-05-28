@@ -11,19 +11,21 @@ if (token) {
 }
 
 window.addEventListener('storage', () => {
-  const newToken = localStorage.getItem('token');
-  isUserLoggedIn = !!newToken;
+  if (localStorage.getItem('token') && token !== localStorage.getItem('token')) {
+    const newToken = localStorage.getItem('token');
+    isUserLoggedIn = !!newToken;
 
-  showModal({
-    title: '登录状态改变',
-    content: '登录状态已改变，请刷新页面',
-    closeOnClickMask: false,
-    closeIcon: false,
-    footer: 'ok',
-    onOk: () => {
-      window.location.reload();
-    },
-  });
+    showModal({
+      title: '登录状态改变',
+      content: '登录状态已改变，请刷新页面',
+      closeOnClickMask: false,
+      closeIcon: false,
+      footer: 'ok',
+      onOk: () => {
+        window.location.reload();
+      },
+    });
+  }
 });
 
 export const isUserLoggedInSync = () => isUserLoggedIn;
