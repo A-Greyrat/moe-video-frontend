@@ -11,7 +11,7 @@ if (token) {
 }
 
 window.addEventListener('storage', () => {
-  if (localStorage.getItem('token') && token !== localStorage.getItem('token')) {
+  if (token && !localStorage.getItem('token')) {
     const newToken = localStorage.getItem('token');
     isUserLoggedIn = !!newToken;
 
