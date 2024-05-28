@@ -6,16 +6,14 @@ import IndexList from './IndexList.tsx';
 import ChasingList from './ChasingList.tsx';
 import TimelineList from './TimelineList.tsx';
 import RecommendList from './RecommendList.tsx';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import LoadingPage from '../Loading/LoadingPage.tsx';
 import { getCarouselList, getHomeIndexList, getRecommendList } from '../../common/video';
 import './Home.less';
 
 const Home = () => {
-  window.scroll({ top: 0 });
   useTitle('首页');
   const [carouselItems, setCarouselItems] = useState([]);
-  const [recommendList, setRecommendList] = useState([]);
   const [indexList, setIndexList] = useState([]);
 
   useEffect(() => {
@@ -27,9 +25,6 @@ const Home = () => {
       setIndexList(res);
     });
 
-    getRecommendList().then((res) => {
-      setRecommendList(res);
-    });
   }, []);
 
   if (carouselItems.length === 0) return <LoadingPage />;
@@ -51,11 +46,11 @@ const Home = () => {
         <TimelineList />
 
         {/* 推荐列表 */}
-        <RecommendList items={recommendList} />
+        <RecommendList />
       </div>
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default memo(Home);

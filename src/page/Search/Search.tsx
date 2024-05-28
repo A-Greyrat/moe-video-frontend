@@ -10,7 +10,6 @@ import VideoSearchList from './VideoSearchList.tsx';
 import BangumiSearchList from './BangumiSearchList.tsx';
 
 const Search = memo(() => {
-  window.scroll({ top: 0 });
   const { id, type = '' } = useParams();
   useTitle(`搜索 - ${id}`);
   const [activeIndex, setActiveIndex] = useState(type === 'video' ? 1 : type === 'bangumi' ? 2 : 0);

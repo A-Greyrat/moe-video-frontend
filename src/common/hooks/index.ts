@@ -46,6 +46,7 @@ export const useTypePrint = (text: string[], speed = 100) => {
 
 export const useTitle = (title: string) => {
   useEffect(() => {
+    window.scroll({ top: 0 });
     document.title = title;
   }, [title]);
 };

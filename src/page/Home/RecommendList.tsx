@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import './RecommendList.less';
-import { Image } from '@natsume_shiki/mika-ui';
+import { Button, Image } from '@natsume_shiki/mika-ui';
 import PlayCountIcon from '../Icon/PlaybackVolumeIcon.tsx';
 import LoveIcon from '../Icon/LoveIcon.tsx';
 import SkeletonCard from '../../component/SkeletonCard';
+import { getRecommendList } from '../../common/video';
 
 export interface RecommendVideoListItemProps {
   title: string;
@@ -32,10 +33,6 @@ export interface RecommendBangumiListItemProps {
 export interface RecommendListItemProps {
   data: RecommendVideoListItemProps | RecommendBangumiListItemProps;
   type?: string;
-}
-
-interface RecommendListProps {
-  items: RecommendListItemProps[];
 }
 
 const RecommendBangumiListItem = memo((props: RecommendBangumiListItemProps) => {
@@ -121,15 +118,22 @@ export const RecommendListItem = memo((props: RecommendListItemProps) => {
   }
 });
 
-const RecommendList = memo((props: RecommendListProps) => {
-  const { items } = props;
+const RecommendList = memo(() => {
+  const [recommendList, setRecommendList] = useState([]);
+
+  useEffect(() => {
+    getRecommendList(12).then(setRecommendList);
+  }, []);
 
   return (
     <>
-      <div className='flex items-center pb-2'>
+      <div className='flex items-baseline pb-2'>
         <span className='text-3xl font-medium text-gray-800'>猜你喜欢</span>
+        <Button onClick={() => getRecommendList(12).then(setRecommendList)} styleType='link'>
+          刷新
+        </Button>
       </div>
-      {items?.length === 0 && (
+      {recommendList?.length === 0 && (
         <SkeletonCard
           num={12}
           style={{
@@ -141,7 +145,7 @@ const RecommendList = memo((props: RecommendListProps) => {
         />
       )}
       <div className='moe-video-home-page-recommend-list pt-2 pb-4 px-1 mb-12 gap-4 flex overflow-auto'>
-        {items?.length > 0 && items.map((item) => <RecommendListItem key={item.data.url} {...item} />)}
+        {recommendList?.length > 0 && recommendList.map((item) => <RecommendListItem key={item.data.url} {...item} />)}
       </div>
     </>
   );
