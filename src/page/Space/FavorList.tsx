@@ -48,24 +48,23 @@ export const FavorListItem = memo((props: FavorListItemProps) => {
               width: 'fit-content',
               fontSize: '1rem',
             }}
-            onClick={() => {
-              deleteVideoFavorite([id]).then((r) => {
-                if (r.code === 200) {
-                  showMessage({ children: '取消收藏成功' });
-                  if (favorList.length === 1 && currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
-                    getVideoFavoriteList(currentPage - 1, pageSize).then((res) => {
-                      setFavorList(res.items);
-                      setTotal(res.total);
-                    });
-                  } else {
-                    getVideoFavoriteList(currentPage, pageSize).then((res) => {
-                      setFavorList(res.items);
-                      setTotal(res.total);
-                    });
-                  }
+            onClick={async () => {
+              const r = await deleteVideoFavorite([id]);
+              if (r.code === 200) {
+                showMessage({ children: '取消收藏成功' });
+                if (favorList.length === 1 && currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                  getVideoFavoriteList(currentPage - 1, pageSize).then((res) => {
+                    setFavorList(res.items);
+                    setTotal(res.total);
+                  });
+                } else {
+                  getVideoFavoriteList(currentPage, pageSize).then((res_1) => {
+                    setFavorList(res_1.items);
+                    setTotal(res_1.total);
+                  });
                 }
-              });
+              }
             }}
           >
             取消收藏

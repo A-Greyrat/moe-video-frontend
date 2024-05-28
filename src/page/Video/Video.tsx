@@ -44,11 +44,13 @@ const Video = memo(() => {
 
     getVideoInfo(vid).then((res) => {
       const index = `P${p ?? 1}`;
-      const id = res.pagination.find((item) => item.index === index)?.videoId;
-      if (res === null || res.pagination.length === 0 || !id) {
+      if (res === null || !res.pagination || res.pagination.length === 0) {
         nav('/404', { replace: true });
       }
-
+      const id = res.pagination.find((item) => item.index === index)?.videoId;
+      if (!id) {
+        nav('/404', { replace: true });
+      }
       setItem(res);
       fn = () => {
         getLastWatchedProgress(id).then((res) => {
