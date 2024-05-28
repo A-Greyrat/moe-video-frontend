@@ -180,7 +180,7 @@ const Header = memo(() => {
           nav('/');
         }}
       >
-        Moe
+        MoE
       </p>
       <SearchSection />
       <div className='moe-video-header-right'>
