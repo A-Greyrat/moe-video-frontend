@@ -14,25 +14,11 @@ interface TimelineListItem {
   url: string;
 }
 
-const dayMap = {
-  0: '周日',
-  1: '周一',
-  2: '周二',
-  3: '周三',
-  4: '周四',
-  5: '周五',
-  6: '周六',
-};
-
 export const TimelineListItem = memo((props: TimelineListItem) => {
-  const { title, cover, updateTime, updateTo, score, url, id } = props;
-  const [updateDay, setUpdateDay] = useState('');
-  const [updateLocalTime, setUpdateLocalTime] = useState('');
+  const { title, cover, updateTo, score, url, id } = props;
   const [lastWatchedIndex, setLastWatchedIndex] = useState('1');
 
   useEffect(() => {
-    setUpdateDay(dayMap[new Date(updateTime).getDay()]);
-    setUpdateLocalTime(new Date(updateTime).toLocaleTimeString().slice(0, 5));
     if (isUserLoggedInSync()) getLastWatchedIndex(id).then(setLastWatchedIndex);
   }, []);
 
@@ -50,8 +36,6 @@ export const TimelineListItem = memo((props: TimelineListItem) => {
       <div className='flex flex-col justify-between flex-auto'>
         <div className='moe-video-home-page-timeline-list-item-title px-3 pt-1 pb-1 line-clamp-2'>{title}</div>
         <div className='px-3 pb-3 text-gray-400 text-sm gap-1 flex'>
-          <span>{updateDay}</span>
-          <span>{updateLocalTime}</span>
           <span>更新至第{updateTo}集</span>
         </div>
       </div>
@@ -67,20 +51,26 @@ const TimelineList = memo(() => {
 
   useEffect(() => {
     const timeList: TimelineListItem[][] = [];
+    const promiseList: Promise<any>[] = [];
     for (let i = 0; i <= 6; i++) {
       const nextDate = new Date(date);
       nextDate.setDate(nextDate.getDate() + i);
       const timeIndex = nextDate.getDay();
       const formattedDate = `${nextDate.getFullYear()}${String(nextDate.getMonth() + 1).padStart(2, '0')}${String(nextDate.getDate()).padStart(2, '0')}`;
-      getNewBangumiTimeList(formattedDate).then((res) => {
-        if (!timeIndex) {
-          timeList[6] = res;
-        } else {
-          timeList[timeIndex - 1] = res;
-        }
-      });
+      promiseList.push(
+        getNewBangumiTimeList(formattedDate).then((res) => {
+          if (!timeIndex) {
+            timeList[6] = res;
+          } else {
+            timeList[timeIndex - 1] = res;
+          }
+        }),
+      );
     }
-    setTimelineList(timeList);
+
+    Promise.all(promiseList).then(() => {
+      setTimelineList(timeList);
+    });
   }, [now]);
 
   return (
