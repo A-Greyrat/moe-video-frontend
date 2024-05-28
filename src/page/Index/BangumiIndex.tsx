@@ -39,14 +39,14 @@ const BangumiIndex = () => {
             activeIndex={activeIndex}
             onChange={setActiveIndex}
             style={{
-              gap: '1rem',
-              marginBottom: '1rem',
-              padding: '0.2rem 1rem',
+              gap: '2rem',
+              marginBottom: '0.8rem',
+              fontSize: '1.25rem',
               justifyContent: 'flex-start',
             }}
           />
 
-          <div className='moe-video-bangumi-index-page-index-list grid gap-4'>
+          <div className='moe-video-bangumi-index-page-index-list flex gap-4'>
             {/* 番剧区域 */}
             <BangumiIndexList activeIndex={activeIndex} key={activeIndex} />
 

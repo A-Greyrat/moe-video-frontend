@@ -8,7 +8,13 @@
 }
 
 .moe-video-bangumi-index-page-index-list {
-  grid-template-columns: 3fr 1fr;
+  > :first-child {
+    flex: 3;
+  }
+
+  > :last-child {
+    flex: 1;
+  }
 
   .moe-video-skeleton-card-cover {
     width: 100%;
