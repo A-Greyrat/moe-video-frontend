@@ -229,6 +229,8 @@ const SearchList = memo(() => {
     return <div className='text-gray-400 text-center'>暂无搜索结果</div>;
   }
 
+  if (total > 0 && parseInt(page, 10) > Math.ceil(total / pageSize.current)) navigate(`/404`);
+
   return (
     <>
       {bangumiList?.length > 0 && parseInt(page, 10) === 1 && (

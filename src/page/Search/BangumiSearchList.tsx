@@ -51,6 +51,8 @@ const BangumiSearchList = memo(() => {
     return <div className='text-gray-400 text-center'>暂无搜索结果</div>;
   }
 
+  if (total > 0 && parseInt(page, 10) > Math.ceil(total / pageSize.current)) navigate(`/404`);
+
   return (
     <>
       {bangumiSearchList?.length > 0 && (
