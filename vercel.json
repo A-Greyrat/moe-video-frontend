@@ -1,16 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/:path*",
-      "destination": "/"
-    },
-    {
       "source": "/robots.txt",
       "destination": "https://abdecd.xyz/moe/robots.txt"
     },
     {
       "source": "/sitemap.txt",
       "destination": "https://abdecd.xyz/moe/sitemap.txt"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/"
     }
   ]
 }
