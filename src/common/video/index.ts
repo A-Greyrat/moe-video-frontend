@@ -12,7 +12,7 @@ import { IndexListItemProps } from '../../page/Home/IndexList.tsx';
 import { isUserLoggedInSync } from '../user';
 
 const proxyImg = (url: string) =>
-  `https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
+  `https://abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
 
 const proxyUrl = (url: string) => {
   // eslint-disable-next-line camelcase
