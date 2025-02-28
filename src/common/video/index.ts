@@ -12,7 +12,7 @@ import { IndexListItemProps } from '../../page/Home/IndexList.tsx';
 import { isUserLoggedInSync } from '../user';
 
 const proxyImg = (url: string) =>
-  `https://abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
+  `https://p.m3tr.top/proxy?pReferer=https://www.bilibili.com&pUrl=${encodeURIComponent(url)}`;
 
 const proxyUrl = (url: string) => {
   // eslint-disable-next-line camelcase
@@ -300,7 +300,7 @@ export const getDanmaku = async (videoId: string, segmentIndex?: number) => getD
 // return getDanmaku_v2(videoId, p, SESSDATA);
 
 export const getVideoUrl_v1 = async (videoId: string, p?: string, extra?: string) => {
-  const video_proxy_url = 'https://fast.abdecd.xyz/proxy?pReferer=https://www.bilibili.com&pHost=';
+  const video_proxy_url = 'https://p.m3tr.top/proxy?pReferer=https://www.bilibili.com&pHost=';
   return fetch(`https://b.erisu.moe/api/playurl/flv?bvid=${videoId}&SESSDATA=${extra}${p ? `&p=${p}` : ''}`)
     .then((res) => res.json())
     .then((data) => {
@@ -500,8 +500,8 @@ export const postWatchProgress = async (videoId: string, progress: number) => {
 };
 
 export const postWatchCount = async (videoId: string) => httpPost('/statistic/video-play-start', {
-    videoId
-  });
+  videoId
+});
 
 export const getLastWatchedIndex = async (id: string) =>
   httpGet<any>('/plain-user/history/video-group', { params: { videoGroupId: id } }).then((res) =>
