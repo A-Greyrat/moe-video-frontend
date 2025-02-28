@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/robots.txt",
-      "destination": "https://abdecd.xyz/moe/robots.txt"
+      "destination": "https://m3tr.top/moe/robots.txt"
     },
     {
       "source": "/sitemap.txt",
-      "destination": "https://abdecd.xyz/moe/sitemap.txt"
+      "destination": "https://m3tr.top/moe/sitemap.txt"
     },
     {
       "source": "/:path*",

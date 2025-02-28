@@ -8,7 +8,7 @@ export interface ResponseData<T> {
   data: T;
 }
 
-export const baseURL = 'https://abdecd.xyz/moe';
+export const baseURL = 'https://m3tr.top/moe';
 const instance = axios.create({
   baseURL,
 });
